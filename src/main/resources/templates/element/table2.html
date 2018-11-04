@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>表格</title>
+    <link rel="stylesheet" href="../../static/element-ui/lib/theme-chalk/index.css">
+    <script src="../../static/js/jquery.min.js"></script>
+    <!-- import Vue before Element -->
+    <script src="../../static/vue/dist/vue.min.js"></script>
+    <!-- import JavaScript -->
+    <script src="../../static/element-ui/lib/index.js"></script>
+    <style>
+        .el-table .warning-row {
+            background: oldlace;
+        }
+
+        .el-table .success-row {
+            background: #f0f9eb;
+        }
+
+    </style>
+</head>
+<body>
+<div id="app">
+    <el-form inline="block" size="small" style="width:25%;margin: 0 auto">
+        <el-form-item>
+            <el-input v-model="username1" placeholder="用户名"></el-input>
+        </el-form-item>
+        <el-button type="primary" @click="getUserList(1,pageSize)" size="small">查询</el-button>
+    </el-form>
+
+    <template>
+        <el-table align="center"
+                  :data="userList"
+                  style="width:1000px; margin: 0 auto"
+                  :row-class-name="tableRowClassName">
+            <el-table-column
+                    prop="id"
+                    label="编号"
+                    width="180"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="username"
+                    label="用户名"
+                    width="180"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="password"
+                    label="密码"
+                    align="center">
+            </el-table-column>
+        </el-table>
+    </template>
+    <div class="block" style="margin-top: 10px;">
+        <el-pagination align="center"
+                       background
+                       @size-change="handleSizeChange"
+                       @current-change="handleCurrentChange"
+                       :current-page="currentPage"
+                       :page-sizes="pageSizes"
+                       :page-size="pageSize"
+                       layout="total, sizes, prev, pager, next, jumper"
+                       :total="total">
+        </el-pagination>
+    </div>
+</div>
+</body>
+
+
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            userList: [],
+            currentPage: 1,
+            pageSizes: [1, 20, 50],
+            pageSize: 1,
+            total: 0,
+
+            username1: ''
+
+        },
+        methods: {
+
+            tableRowClassName({row, rowIndex}) {
+                if (rowIndex % 2 === 1) {
+                    return 'success-row';
+                }
+                return '';
+            },
+
+            /**
+             * 获取当页容量和当前页码
+             */
+            handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+                vm.getUserList(vm.currentPage,val)
+            },
+            handleCurrentChange(val) {
+                console.log(`当前页: ${val}`);
+                vm.getUserList(val,vm.pageSize)
+            },
+
+            /**
+             * 获取分页用户列表
+             *
+             * @param currentPage
+             * @param pageSize
+             */
+            getUserList: function(currentPage,pageSize) {
+                $.ajax({
+                    type: 'get',
+                    url: 'userList/' + currentPage + '/' + pageSize,
+                    data: {
+                        username: vm.username1
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        vm.currentPage = data.pageNo;
+                        vm.pageSize = pageSize;
+                        vm.total = data.totalCount;
+                        vm.userList = data.userList;
+                    }
+                })
+            },
+        },
+    });
+
+    $(function () {
+        vm.handleSizeChange(vm.pageSize)
+    })
+
+
+</script>
+</html>

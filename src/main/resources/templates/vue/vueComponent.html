@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue组件</title>
+    <script src="../../static/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../static/element-ui/lib/theme-chalk/index.css">
+    <style>
+
+    </style>
+</head>
+<body>
+<div id="app" class="col-sm-5">
+    <my-component prompt-message="点击加1"></my-component>
+    <my-component prompt-message="2"></my-component>
+    <my-component prompt-message="3"></my-component>
+</div>
+</body>
+<!-- import Vue before Element -->
+<script src="../../static/vue/dist/vue.min.js"></script>
+<script>
+
+    Vue.component('my-component', {
+        props:['promptMessage'],
+        template: '<div class="col-sm-3">{{promptMessage}} <button class="btn btn-primary " @click="counter++">{{counter}}</button></div>',
+        data: function () {
+            return {
+                counter: 0
+            }
+        },
+    });
+    var app = new Vue({
+        el: '#app',
+    });
+
+</script>
+</html>

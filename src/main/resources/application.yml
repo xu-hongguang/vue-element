@@ -1,0 +1,15 @@
+#数据库数据源
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: root
+    url: jdbc:mysql://localhost:3306/logistics
+  jpa:
+    show-sql: true
+
+#日志文件路径
+logging:
+  path: E:/logs/
+  file: ${logging.path}vue_log
+

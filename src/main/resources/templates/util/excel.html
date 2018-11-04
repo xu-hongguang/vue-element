@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Excel文件导入</title>
+    <script src="js/jquery.min.js"></script>
+</head>
+<body>
+<input type="button" value="导出" id="export">
+<script>
+  $(function () {
+      $("#export").click(function () {
+          /*$.ajax({
+              type:'GET',
+              url:'export/userExcel',
+              success:function () {
+                  // alert("成功")
+              }
+          })*/
+          location.href = "export/userExcel"
+      })
+  })
+</script>
+</body>
+</html>

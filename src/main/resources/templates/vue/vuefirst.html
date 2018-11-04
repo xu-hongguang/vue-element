@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello Vue!</title>
+    <script src="js/jquery.min.js"></script>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../static/element-ui/lib/theme-chalk/index.css">
+    <style>
+        .class1{
+            background: #444;
+            color: #eee;
+        }
+    </style>
+</head>
+<body>
+<hr>
+<form class="form-inline">
+    <div class="form-group">
+        <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+        <div class="input-group">
+            <div class="input-group-addon">编号</div>
+            <input type="text" class="form-control" id="exampleInputAmount" placeholder="Amount">
+            <div class="input-group-addon">.00</div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">搜索</button>
+</form>
+<hr>
+<div id="app">
+    {{message}}
+</div>
+<hr>
+<div id="app-2">
+    <span v-bind:title="message">
+         鼠标悬停几秒钟查看此处动态绑定的提示信息！
+    </span>
+</div>
+<hr>
+<div id="app-3">
+    <p v-if="see">现在你看到我了</p>
+</div>
+<hr>
+<div class="form-group" id="app-6">
+    <label for="exampleInputEmail1">请输入：</label>
+    <input type="email" class="form-control" id="exampleInputEmail1" v-model="message">
+    <p>{{ message }}</p>
+</div>
+<hr>
+<div id="app-7">
+    <ul>
+        <!--
+          现在我们为每个 todo-item 提供 todo 对象
+          todo 对象是变量，即其内容可以是动态的。
+          我们也需要为每个组件提供一个“key”，稍后再
+          作详细解释。
+        -->
+        <todo-item
+                v-for="items in groceryList"
+                v-bind:todo="items"
+                v-bind:key="items.id">
+        </todo-item>
+    </ul>
+</div>
+<hr>
+<div id="app-8">
+    {{ message+'叠加' }}<br>
+    {{ ok ? '是的':'不是' }}<br>
+    {{ message.split('').reverse().join('') }}
+</div>
+<hr>
+<div id="app-9">
+    <label for="r1">修改颜色</label><input type="checkbox" v-model="classes" id="r1">
+    <br><br>
+    <div v-bind:class="{'class1': classes}">
+        v-bind:class 指令
+    </div>
+</div>
+</body>
+<!-- import Vue before Element -->
+<script src="../../static/vue/dist/vue.min.js"></script>
+<script>
+
+    new Vue({
+        el: '#app',
+        data: {
+            message: 'Hello Vue!!!'
+        }
+    });
+
+    new Vue({
+        el: '#app-2',
+        data: {
+            message: '页面加载于 ' + new Date().toLocaleString()
+        }
+    });
+
+    new Vue({
+        el: '#app-3',
+        data: {
+            see: true
+        }
+    });
+
+    new Vue({
+        el: '#app-6',
+        data: {
+            message: 'Hello Vue!'
+        }
+    });
+
+    //自定义组件
+    Vue.component('todo-item', {
+        props: ['todo'],
+        template: '<li>{{todo.id}} {{ todo.text }}</li>'
+    });
+    new Vue({
+        el: '#app-7',
+        data: {
+            groceryList: [
+                {id: 0, text: '蔬菜'},
+                {id: 1, text: '奶酪'},
+                {id: 2, text: '随便其它什么人吃的东西'}
+            ]
+        }
+    });
+
+    new Vue({
+        el: '#app-8',
+        data: {
+            message: 'js表达式',
+            ok: false
+        }
+    });
+
+    new Vue({
+        el: '#app-9',
+        data:{
+            classes: false
+        }
+    });
+</script>
+</html>

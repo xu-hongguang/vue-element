@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>表格</title>
+    <link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+    <script src="js/jquery.min.js"></script>
+    <!-- import Vue before Element -->
+    <script src="vue/dist/vue.min.js"></script>
+    <script src="axios/dist/axios.min.js"></script>
+    <script src="vue/vue-resource@1.5.1.js"></script>
+    <!-- import JavaScript -->
+    <script src="element-ui/lib/index.js"></script>
+    <style>
+        .el-table .warning-row {
+            background: oldlace;
+        }
+
+        .el-table .success-row {
+            background: #f0f9eb;
+        }
+
+    </style>
+</head>
+<body>
+<div id="app">
+    <el-form inline="block" size="small" style="width:25%;margin: 0 auto">
+        <el-form-item>
+            <el-input v-model="username1" placeholder="用户名"></el-input>
+        </el-form-item>
+        <el-button type="primary" @click="getUserList(1)" size="small">查询</el-button>
+    </el-form>
+
+    <template>
+        <el-table align="center"
+                  :data="userList"
+                  style="width:1000px; margin: 0 auto"
+                  :row-class-name="tableRowClassName">
+            <el-table-column
+                    prop="id"
+                    label="编号"
+                    width="180"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="username"
+                    label="用户名"
+                    width="180"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="password"
+                    label="密码"
+                    align="center">
+            </el-table-column>
+        </el-table>
+    </template>
+    <div class="block" style="margin-top: 10px;">
+        <el-pagination align="center"
+                       background
+                       @size-change="handleSizeChange"
+                       @current-change="handleCurrentChange"
+                       :current-page="currentPage"
+                       :page-sizes="pageSizes"
+                       :page-size="pageSize"
+                       layout="total, sizes, prev, pager, next, jumper"
+                       :total="total">
+        </el-pagination>
+    </div>
+</div>
+</body>
+
+
+<script>
+    window.onload = function () {
+        const vm = new Vue({
+            el: '#app',
+            data: {
+                userList: [],
+                currentPage: 1,
+                pageSizes: [2, 5, 20, 50],
+                pageSize: 5,
+                total: 0,
+
+                username1: ''
+
+            },
+            methods: {
+
+                tableRowClassName({row, rowIndex}) {
+                    if (rowIndex % 2 === 1) {
+                        return 'success-row';
+                    }
+                    return '';
+                },
+
+                /**
+                 * 获取当页容量和当前页码
+                 */
+                handleSizeChange(val) {
+                    if (vm.total > 0) {
+                        console.log(`每页 ${val} 条`);
+                        vm.pageSize = val;
+                        vm.getUserList(vm.currentPage);
+                    }
+                },
+                handleCurrentChange(currentPage) {
+                    if (vm.total > 0) {
+                        console.log(`当前页: ${currentPage}`);
+                        vm.currentPage = currentPage;
+                        vm.getUserList(currentPage);
+                    }
+                },
+
+                /**
+                 * 获取分页用户列表
+                 *
+                 * @param pageNo
+                 */
+                getUserList: function (pageNo) {
+                    //ajax方式与后台交互
+                    /*$.ajax({
+                        type: 'get',
+                        url: 'userList/' + pageNo + '/' + vm.pageSize,
+                        data: {
+                            username: vm.username1
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            vm.currentPage = data.pageNo;
+                            // vm.pageSize = data.pageSize;
+                            vm.total = data.totalCount;
+                            vm.userList = data.userList;
+                        }
+                    });*/
+
+
+                    //使用vue-resource插件与后台交互，全版
+                    /*vm.$http({
+                        method: 'GET',
+                        url: 'userList/' + pageNo + '/' + vm.pageSize + '?username=' + vm.username1,
+                        data: {}, //get请求必须在路径后加数据
+                        dataType: 'json'
+                    }).then(function (response) {
+                        vm.currentPage = response.data.pageNo;
+                        vm.total = response.data.totalCount;
+                        vm.userList = response.data.userList;
+                    }).catch(function (error) {
+
+                    });*/
+                    //简写版get方式
+                    /*vm.$http.get(
+                        'userList/' + pageNo + '/' + vm.pageSize + '?username=' + vm.username1,
+                    ).then(function (data) {
+                        //.data不可去
+                        vm.currentPage = data.data.pageNo;
+                        vm.total = data.data.totalCount;
+                        vm.userList = data.data.userList;
+                    });*/
+
+                    // 使用axios方式与后台交互，全版
+                    axios({
+                        method: 'get',
+                        url: 'userList/' + pageNo + '/' + vm.pageSize + '?username=' + vm.username1,
+                        data: {},
+                        dataType: 'json'
+                    }).then((response) => {
+                        //.data不可去
+                        vm.currentPage = response.data.pageNo;
+                        vm.total = response.data.totalCount;
+                        vm.userList = response.data.userList;
+                    }).catch((error) => {
+
+                    });
+                    // 简写版
+                    /*axios.get('userList/' + pageNo + '/' + vm.pageSize + '?username=' + vm.username1,
+                        {}).then(function (response) {
+                        vm.currentPage = response.data.pageNo;
+                        vm.total = response.data.totalCount;
+                        vm.userList = response.data.userList;
+                    })*/
+
+                },
+            },
+        });
+
+        vm.getUserList(vm.currentPage);
+    }
+
+
+</script>
+</html>
