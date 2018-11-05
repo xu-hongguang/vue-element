@@ -49,7 +49,7 @@ public class PageController {
     public String add(@RequestBody User user) {
         logger.info("添加：" + user);
 
-        if (userService.saveUser(user)) {
+        if (user != null && userService.saveUser(user)) {
             return "suc";
         }
 
@@ -66,8 +66,7 @@ public class PageController {
     public String update(@RequestBody User user) {
         logger.info("修改为：" + user);
 
-        if (user != null) {
-            userService.updateUser(user);
+        if (user != null && userService.updateUser(user)) {
             return "suc";
         }
 
@@ -80,7 +79,7 @@ public class PageController {
      * @return
      */
     @RequestMapping(value = "/user/delete")
-    public String delete(@RequestParam("id") Integer id) {
+    public String delete(Integer id) {
         logger.info("删除：" + id);
 
         if ((id != null) && (id > 0)) {

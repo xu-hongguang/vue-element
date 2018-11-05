@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.Predicate;
+import java.util.stream.IntStream;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -71,8 +72,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(User user){
-        userRepository.save(user);
+    public boolean updateUser(User user){
+        if (user != null) {
+            userRepository.save(user);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -81,10 +86,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void deleteMap(Integer[] ids) {
-        for (int id = 0; id < ids.length; id++) {
-            deleteUser(id);
+        int bound = ids.length;
+        for (int i = 0; i < bound; i++) {
+            deleteUser(i);
         }
     }
 
