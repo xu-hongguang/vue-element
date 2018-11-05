@@ -1,22 +1,19 @@
 package com.xhg.studyelement.controller;
 
 import com.google.gson.Gson;
-import com.xhg.common.utils.R;
 import com.xhg.studyelement.pojo.User;
 import com.xhg.studyelement.serivce.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
 @RestController
 public class PageController {
-    Logger logger = LoggerFactory.getLogger(PageController.class);
+    private Logger logger = LoggerFactory.getLogger(PageController.class);
 
     @Autowired
     private UserService userService;
@@ -38,9 +35,74 @@ public class PageController {
 
         logger.info("获取的数据：" + userPage.getContent());
 
-
 //        return map;
         return new Gson().toJson(map);
+    }
+
+    /**
+     * 添加
+     *
+     * @param user
+     * @return
+     */
+    @RequestMapping("/user/add")
+    public String add(@RequestBody User user) {
+        logger.info("添加：" + user);
+
+        if (userService.saveUser(user)) {
+            return "suc";
+        }
+
+        return "err";
+    }
+
+    /**
+     * 修改
+     *
+     * @param user
+     * @return
+     */
+    @RequestMapping("/user/update")
+    public String update(@RequestBody User user) {
+        logger.info("修改为：" + user);
+
+        if (user != null) {
+            userService.updateUser(user);
+            return "suc";
+        }
+
+        return "err";
+    }
+
+    /**
+     * 删除
+     *
+     * @return
+     */
+    @RequestMapping(value = "/user/delete")
+    public String delete(@RequestParam("id") Integer id) {
+        logger.info("删除：" + id);
+
+        if ((id != null) && (id > 0)) {
+            userService.deleteUser(id);
+            return "suc";
+        }
+
+        return "err";
+    }
+
+    /**
+     * 批量删除
+     *
+     * @return
+     */
+    @RequestMapping("/user/batchRemove")
+    public String batchRemove(Integer[] ids) {
+        if (ids != null && ids.length > 0) {
+            userService.deleteMap(ids);
+            return "suc";
+        }
+        return "err";
     }
 
 }

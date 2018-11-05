@@ -38,7 +38,7 @@ public class StudyelementApplicationTests {
 
 	@Test
 	public void test(){
-		User user = userRepository.findById(2);
+		User user = userRepository.findById(2).get();
 
 		System.out.println(user.toString());
 
@@ -47,4 +47,11 @@ public class StudyelementApplicationTests {
         System.out.println(userPage.getTotalElements());
 
     }
+
+    @Test
+    public void  test2(){
+		userService.deleteUser(5);
+
+	}
+
 }

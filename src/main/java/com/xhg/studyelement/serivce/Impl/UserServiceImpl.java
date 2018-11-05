@@ -3,6 +3,8 @@ package com.xhg.studyelement.serivce.Impl;
 import com.xhg.studyelement.dao.UserRepository;
 import com.xhg.studyelement.pojo.User;
 import com.xhg.studyelement.serivce.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,11 +12,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.Predicate;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired
     private UserRepository userRepository;
@@ -52,4 +57,36 @@ public class UserServiceImpl implements UserService {
             return query.getRestriction();
         }, pageable);
     }
+
+    @Override
+    public boolean saveUser(User user) {
+        User user1 = userRepository.findByUsername(user.getUsername());
+        logger.info("对比：" + user1);
+        boolean isSave = false;
+        if (user1 == null) {
+            userRepository.save(user);
+            isSave = true;
+        }
+        return isSave;
+    }
+
+    @Override
+    public void updateUser(User user){
+        userRepository.save(user);
+    }
+
+    @Override
+    public void deleteUser(Integer id) {
+        userRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public void deleteMap(Integer[] ids) {
+        for (int id = 0; id < ids.length; id++) {
+            deleteUser(id);
+        }
+    }
+
+
 }

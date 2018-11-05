@@ -24,11 +24,28 @@
 </head>
 <body>
 <div id="app">
-    <el-form inline="block" size="small" style="width:25%;margin: 0 auto">
+    <el-form inline="block" align="center" size="small" style="width: 500px;margin: 0 auto">
         <el-form-item>
             <el-input v-model="username1" placeholder="用户名"></el-input>
         </el-form-item>
-        <el-button type="primary" @click="getUserList(1)" size="small">查询</el-button>
+        <el-button type="primary" @click="getUserList(1)" size="small" icon="el-icon-search">查询</el-button>
+        <el-button type="primary" @click="dialogFormVisible = true" size="small" icon="el-icon-circle-plus-outline">添加</el-button>
+        <!--添加弹出框内容-->
+        <el-dialog title="添加用户" :visible.sync="dialogFormVisible">
+            <el-form :model="user">
+                <el-form-item label="用户名" :label-width="formLabelWidth">
+                    <el-input v-model="user.username" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="密 码" :label-width="formLabelWidth">
+                    <el-input v-model="user.password" autocomplete="off"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="addUser">保 存</el-button>
+            </div>
+        </el-dialog>
+        <el-button type="danger" @click="" size="small" icon="el-icon-delete">批量删除</el-button>
     </el-form>
 
     <template>
@@ -36,6 +53,10 @@
                   :data="userList"
                   style="width:1000px; margin: 0 auto"
                   :row-class-name="tableRowClassName">
+            <el-table-column
+                    type="selection"
+                    width="55">
+            </el-table-column>
             <el-table-column
                     prop="id"
                     label="编号"
@@ -52,6 +73,39 @@
                     prop="password"
                     label="密码"
                     align="center">
+            </el-table-column>
+            <el-table-column label="操作" align="center">
+                <template slot-scope="scope">
+                    <!--弹出框-->
+                    <el-button
+                            size="mini"
+                            @click="handleEdit(scope.$index, scope.row)" icon="el-icon-edit-outline">编辑
+                    </el-button>
+                    <el-button
+                            size="mini"
+                            type="danger"
+                            @click="handleDelete(scope.$index, scope.row)" icon="el-icon-delete">删除
+                    </el-button>
+                    <!--编辑弹出框内容-->
+                    <el-dialog title="修改用户信息" :visible.sync="dialogFormVisible2">
+                        <el-form :model="user">
+                            <!--用于spring data jpa修改数据，必须要主键-->
+                            <input type="hidden" v-model="user.id">
+                            <el-form-item style="width: 500px" label="用户名" :label-width="formLabelWidth">
+                                <el-input v-model="user.username" autocomplete="off"></el-input>
+                            </el-form-item>
+                            <el-form-item style="width: 500px" label="密 码" :label-width="formLabelWidth">
+                                <el-input v-model="user.password" autocomplete="off"></el-input>
+                            </el-form-item>
+                        </el-form>
+                        <div slot="footer" class="dialog-footer">
+                            <el-button @click="dialogFormVisible2 = false">取 消</el-button>
+                            <el-button type="primary" @click="updateUser">保 存</el-button>
+                        </div>
+                    </el-dialog>
+
+
+                </template>
             </el-table-column>
         </el-table>
     </template>
@@ -82,11 +136,25 @@
                 pageSize: 5,
                 total: 0,
 
-                username1: ''
+                //查询条件
+                username1: '',
+
+                //用于修改弹出框数据
+                dialogFormVisible: false,
+                dialogFormVisible2: false,
+                user: {
+                    id:0,
+                    username: '',
+                    password: ''
+                },
+                formLabelWidth: '100px'
 
             },
             methods: {
 
+                /*
+                 * 表格隔行变色
+                 */
                 tableRowClassName({row, rowIndex}) {
                     if (rowIndex % 2 === 1) {
                         return 'success-row';
@@ -94,7 +162,7 @@
                     return '';
                 },
 
-                /**
+                /*
                  * 获取当页容量和当前页码
                  */
                 handleSizeChange(val) {
@@ -180,6 +248,116 @@
                         vm.userList = response.data.userList;
                     })*/
 
+                },
+
+                /**
+                 *  添加
+                 */
+                addUser: function () {
+                    var data = {
+                        username: vm.user.username,
+                        password: vm.user.password
+                    };
+
+                    axios({
+                        method: 'post',
+                        url: 'user/add',
+                        headers:{
+                            'Content-type': 'application/json'
+                        },
+                        data: JSON.stringify(data),
+                        dataType: 'text',
+                    }).then((response) => {
+                        //.data不可去
+                        if (response.data === 'suc') {
+                            // vm.dialogFormVisible = false;
+
+                            vm.open('保存成功！', 'success');
+                            vm.getUserList(vm.currentPage)
+                        } else {
+
+                            vm.dialogFormVisible = false;
+                            vm.open('保存失败！', 'error')
+                        }
+                    })
+                },
+                /**
+                 * 到修改页面
+                 * @param index
+                 * @param row
+                 */
+                handleEdit(index, row) {
+                    console.log(index, row);
+                    vm.dialogFormVisible2 = true;
+
+                    //给修改表单赋值
+                    this.user.id = vm.userList[index].id;
+                    this.user.username = vm.userList[index].username;
+                    this.user.password = vm.userList[index].password
+
+                },
+                /**
+                 * 修改
+                 */
+                updateUser: function () {
+                    var data = {
+                        id:vm.user.id,
+                        username: vm.user.username,
+                        password: vm.user.password
+                    };
+
+                    axios({
+                        method: 'put',
+                        url: 'user/update',
+                        headers:{
+                            'Content-type': 'application/json'
+                        },
+                        data: JSON.stringify(data),
+                        dataType: 'text',
+                    }).then((response) => {
+                        //.data不可去
+                        if (response.data === 'suc') {
+                            vm.open('修改成功！', 'success');
+                            vm.getUserList(vm.currentPage)
+                        } else {
+                            vm.open('修改失败！', 'error')
+                        }
+                    })
+                },
+
+
+                /**
+                 * 删除
+                 * @param index
+                 * @param row
+                 */
+                handleDelete(index, row) {
+                    console.log(index, row);
+                    axios({
+                        method: 'post',
+                        url: 'user/delete',
+                        data: {
+                            id: parseInt(vm.userList[index].id)
+                        },
+                        dataType: 'text',
+                    }).then((response) => {
+                        //.data不可去
+                        if (response.data === 'suc') {
+                            vm.open('删除成功！', 'success');
+                            vm.getUserList(vm.currentPage)
+                        } else {
+                            vm.open('删除失败！', 'error')
+                        }
+                    })
+
+                },
+
+                open(message, type) {
+                    this.$message({
+                        showClose: true,
+                        message: message,
+                        type: type
+                    });
                 },
             },
         });

@@ -10,4 +10,13 @@ public interface UserService {
     Page<User> findAll(Integer pageNo,Integer pageSize);
 
     Page<User> findAllByUsername(Integer pageNo, Integer pageSize,String username);
+
+    boolean saveUser(User user);
+
+    void updateUser(User user);
+
+    void deleteUser(Integer id);
+
+    void deleteMap(Integer[] ids);
+
 }

@@ -22,34 +22,100 @@
 </head>
 <body>
 <div id="app">
-    <el-form inline="block" size="small" style="width:25%;margin: 0 auto">
+    <el-form inline="block" align="center" size="small" style="width: 500px;margin: 0 auto">
         <el-form-item>
             <el-input v-model="username1" placeholder="用户名"></el-input>
         </el-form-item>
-        <el-button type="primary" @click="getUserList(1,pageSize)" size="small">查询</el-button>
+        <el-form-item>
+            <el-button type="primary" @click="getUserList(1)" size="small" icon="el-icon-search">查询</el-button>
+            <el-button type="primary" @click="" size="small" icon="el-icon-circle-plus-outline">添加</el-button>
+            <el-button type="danger" @click="" size="small" icon="el-icon-delete">批量删除</el-button>
+        </el-form-item>
     </el-form>
-
+    <el-button  @click="open6">成功</el-button>
     <template>
         <el-table align="center"
-                  :data="userList"
+                  :data="tableData"
                   style="width:1000px; margin: 0 auto"
                   :row-class-name="tableRowClassName">
             <el-table-column
-                    prop="id"
-                    label="编号"
-                    width="180"
-                    align="center">
+                    type="selection"
+                    width="55">
             </el-table-column>
             <el-table-column
-                    prop="username"
-                    label="用户名"
+                    prop="date"
+                    label="日期"
+                    sortable
                     width="180"
-                    align="center">
+                    :filters="[{text: '2016-05-01', value: '2016-05-01'}, {text: '2016-05-02', value: '2016-05-02'}, {text: '2016-05-03', value: '2016-05-03'}, {text: '2016-05-04', value: '2016-05-04'}]"
+                    :filter-method="filterHandler"
+            >
             </el-table-column>
             <el-table-column
-                    prop="password"
-                    label="密码"
-                    align="center">
+                    prop="name"
+                    label="姓名"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="address"
+                    label="地址"
+                    :formatter="formatter">
+            </el-table-column>
+            <el-table-column
+                    prop="tag"
+                    label="标签"
+                    width="100"
+                    :filters="[{ text: '家', value: '家' }, { text: '公司', value: '公司' }]"
+                    :filter-method="filterTag"
+                    filter-placement="bottom-end">
+                <template slot-scope="scope">
+                    <el-tag
+                            :type="scope.row.tag === '家' ? 'primary' : 'success'"
+                            disable-transitions>{{scope.row.tag}}
+                    </el-tag>
+                </template>
+            </el-table-column>
+            <el-table-column label="操作" align="center">
+                <template slot-scope="scope">
+                    <!--弹出框-->
+                    <el-button
+                            size="mini"
+                            @click="handleEdit(scope.$index, scope.row)" icon="el-icon-edit-outline">编辑
+                    </el-button>
+                    <!--弹出框内容-->
+                    <el-dialog title="修改用户信息" :visible.sync="dialogFormVisible">
+                        <el-form :model="userInfo">
+                            <el-form-item label="日期" style="width: 120px" :label-width="formLabelWidth">
+                                <el-date-picker
+                                        v-model="userInfo.date"
+                                        align="left"
+                                        type="date"
+                                        placeholder="选择日期"
+                                        :picker-options="pickerOptions1">
+                                </el-date-picker>
+                            </el-form-item>
+                            <el-form-item style="width: 340px" label="姓名" :label-width="formLabelWidth">
+                                <el-input v-model="userInfo.name" autocomplete="off"></el-input>
+                            </el-form-item>
+                            <el-form-item style="width: 340px" label="地址" :label-width="formLabelWidth">
+                                <el-input v-model="userInfo.address" autocomplete="off"></el-input>
+                            </el-form-item>
+                            <el-form-item style="width: 340px" label="标签" :label-width="formLabelWidth">
+                                <el-input v-model="userInfo.tag" autocomplete="off"></el-input>
+                            </el-form-item>
+                        </el-form>
+                        <div slot="footer" class="dialog-footer">
+                            <el-button @click="dialogFormVisible = false">取 消</el-button>
+                            <el-button type="primary" @click="dialogFormVisible = false">保 存</el-button>
+                        </div>
+                    </el-dialog>
+
+                    <el-button
+                            size="mini"
+                            type="danger"
+                            @click="handleDelete(scope.$index, scope.row)" icon="el-icon-delete">删除
+                    </el-button>
+                </template>
             </el-table-column>
         </el-table>
     </template>
@@ -73,16 +139,83 @@
     var vm = new Vue({
         el: '#app',
         data: {
-            userList: [],
+            tableData: [{
+                date: '2016-05-02',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1518 弄',
+                tag: '家'
+            }, {
+                date: '2016-05-04',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1517 弄',
+                tag: '公司'
+            }, {
+                date: '2016-05-01',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1519 弄',
+                tag: '家'
+            }, {
+                date: '2016-05-03',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1516 弄',
+                tag: '公司'
+            }],
             currentPage: 1,
             pageSizes: [1, 20, 50],
             pageSize: 1,
             total: 0,
 
-            username1: ''
+            //查询条件
+            username1: '',
+
+            //用于修改弹出框数据
+            dialogFormVisible: false,
+            userInfo: {
+                date: '',
+                name: '',
+                address: '',
+                tag: ''
+            },
+            formLabelWidth: '120px',
+
+            pickerOptions1: {
+                disabledDate(time) {
+                    return time.getTime() > Date.now();
+                },
+                shortcuts: [{
+                    text: '今天',
+                    onClick(picker) {
+                        picker.$emit('pick', new Date());
+                    }
+                }, {
+                    text: '昨天',
+                    onClick(picker) {
+                        const date = new Date();
+                        date.setTime(date.getTime() - 3600 * 1000 * 24);
+                        picker.$emit('pick', date);
+                    }
+                }, {
+                    text: '一周前',
+                    onClick(picker) {
+                        const date = new Date();
+                        date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+                        picker.$emit('pick', date);
+                    }
+                }]
+            },
 
         },
         methods: {
+            formatter(row, column) {
+                return row.address;
+            },
+            filterTag(value, row) {
+                return row.tag === value;
+            },
+            filterHandler(value, row, column) {
+                const property = column['property'];
+                return row[property] === value;
+            },
 
             tableRowClassName({row, rowIndex}) {
                 if (rowIndex % 2 === 1) {
@@ -96,11 +229,17 @@
              */
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);
-                vm.getUserList(vm.currentPage,val)
+                if (vm.total >0){
+                    vm.pageSize = val;
+                    vm.getUserList(vm.currentPage);
+                }
             },
             handleCurrentChange(val) {
                 console.log(`当前页: ${val}`);
-                vm.getUserList(val,vm.pageSize)
+                if (vm.total >0){
+                    vm.currentPage = val;
+                    vm.getUserList(val);
+                }
             },
 
             /**
@@ -109,27 +248,56 @@
              * @param currentPage
              * @param pageSize
              */
-            getUserList: function(currentPage,pageSize) {
+            getUserList: function (currentPage) {
                 $.ajax({
                     type: 'get',
-                    url: 'userList/' + currentPage + '/' + pageSize,
+                    url: 'userList/' + currentPage + '/' + vm.pageSize,
                     data: {
                         username: vm.username1
                     },
                     dataType: 'json',
                     success: function (data) {
                         vm.currentPage = data.pageNo;
-                        vm.pageSize = pageSize;
                         vm.total = data.totalCount;
                         vm.userList = data.userList;
                     }
                 })
             },
+
+            /**
+             * 修改
+             * @param index
+             * @param row
+             */
+            handleEdit(index, row) {
+                console.log(index, row);
+                vm.dialogFormVisible = true;
+
+                //给修改表单赋值
+                this.userInfo.name = vm.tableData[index].name;
+                this.userInfo.address = vm.tableData[index].address
+            },
+            /**
+             * 删除
+             * @param index
+             * @param row
+             */
+            handleDelete(index, row) {
+                console.log(index, row);
+            },
+
+            open6() {
+                this.$message({
+                    showClose: true,
+                    message: '恭喜你，这是一条成功消息',
+                    type: 'success'
+                });
+            },
         },
     });
 
     $(function () {
-        vm.handleSizeChange(vm.pageSize)
+        vm.handleSizeChange(vm.currentPage)
     })
 
 

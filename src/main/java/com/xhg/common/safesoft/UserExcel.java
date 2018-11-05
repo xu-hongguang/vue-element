@@ -44,7 +44,7 @@ public class UserExcel extends AbstractExportExcel {
         for (User user : users) {
             setSheetValue(sheet, lineNum, 0, String.valueOf(user.getId()), style);
             setSheetValue(sheet, lineNum, 1, user.getUsername(), style);
-            setSheetValue(sheet, lineNum, 2, user.getPwd(), style);
+            setSheetValue(sheet, lineNum, 2, user.getPassword(), style);
             lineNum++;
         }
     }
