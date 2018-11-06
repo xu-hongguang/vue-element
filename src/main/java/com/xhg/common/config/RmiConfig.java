@@ -1,4 +1,3 @@
-/*
 package com.xhg.common.config;
 
 import com.xhg.studyelement.serivce.UserService;
@@ -7,14 +6,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.remoting.rmi.RmiProxyFactoryBean;
 import org.springframework.remoting.rmi.RmiServiceExporter;
 
-*/
 /**
  * RMI服务
  *
  * @author 16033
- *//*
-
-@Configuration
+ */
+//@Configuration
 public class RmiConfig {
 
     @Bean
@@ -23,13 +20,17 @@ public class RmiConfig {
         rmiServiceExporter.setService(userService);
         rmiServiceExporter.setServiceName("userService");
         rmiServiceExporter.setServiceInterface(UserService.class);
-        rmiServiceExporter.setRegistryHost("rmi.replies.com");
+//        rmiServiceExporter.setRegistryHost("rmi.user.com");
         rmiServiceExporter.setRegistryPort(1199);
         return rmiServiceExporter;
     }
 
+    /**
+     * 装配RMI服务
+     * @return
+     */
     @Bean
-    public RmiProxyFactoryBean userService(){
+    public RmiProxyFactoryBean rmiProxyFactoryBean(){
         RmiProxyFactoryBean rmiProxyFactoryBean = new RmiProxyFactoryBean();
         rmiProxyFactoryBean.setServiceUrl("rmi://localhost:1199/userService");
         rmiProxyFactoryBean.setServiceInterface(UserService.class);
@@ -37,4 +38,3 @@ public class RmiConfig {
     }
 
 }
-*/

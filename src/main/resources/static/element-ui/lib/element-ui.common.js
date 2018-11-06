@@ -621,7 +621,7 @@ module.exports = require("element-ui/lib/tag");
 /* 26 */
 /***/ (function(module, exports) {
 
-module.exports = require("element-ui/lib/utils/scroll-into-view");
+module.exports = require("element-ui/lib/utils/scroll-into-views");
 
 /***/ }),
 /* 27 */

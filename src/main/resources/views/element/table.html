@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>表格</title>
+    <link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+    <!--<script src="js/jquery.min.js"></script>-->
+    <!-- import Vue before Element -->
+    <script src="vue/dist/vue.min.js"></script>
+    <script src="axios/dist/axios.min.js"></script>
+    <script src="vue/vue-resource@1.5.1.js"></script>
+    <!-- import JavaScript -->
+    <script src="element-ui/lib/index.js"></script>
+    <style>
+        .el-table .warning-row {
+            background: oldlace;
+        }
+
+        .el-table .success-row {
+            background: #f0f9eb;
+        }
+
+    </style>
+</head>
+<body>
+<div id="app">
+    <el-form inline="block" align="center" size="small" style="width: 600px;margin: 0 auto">
+        <el-form-item>
+            <el-input v-model="username1" placeholder="用户名"></el-input>
+        </el-form-item>
+        <el-button type="primary" @click="getUserList(1)" size="small" icon="el-icon-search">查询</el-button>
+        <el-button type="success" @click="toAdd" size="small" icon="el-icon-circle-plus-outline">添加</el-button>
+        <el-button type="info" @click="exportUserExcel" size="small" icon="el-icon-download">导出</el-button>
+        <el-button type="danger" @click="batchRemove" size="small" icon="el-icon-delete">批量删除</el-button>
+    </el-form>
+
+    <template>
+        <!--添加弹出框内容-->
+        <el-dialog title="添加用户" :visible.sync="dialogFormVisible">
+            <el-form :model="user" :rules="rules" ref="user">
+                <el-form-item style="width: 500px" label="用户名" prop="username" :label-width="formLabelWidth">
+                    <el-input v-model="user.username" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item style="width: 500px" label="密 码" prop="password" :label-width="formLabelWidth">
+                    <el-input v-model="user.password" autocomplete="off"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="resetForm('user')">取 消</el-button>
+                <el-button type="primary" @click="submitForm('user',addUser)">保 存</el-button>
+            </div>
+        </el-dialog>
+
+        <!--表格-->
+        <el-table align="center"
+                  :data="userList"
+                  style="width:1000px; margin: 0 auto"
+                  :row-class-name="tableRowClassName"
+                  @selection-change="handleSelectionChange"
+                  v-loading="listLoading"
+                  element-loading-text="正在拼命加载中">
+            <el-table-column
+                    type="selection"
+                    width="55" prop="id">
+            </el-table-column>
+            <el-table-column
+                    prop="id"
+                    label="编号"
+                    width="180"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="username"
+                    label="用户名"
+                    width="180"
+                    align="center">
+            </el-table-column>
+            <el-table-column
+                    prop="password"
+                    label="密码"
+                    align="center">
+            </el-table-column>
+            <el-table-column label="操作" align="center">
+                <template slot-scope="scope">
+                    <!--跳转到编辑弹出框-->
+                    <el-button
+                            size="mini"
+                            @click="handleEdit(scope.$index, scope.row)" icon="el-icon-edit-outline">编辑
+                    </el-button>
+                    <el-button
+                            size="mini"
+                            type="danger"
+                            @click="open2(scope.$index, scope.row)" icon="el-icon-delete">删除
+                    </el-button>
+                    <!--编辑弹出框内容-->
+                    <el-dialog title="修改用户信息" :visible.sync="dialogFormVisible2">
+                        <el-form :model="user" :rules="rules" ref="user">
+                            <!--用于spring data jpa修改数据，必须要主键-->
+                            <input type="hidden" v-model="user.id">
+                            <el-form-item style="width: 500px" label="用户名" prop="username"
+                                          :label-width="formLabelWidth">
+                                <el-input v-model="user.username" autocomplete="off"></el-input>
+                            </el-form-item>
+                            <el-form-item style="width: 500px" label="密 码" prop="password"
+                                          :label-width="formLabelWidth">
+                                <el-input v-model="user.password" autocomplete="off"></el-input>
+                            </el-form-item>
+                        </el-form>
+                        <div slot="footer" class="dialog-footer">
+                            <el-button @click="updateResetForm('user')">取 消</el-button>
+                            <el-button type="primary" @click="submitForm('user',updateUser)">保 存</el-button>
+                        </div>
+                    </el-dialog>
+
+
+                </template>
+            </el-table-column>
+        </el-table>
+    </template>
+    <!--分页-->
+    <div class="block" style="margin-top: 10px;">
+        <el-pagination align="center"
+                       background
+                       @size-change="handleSizeChange"
+                       @current-change="handleCurrentChange"
+                       :current-page="currentPage"
+                       :page-sizes="pageSizes"
+                       :page-size="pageSize"
+                       layout="total, sizes, prev, pager, next, jumper"
+                       :total="total">
+        </el-pagination>
+    </div>
+</div>
+</body>
+
+<script>
+    window.onload = function () {
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                //加载
+                listLoading:true,
+                //列表数据
+                userList: [],
+                //分页
+                currentPage: 1,
+                pageSizes: [2, 5, 20, 50],
+                pageSize: 5,
+                total: 0,
+
+                //多选
+                multipleSelection: [],
+
+                //查询条件
+                username1: '',
+
+                //用于弹出(true)或关闭(false)弹框
+                dialogFormVisible: false,
+                dialogFormVisible2: false,
+                //表单数据
+                user: {
+                    id: 0,
+                    username: '',
+                    password: ''
+                },
+                formLabelWidth: '100px',
+                //表单验证
+                rules: {
+                    username: [
+                        {required: true, message: '请输入用户名', trigger: 'blur'},
+                    ],
+                    password: [
+                        {required: true, message: '请输入密码', trigger: 'blur'},
+                        {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'}
+                    ],
+                }
+
+            },
+            methods: {
+                //提交表单,成功则执行isFunction()方法
+                submitForm(formName, isFunction) {
+                    this.$refs[formName].validate((valid) => {
+                        if (valid) {
+                            if ((typeof isFunction) === 'function') {
+                                isFunction();
+                            }
+                        } else {
+                            console.log('error submit!!');
+                            return false;
+                        }
+                    });
+                },
+                //重置表单
+                resetForm(formName) {
+                    vm.dialogFormVisible = false;
+                    this.$refs[formName].resetFields();
+                },
+                //重置表单
+                updateResetForm(formName) {
+                    vm.dialogFormVisible2 = false;
+                    this.$refs[formName].resetFields();
+                },
+
+                /*
+                 * 表格隔行变色
+                 */
+                tableRowClassName({row, rowIndex}) {
+                    if (rowIndex % 2 === 1) {
+                        return 'success-row';
+                    }
+                    return '';
+                },
+
+                /*
+                 * 处理当页容量和当前页码
+                 */
+                handleSizeChange(val) {
+                    if (vm.total > 0) {
+                        console.log(`每页 ${val} 条`);
+                        vm.pageSize = val;
+                        vm.getUserList(vm.currentPage);
+                    }
+                },
+                handleCurrentChange(currentPage) {
+                    if (vm.total > 0) {
+                        console.log(`当前页: ${currentPage}`);
+                        vm.currentPage = currentPage;
+                        vm.getUserList(currentPage);
+                    }
+                },
+
+                /**
+                 * 查询分页用户列表
+                 *
+                 * @param pageNo
+                 */
+                getUserList: function (pageNo) {
+                    //显示加载
+                    vm.listLoading = true;
+                    if (!isNaN(pageNo)) {
+                        this.currentPage = pageNo;
+                    }
+
+                    //ajax方式与后台交互
+                    /*$.ajax({
+                        type: 'get',
+                        url: 'userList/' + pageNo + '/' + vm.pageSize,
+                        data: {
+                            username: vm.username1
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            vm.currentPage = data.pageNo;
+                            // vm.pageSize = data.pageSize;
+                            vm.total = data.totalCount;
+                            vm.userList = data.userList;
+                        }
+                    });*/
+
+
+                    //使用vue-resource插件与后台交互，全版
+                    /*vm.$http({
+                        method: 'GET',
+                        url: 'userList/' + pageNo + '/' + vm.pageSize + '?username=' + vm.username1,
+                        data: {}, //get请求必须在路径后加数据
+                        dataType: 'json'
+                    }).then(function (response) {
+                        vm.currentPage = response.data.pageNo;
+                        vm.total = response.data.totalCount;
+                        vm.userList = response.data.userList;
+                    }).catch(function (error) {
+
+                    });*/
+                    //简写版get方式
+                    /*vm.$http.get(
+                        'userList/' + pageNo + '/' + vm.pageSize + '?username=' + vm.username1,
+                    ).then(function (data) {
+                        //.data不可去
+                        vm.currentPage = data.data.pageNo;
+                        vm.total = data.data.totalCount;
+                        vm.userList = data.data.userList;
+                    });*/
+
+                    // 使用axios方式与后台交互，全版
+                    axios({
+                        method: 'get',
+                        url: 'userList/' + pageNo + '/' + vm.pageSize + '?username=' + vm.username1,
+                        data: {},
+                        dataType: 'json'
+                    }).then((response) => {
+                        //.data不可去
+                        vm.currentPage = response.data.pageNo;
+                        vm.total = response.data.totalCount;
+                        vm.userList = response.data.userList;
+
+                        //关闭加载显示
+                        vm.listLoading = false;
+                    }).catch((error) => {
+                        vm.listLoading = false;
+                    });
+                    // 简写版
+                    /*axios.get('userList/' + pageNo + '/' + vm.pageSize + '?username=' + vm.username1,
+                        {}).then(function (response) {
+                        vm.currentPage = response.data.pageNo;
+                        vm.total = response.data.totalCount;
+                        vm.userList = response.data.userList;
+                    })*/
+
+
+
+                },
+
+                toAdd() {
+                    this.user.username = '';
+                    this.user.password = '';
+
+                    //打开保存弹窗
+                    vm.dialogFormVisible = true
+                },
+                /**
+                 *  保存用户
+                 */
+                addUser() {
+                    // vm.submitForm('user');
+
+                    const data = {
+                        username: vm.user.username,
+                        password: vm.user.password
+                    };
+                    axios({
+                        method: 'post',
+                        url: 'user/add',
+                        headers: {
+                            'Content-type': 'application/json'
+                        },
+                        data: JSON.stringify(data),
+                        dataType: 'text',
+                    }).then((response) => {
+                        //.data不可去
+                        if (response.data === 'suc') {
+                            //关闭弹窗
+                            vm.dialogFormVisible = false;
+
+                            vm.open('保存成功！', 'success');
+                            vm.getUserList(vm.currentPage)
+                        } else {
+                            vm.open('保存失败,用户名已存在！', 'error')
+                        }
+                    })
+                },
+
+                /**
+                 * 导出Excel文件
+                 */
+                exportUserExcel() {
+                    location.href = "export/userExcel"
+                },
+
+
+                /**
+                 * 去修改页面
+                 * @param index
+                 * @param row
+                 */
+                handleEdit(index, row) {
+                    console.log(index, row);
+                    //打开修改弹窗
+                    vm.dialogFormVisible2 = true;
+
+                    //给修改表单赋值
+                    this.user.id = vm.userList[index].id;
+                    this.user.username = vm.userList[index].username;
+                    this.user.password = vm.userList[index].password
+
+                },
+                /**
+                 * 修改
+                 */
+                updateUser() {
+                    const data = {
+                        id: vm.user.id,
+                        username: vm.user.username,
+                        password: vm.user.password
+                    };
+
+                    axios({
+                        method: 'put',
+                        url: 'user/update',
+                        headers: {
+                            'Content-type': 'application/json'
+                        },
+                        data: JSON.stringify(data),
+                        dataType: 'text',
+                    }).then((response) => {
+                        //.data不可去
+                        if (response.data === 'suc') {
+                            vm.dialogFormVisible2 = false;
+                            vm.open('修改成功！', 'success');
+                            vm.getUserList(vm.currentPage)
+                        } else {
+                            vm.open('修改失败！', 'error')
+                        }
+                    })
+                },
+
+
+                /**
+                 * 删除
+                 * @param index
+                 * @param row
+                 */
+                handleDelete(index, row) {
+                    console.log(index, row);
+                    axios({
+                        //delete请求方式需要在url路径后传参
+                        method: 'delete',
+                        url: 'user/delete?id=' + vm.userList[index].id,
+                        data: {},
+                        dataType: 'text',
+                    }).then((response) => {
+                        //.data不可去
+                        if (response.data === 'suc') {
+                            vm.getUserList(vm.currentPage)
+                        } else {
+                        }
+                    })
+
+                },
+                //处理多选框改变
+                handleSelectionChange(val) {
+                    vm.multipleSelection = val;
+                },
+                //获取删除数据的所有id
+                getDeleteIds() {
+                    let ids = [];
+                    for (let i = 0; i < this.multipleSelection.length; i++) {
+                        ids.push(this.multipleSelection[i].id);
+                    }
+                    return ids;
+                },
+                //批量删除
+                batchRemove() {
+                    if (this.multipleSelection.length === 0) {
+                        this.$alert('请先选择要删除的数据!','提示');
+                        return;
+                    }
+
+                    this.$confirm('此操作将永久删除这些数据, 是否继续?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        const ids = vm.getDeleteIds();
+                        //批量删除数据
+                        axios({
+                            method: 'post',
+                            url: '/user/batchRemove',
+                            headers: {
+                                'Content-type': 'application/json'
+                            },
+                            data: JSON.stringify(ids),
+                            dataType: 'text',
+                        }).then((response) => {
+                            //.data不可去
+                            if (response.data === 'suc') {
+                                vm.getUserList(vm.currentPage)
+                            } else {
+                            }
+                        });
+
+                        this.$message({
+                            showClose: true,
+                            type: 'success',
+                            message: '删除成功!'
+                        });
+                    }).catch(() => {
+                        this.$message({
+                            showClose: true,
+                            type: 'info',
+                            message: '已取消删除'
+                        });
+                    });
+                },
+                //提示警告是否删除
+                open2(index, row) {
+                    this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        //删除数据
+                        vm.handleDelete(index, row);
+                        this.$message({
+                            showClose: true,
+                            type: 'success',
+                            message: '删除成功!'
+                        });
+                    }).catch(() => {
+                        this.$message({
+                            showClose: true,
+                            type: 'info',
+                            message: '已取消删除'
+                        });
+                    });
+                },
+
+
+                //提示窗
+                open(message, type) {
+                    this.$message({
+                        showClose: true,
+                        message: message,
+                        type: type
+                    });
+                },
+
+            },
+        });
+
+
+        vm.getUserList(1);
+    }
+
+
+</script>
+</html>

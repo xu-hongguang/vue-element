@@ -7,7 +7,7 @@
 import { makeMap } from 'shared/util'
 
 export const isReservedTag = makeMap(
-  'template,script,style,element,content,slot,link,meta,svg,view,' +
+  'template,script,style,element,content,slot,link,meta,svg,views,' +
   'a,div,img,image,text,span,input,switch,textarea,spinner,select,' +
   'slider,slider-neighbor,indicator,canvas,' +
   'list,cell,header,loading,loading-indicator,refresh,scrollable,scroller,' +

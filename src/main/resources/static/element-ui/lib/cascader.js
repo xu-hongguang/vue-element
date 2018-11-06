@@ -221,7 +221,7 @@ module.exports = require("element-ui/lib/utils/shared");
 /***/ 26:
 /***/ (function(module, exports) {
 
-module.exports = require("element-ui/lib/utils/scroll-into-view");
+module.exports = require("element-ui/lib/utils/scroll-into-views");
 
 /***/ }),
 

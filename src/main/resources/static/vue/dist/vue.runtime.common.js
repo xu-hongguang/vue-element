@@ -3028,7 +3028,7 @@ function callUpdatedHooks (queue) {
  */
 function queueActivatedComponent (vm) {
   // setting _inactive to false here so that a render function can
-  // rely on checking whether it's in an inactive tree (e.g. router-view)
+  // rely on checking whether it's in an inactive tree (e.g. router-views)
   vm._inactive = false;
   activatedChildren.push(vm);
 }
@@ -5237,7 +5237,7 @@ var isHTMLTag = makeMap(
 var isSVG = makeMap(
   'svg,animate,circle,clippath,cursor,defs,desc,ellipse,filter,font-face,' +
   'foreignObject,g,glyph,image,line,marker,mask,missing-glyph,path,pattern,' +
-  'polygon,polyline,rect,switch,symbol,text,textpath,tspan,use,view',
+  'polygon,polyline,rect,switch,symbol,text,textpath,tspan,use,views',
   true
 );
 

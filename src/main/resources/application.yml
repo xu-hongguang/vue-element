@@ -1,15 +1,35 @@
+
+# Tomcat
+server:
+    tomcat:
+        max-threads: 1000
+        min-spare-threads: 30
+        uri-encoding: UTF-8
+    servlet:
+      context-path: /vue-element
+    port: 8080
+
 #数据库数据源
 spring:
   datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
     username: root
     password: root
-    url: jdbc:mysql://localhost:3306/first?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://localhost:3306/logistics?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
   jpa:
     show-sql: true
+  mvc:
+    date-format: yyyy-MM-dd
+# 取消thymeleaf模板的默认
+  thymeleaf:
+    cache: false
+    enabled: false
+# 设置静态资源文件
+  resources:
+    static-locations: classpath:/views/,classpath:/static/
 
 #日志文件路径
 logging:
   path: E:/logs/
   file: ${logging.path}vue_log
-

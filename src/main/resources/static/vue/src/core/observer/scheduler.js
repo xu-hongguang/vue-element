@@ -107,7 +107,7 @@ function callUpdatedHooks (queue) {
  */
 export function queueActivatedComponent (vm: Component) {
   // setting _inactive to false here so that a render function can
-  // rely on checking whether it's in an inactive tree (e.g. router-view)
+  // rely on checking whether it's in an inactive tree (e.g. router-views)
   vm._inactive = false
   activatedChildren.push(vm)
 }

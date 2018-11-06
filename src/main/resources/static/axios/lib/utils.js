@@ -40,10 +40,10 @@ function isFormData(val) {
 }
 
 /**
- * Determine if a value is a view on an ArrayBuffer
+ * Determine if a value is a views on an ArrayBuffer
  *
  * @param {Object} val The value to test
- * @returns {boolean} True if value is a view on an ArrayBuffer, otherwise false
+ * @returns {boolean} True if value is a views on an ArrayBuffer, otherwise false
  */
 function isArrayBufferView(val) {
   var result;

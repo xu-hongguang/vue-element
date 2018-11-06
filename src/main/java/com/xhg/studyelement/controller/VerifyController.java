@@ -27,7 +27,7 @@ public class VerifyController {
         if (verify.equalsIgnoreCase(input)) {
             jsonUtil = new JsonUtil();
             jsonUtil.setIsSuc("suc");
-            session.removeAttribute("verify");
+//            session.removeAttribute("verify");
         } else {
             jsonUtil = new JsonUtil();
         }

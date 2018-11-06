@@ -19,7 +19,7 @@
 
 <script type="text/babel">
   import ElScrollbar from 'element-ui/packages/scrollbar';
-  import scrollIntoView from 'element-ui/src/utils/scroll-into-view';
+  import scrollIntoView from 'element-ui/src/utils/scroll-into-views';
 
   const parseTime = function(time) {
     const values = (time || '').split(':');
