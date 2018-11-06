@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>表格</title>
     <link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
-    <script src="js/jquery.min.js"></script>
+    <!--<script src="js/jquery.min.js"></script>-->
     <!-- import Vue before Element -->
     <script src="vue/dist/vue.min.js"></script>
     <script src="axios/dist/axios.min.js"></script>
@@ -24,13 +24,14 @@
 </head>
 <body>
 <div id="app">
-    <el-form inline="block" align="center" size="small" style="width: 500px;margin: 0 auto">
+    <el-form inline="block" align="center" size="small" style="width: 600px;margin: 0 auto">
         <el-form-item>
             <el-input v-model="username1" placeholder="用户名"></el-input>
         </el-form-item>
         <el-button type="primary" @click="getUserList(1)" size="small" icon="el-icon-search">查询</el-button>
-        <el-button type="primary" @click="toAdd" size="small" icon="el-icon-circle-plus-outline">添加</el-button>
-        <el-button type="danger" @click="" size="small" icon="el-icon-delete">批量删除</el-button>
+        <el-button type="success" @click="toAdd" size="small" icon="el-icon-circle-plus-outline">添加</el-button>
+        <el-button type="info" @click="exportUserExcel" size="small" icon="el-icon-download">导出</el-button>
+        <el-button type="danger" @click="batchRemove" size="small" icon="el-icon-delete">批量删除</el-button>
     </el-form>
 
     <template>
@@ -50,13 +51,17 @@
             </div>
         </el-dialog>
 
+        <!--表格-->
         <el-table align="center"
                   :data="userList"
                   style="width:1000px; margin: 0 auto"
-                  :row-class-name="tableRowClassName">
+                  :row-class-name="tableRowClassName"
+                  @selection-change="handleSelectionChange"
+                  v-loading="listLoading"
+                  element-loading-text="正在拼命加载中">
             <el-table-column
                     type="selection"
-                    width="55">
+                    width="55" prop="id">
             </el-table-column>
             <el-table-column
                     prop="id"
@@ -77,7 +82,7 @@
             </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                    <!--弹出框-->
+                    <!--跳转到编辑弹出框-->
                     <el-button
                             size="mini"
                             @click="handleEdit(scope.$index, scope.row)" icon="el-icon-edit-outline">编辑
@@ -85,7 +90,7 @@
                     <el-button
                             size="mini"
                             type="danger"
-                            @click="handleDelete(scope.$index, scope.row)" icon="el-icon-delete">删除
+                            @click="open2(scope.$index, scope.row)" icon="el-icon-delete">删除
                     </el-button>
                     <!--编辑弹出框内容-->
                     <el-dialog title="修改用户信息" :visible.sync="dialogFormVisible2">
@@ -102,7 +107,7 @@
                             </el-form-item>
                         </el-form>
                         <div slot="footer" class="dialog-footer">
-                            <el-button @click="dialogFormVisible2 = false">取 消</el-button>
+                            <el-button @click="updateResetForm('user')">取 消</el-button>
                             <el-button type="primary" @click="submitForm('user',updateUser)">保 存</el-button>
                         </div>
                     </el-dialog>
@@ -112,6 +117,7 @@
             </el-table-column>
         </el-table>
     </template>
+    <!--分页-->
     <div class="block" style="margin-top: 10px;">
         <el-pagination align="center"
                        background
@@ -127,22 +133,28 @@
 </div>
 </body>
 
-
 <script>
     window.onload = function () {
-        const vm = new Vue({
+        var vm = new Vue({
             el: '#app',
             data: {
+                //加载
+                listLoading:true,
+                //列表数据
                 userList: [],
+                //分页
                 currentPage: 1,
                 pageSizes: [2, 5, 20, 50],
                 pageSize: 5,
                 total: 0,
 
+                //多选
+                multipleSelection: [],
+
                 //查询条件
                 username1: '',
 
-                //用于弹出或关闭弹框
+                //用于弹出(true)或关闭(false)弹框
                 dialogFormVisible: false,
                 dialogFormVisible2: false,
                 //表单数据
@@ -165,8 +177,7 @@
 
             },
             methods: {
-
-                //提交表单
+                //提交表单,成功则执行isFunction()方法
                 submitForm(formName, isFunction) {
                     this.$refs[formName].validate((valid) => {
                         if (valid) {
@@ -182,6 +193,11 @@
                 //重置表单
                 resetForm(formName) {
                     vm.dialogFormVisible = false;
+                    this.$refs[formName].resetFields();
+                },
+                //重置表单
+                updateResetForm(formName) {
+                    vm.dialogFormVisible2 = false;
                     this.$refs[formName].resetFields();
                 },
 
@@ -214,11 +230,17 @@
                 },
 
                 /**
-                 * 获取分页用户列表
+                 * 查询分页用户列表
                  *
                  * @param pageNo
                  */
                 getUserList: function (pageNo) {
+                    //显示加载
+                    vm.listLoading = true;
+                    if (!isNaN(pageNo)) {
+                        this.currentPage = pageNo;
+                    }
+
                     //ajax方式与后台交互
                     /*$.ajax({
                         type: 'get',
@@ -270,8 +292,11 @@
                         vm.currentPage = response.data.pageNo;
                         vm.total = response.data.totalCount;
                         vm.userList = response.data.userList;
-                    }).catch((error) => {
 
+                        //关闭加载显示
+                        vm.listLoading = false;
+                    }).catch((error) => {
+                        vm.listLoading = false;
                     });
                     // 简写版
                     /*axios.get('userList/' + pageNo + '/' + vm.pageSize + '?username=' + vm.username1,
@@ -281,23 +306,24 @@
                         vm.userList = response.data.userList;
                     })*/
 
+
+
                 },
 
-                toAdd: function () {
+                toAdd() {
                     this.user.username = '';
                     this.user.password = '';
 
                     //打开保存弹窗
                     vm.dialogFormVisible = true
                 },
-
                 /**
                  *  保存用户
                  */
-                addUser: function () {
+                addUser() {
                     // vm.submitForm('user');
 
-                    var data = {
+                    const data = {
                         username: vm.user.username,
                         password: vm.user.password
                     };
@@ -322,6 +348,15 @@
                         }
                     })
                 },
+
+                /**
+                 * 导出Excel文件
+                 */
+                exportUserExcel() {
+                    location.href = "export/userExcel"
+                },
+
+
                 /**
                  * 去修改页面
                  * @param index
@@ -341,8 +376,8 @@
                 /**
                  * 修改
                  */
-                updateUser: function () {
-                    var data = {
+                updateUser() {
+                    const data = {
                         id: vm.user.id,
                         username: vm.user.username,
                         password: vm.user.password
@@ -377,7 +412,6 @@
                 handleDelete(index, row) {
                     console.log(index, row);
                     axios({
-
                         //delete请求方式需要在url路径后传参
                         method: 'delete',
                         url: 'user/delete?id=' + vm.userList[index].id,
@@ -386,14 +420,90 @@
                     }).then((response) => {
                         //.data不可去
                         if (response.data === 'suc') {
-                            vm.open('删除成功！', 'success');
                             vm.getUserList(vm.currentPage)
                         } else {
-                            vm.open('删除失败！', 'error')
                         }
                     })
 
                 },
+                //处理多选框改变
+                handleSelectionChange(val) {
+                    vm.multipleSelection = val;
+                },
+                //获取删除数据的所有id
+                getDeleteIds() {
+                    let ids = [];
+                    for (let i = 0; i < this.multipleSelection.length; i++) {
+                        ids.push(this.multipleSelection[i].id);
+                    }
+                    return ids;
+                },
+                //批量删除
+                batchRemove() {
+                    if (this.multipleSelection.length === 0) {
+                        this.$alert('请先选择要删除的数据!','提示');
+                        return;
+                    }
+
+                    this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        const ids = vm.getDeleteIds();
+                        //批量删除数据
+                        axios({
+                            method: 'post',
+                            url: '/user/batchRemove',
+                            headers: {
+                                'Content-type': 'application/json'
+                            },
+                            data: JSON.stringify(ids),
+                            dataType: 'text',
+                        }).then((response) => {
+                            //.data不可去
+                            if (response.data === 'suc') {
+                                vm.getUserList(vm.currentPage)
+                            } else {
+                            }
+                        });
+
+                        this.$message({
+                            showClose: true,
+                            type: 'success',
+                            message: '删除成功!'
+                        });
+                    }).catch(() => {
+                        this.$message({
+                            showClose: true,
+                            type: 'info',
+                            message: '已取消删除'
+                        });
+                    });
+                },
+                //提示警告是否删除
+                open2(index, row) {
+                    this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        //删除数据
+                        vm.handleDelete(index, row);
+                        this.$message({
+                            showClose: true,
+                            type: 'success',
+                            message: '删除成功!'
+                        });
+                    }).catch(() => {
+                        this.$message({
+                            showClose: true,
+                            type: 'info',
+                            message: '已取消删除'
+                        });
+                    });
+                },
+
 
                 //提示窗
                 open(message, type) {
@@ -403,8 +513,10 @@
                         type: type
                     });
                 },
+
             },
         });
+
 
         vm.getUserList(1);
     }

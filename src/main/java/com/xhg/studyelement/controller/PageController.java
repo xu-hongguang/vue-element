@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.Map;
 
 @RestController
@@ -96,7 +97,9 @@ public class PageController {
      * @return
      */
     @RequestMapping("/user/batchRemove")
-    public String batchRemove(Integer[] ids) {
+    public String batchRemove(@RequestBody Integer[] ids) {
+        logger.info("删除ids：" + Arrays.toString(ids));
+
         if (ids != null && ids.length > 0) {
             userService.deleteMap(ids);
             return "suc";

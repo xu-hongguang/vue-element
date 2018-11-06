@@ -88,9 +88,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteMap(Integer[] ids) {
-        int bound = ids.length;
-        for (int i = 0; i < bound; i++) {
-            deleteUser(i);
+        for (Integer id : ids) {
+            deleteUser(id);
         }
     }
 

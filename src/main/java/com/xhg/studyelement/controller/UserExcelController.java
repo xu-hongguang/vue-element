@@ -17,7 +17,7 @@ public class UserExcelController {
     @RequestMapping("/export/userExcel")
     public void toExcel(HttpServletResponse response){
         UserExcel userExcel = new UserExcel(userRepository.findAll());
-        userExcel.write(response,"用户列表");
+        userExcel.write(response,"userExcel");
     }
 
 }
