@@ -11,6 +11,8 @@ public interface UserService {
 
     Page<User> findAllByUsername(Integer pageNo, Integer pageSize,String username);
 
+    User findByUsername(String username);
+
     boolean saveUser(User user);
 
     boolean updateUser(User user);

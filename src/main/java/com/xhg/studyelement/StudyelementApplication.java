@@ -9,9 +9,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 /**
  * @author 16033
  */
-@SpringBootApplication(scanBasePackages = {"com.xhg.common","com.xhg.studyelement"})
+@SpringBootApplication(scanBasePackages = {"com.xhg.studyelement"})
 public class StudyelementApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(StudyelementApplication.class, args);
 	}

@@ -3,14 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <title>登录</title>
+    <link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="layui/css/layui.css">
     <script src="js/jquery.min.js"></script>
+    <!-- import Vue before Element -->
+    <script src="vue/dist/vue.min.js"></script>
+    <script src="axios/dist/axios.min.js"></script>
+    <!-- import element-ui JavaScript -->
+    <script src="element-ui/lib/index.js"></script>
+    <script src="layui/layui.js"></script>
 </head>
 <body>
-<input type="button" value="提交">
+<div id="loginDiv">
+
+    <el-form style="width: 500px;margin: 200px auto 0;" :model="user" :rules="rules" ref="user" size="small"
+             :label-width="formLabelWidth" class="demo-ruleForm">
+        <h2 style="width: 200px;margin: 15px auto;font: 500 25px 'Microsoft YaHei UI'">用户登录</h2>
+        <el-form-item style="width: 350px" label="用户名" prop="username">
+            <el-input v-model="user.username" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item style="width: 350px" label="密 码" prop="password">
+            <el-input v-model="user.password" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item align="left">
+            <el-button type="primary" @click="submitForm('user')">登 录</el-button>
+            <el-button @click="resetForm('user')">重 置</el-button>
+        </el-form-item>
+    </el-form>
+
+</div>
 <script>
-    $("input[type='button']").click(function () {
-        location.href = 'table';
-    })
+    window.onload = function () {
+        const login = new Vue({
+            el: '#loginDiv',
+            data: {
+                user: {
+                    id: 0,
+                    username: '',
+                    password: ''
+                },
+                formLabelWidth: '120px',
+                //表单验证
+                rules: {
+                    username: [
+                        {required: true, message: '请输入用户名', trigger: 'blur'},
+                    ],
+                    password: [
+                        {required: true, message: '请输入密码', trigger: 'blur'},
+                        {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'}
+                    ],
+                }
+            },
+            methods: {
+                submitForm(formName) {
+                    this.$refs[formName].validate((valid) => {
+                        if (valid) {
+                            location.href = 'table';
+                        } else {
+                            console.log('error submit!!');
+                            return false;
+                        }
+                    });
+                },
+                resetForm(formName) {
+                    this.$refs[formName].resetFields();
+                },
+                loginUser: function () {
+                    axios({
+                        type: 'post',
+                        url: 'login',
+
+                    })
+                }
+            }
+        });
+    }
 </script>
 </body>
 </html>

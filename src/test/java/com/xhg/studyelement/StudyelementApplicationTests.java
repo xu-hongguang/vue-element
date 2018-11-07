@@ -1,9 +1,10 @@
 package com.xhg.studyelement;
 
-import com.xhg.common.utils.PageUtils;
+import com.xhg.studyelement.common.utils.PageUtils;
 import com.xhg.studyelement.dao.UserRepository;
 import com.xhg.studyelement.pojo.User;
 import com.xhg.studyelement.serivce.UserService;
+import com.xhg.studyelement.shiro.dao.IUserDAO;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -52,6 +53,14 @@ public class StudyelementApplicationTests {
     public void  test2(){
 		userService.deleteUser(5);
 
+	}
+
+	@Autowired
+	private IUserDAO userDAO;
+
+	@Test
+	public void getUserByUsername() {
+		System.out.println(userDAO.getUserByUsername("zhangsan"));
 	}
 
 }

@@ -23,16 +23,11 @@ public class TestController {
     }
 
     @RequestMapping("/table")
-    public String second(){
+    public String userTable(){
         return "element/table.html";
     }
 
-    @RequestMapping(value = "/third",method = {GET})
-    public String third(){
-        return "element/hello.html";
-    }
-
-    @RequestMapping("/views")
+    @RequestMapping("/toLogin")
     public String view(){
         return "login.html";
     }

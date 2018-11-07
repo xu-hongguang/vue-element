@@ -52,7 +52,7 @@
         </el-dialog>
 
         <!--表格-->
-        <el-table align="center"
+        <el-table align="center" border
                   :data="userList"
                   style="width:1000px; margin: 0 auto"
                   :row-class-name="tableRowClassName"
@@ -139,7 +139,7 @@
             el: '#app',
             data: {
                 //加载
-                listLoading:true,
+                listLoading: true,
                 //列表数据
                 userList: [],
                 //分页
@@ -177,6 +177,21 @@
 
             },
             methods: {
+                /*
+                     * 表格隔行变色
+                     */
+                tableRowClassName({row, rowIndex}) {
+                    if (rowIndex % 2 === 1) {
+                        return 'success-row';
+                    }
+                    return '';
+                },
+
+                //修改重置表单
+                updateResetForm(formName) {
+                    vm.dialogFormVisible2 = false;
+                    this.$refs[formName].resetFields();
+                },
                 //提交表单,成功则执行isFunction()方法
                 submitForm(formName, isFunction) {
                     this.$refs[formName].validate((valid) => {
@@ -190,26 +205,12 @@
                         }
                     });
                 },
-                //重置表单
+                //保存重置表单
                 resetForm(formName) {
                     vm.dialogFormVisible = false;
                     this.$refs[formName].resetFields();
                 },
-                //重置表单
-                updateResetForm(formName) {
-                    vm.dialogFormVisible2 = false;
-                    this.$refs[formName].resetFields();
-                },
 
-                /*
-                 * 表格隔行变色
-                 */
-                tableRowClassName({row, rowIndex}) {
-                    if (rowIndex % 2 === 1) {
-                        return 'success-row';
-                    }
-                    return '';
-                },
 
                 /*
                  * 处理当页容量和当前页码
@@ -305,7 +306,6 @@
                         vm.total = response.data.totalCount;
                         vm.userList = response.data.userList;
                     })*/
-
 
 
                 },
@@ -441,7 +441,7 @@
                 //批量删除
                 batchRemove() {
                     if (this.multipleSelection.length === 0) {
-                        this.$alert('请先选择要删除的数据!','提示');
+                        this.$alert('请先选择要删除的数据!', '提示');
                         return;
                     }
 
@@ -503,6 +503,29 @@
                         });
                     });
                 },
+                delete(index, row) {
+                    this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        //删除数据
+                        vm.handleDelete(index, row);
+                        this.$message({
+                            showClose: true,
+                            type: 'success',
+                            message: '删除成功!'
+                        });
+                    }).catch(() => {
+                        this.$message({
+                            showClose: true,
+                            type: 'info',
+                            message: '已取消删除'
+                        });
+                    });
+                },
+
+
 
 
                 //提示窗
