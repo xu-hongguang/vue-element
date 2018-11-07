@@ -1,6 +1,6 @@
 package com.xhg.studyelement.controller;
 
-import com.xhg.common.safesoft.UserExcel;
+import com.xhg.studyelement.common.safesoft.UserExcel;
 import com.xhg.studyelement.dao.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
