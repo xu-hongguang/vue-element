@@ -3,7 +3,7 @@ import { validate, isJS } from './util'
 export default class VueSSRServerPlugin {
   constructor (options = {}) {
     this.options = Object.assign({
-      filename: 'vue-ssr-server-bundle.json'
+      filename: 'vuestudy-ssr-server-bundle.json'
     }, options)
   }
 

@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import Vue from 'vuestudy'
 
 /** ElementUI component common definition */
 export declare class ElementUIComponent extends Vue {

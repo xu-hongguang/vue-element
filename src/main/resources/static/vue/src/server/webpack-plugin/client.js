@@ -5,7 +5,7 @@ import { isJS } from './util'
 export default class VueSSRClientPlugin {
   constructor (options = {}) {
     this.options = Object.assign({
-      filename: 'vue-ssr-client-manifest.json'
+      filename: 'vuestudy-ssr-client-manifest.json'
     }, options)
   }
 

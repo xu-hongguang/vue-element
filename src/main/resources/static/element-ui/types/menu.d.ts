@@ -32,7 +32,7 @@ export declare class ElMenu extends ElementUIComponent {
   /** How sub-menus are triggered, only works when mode is 'horizontal' */
   menuTrigger: string
 
-  /** Whether vue-router mode is activated. If true, index will be used as 'path' to activate the route action */
+  /** Whether vuestudy-router mode is activated. If true, index will be used as 'path' to activate the route action */
   router: boolean
 
   /** Whether the menu collapse transition is active */

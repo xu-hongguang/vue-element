@@ -14,7 +14,7 @@ type Attribute = {
 };
 
 /**
- * Parse a single-file component (*.vue) file into an SFC Descriptor Object.
+ * Parse a single-file component (*.vuestudy) file into an SFC Descriptor Object.
  */
 export function parseComponent (
   content: string,

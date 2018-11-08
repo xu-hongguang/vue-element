@@ -1,6 +1,6 @@
 package com.xhg.studyelement.common.safesoft;
 
-import com.xhg.studyelement.pojo.User;
+import com.xhg.studyelement.pojo.User1;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -13,11 +13,11 @@ import java.util.List;
  *
  * @author marvin.zhong
  */
-public class UserExcel extends AbstractExportExcel {
+public class User1Excel extends AbstractExportExcel {
 
-    private List<User> list;
+    private List<User1> list;
 
-    public UserExcel(List<User> list) {
+    public User1Excel(List<User1> list) {
         this.list = list;
     }
 
@@ -31,7 +31,7 @@ public class UserExcel extends AbstractExportExcel {
         final XSSFSheet sheet = workBook.getSheetAt(0);
         final int beginLine = 1;
 
-        final List<User> users = list;
+        final List<User1> users = list;
         int lineNum = beginLine;
 
         //获取单元格样式
@@ -41,7 +41,7 @@ public class UserExcel extends AbstractExportExcel {
         font.setFontName("宋体");
         style.setFont(font);
 
-        for (User user : users) {
+        for (User1 user : users) {
             setSheetValue(sheet, lineNum, 0, String.valueOf(user.getId()), style);
             setSheetValue(sheet, lineNum, 1, user.getUsername(), style);
             setSheetValue(sheet, lineNum, 2, user.getPassword(), style);

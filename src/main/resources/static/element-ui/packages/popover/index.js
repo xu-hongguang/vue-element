@@ -1,6 +1,6 @@
 import Popover from './src/main';
 import directive from './src/directive';
-import Vue from 'vue';
+import Vue from 'vuestudy';
 
 Vue.directive('popover', directive);
 

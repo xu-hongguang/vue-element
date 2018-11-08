@@ -27,7 +27,7 @@ public class TestController {
         return "element/table.html";
     }
 
-    @RequestMapping("/toLogin")
+    @GetMapping("/login")
     public String view(){
         return "login.html";
     }

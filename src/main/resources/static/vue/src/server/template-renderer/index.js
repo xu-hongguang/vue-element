@@ -116,7 +116,7 @@ export default class TemplateRenderer {
       (cssFiles.length
         ? cssFiles.map(file => `<link rel="stylesheet" href="${this.publicPath}/${file}">`).join('')
         : '') +
-      // context.styles is a getter exposed by vue-style-loader which contains
+      // context.styles is a getter exposed by vuestudy-style-loader which contains
       // the inline component styles collected during SSR
       (context.styles || '')
     )

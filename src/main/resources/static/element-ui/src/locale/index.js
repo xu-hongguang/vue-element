@@ -1,5 +1,5 @@
 import defaultLang from 'element-ui/src/locale/lang/zh-CN';
-import Vue from 'vue';
+import Vue from 'vuestudy';
 import deepmerge from 'deepmerge';
 import Format from './format';
 

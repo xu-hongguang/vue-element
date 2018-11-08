@@ -1,4 +1,4 @@
-import { CreateElement, VNode } from 'vue'
+import { CreateElement, VNode } from 'vuestudy'
 import { ElementUIComponent } from './component'
 
 export type TransferPanelPosition = 'left' | 'right'

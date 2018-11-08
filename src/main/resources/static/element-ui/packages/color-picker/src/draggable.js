@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import Vue from 'vuestudy';
 let isDragging = false;
 
 export default function(element, options) {

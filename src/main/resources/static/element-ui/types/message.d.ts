@@ -1,4 +1,4 @@
-import Vue, {VNode} from 'vue'
+import Vue, {VNode} from 'vuestudy'
 
 export type MessageType = 'success' | 'warning' | 'info' | 'error'
 

@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import Vue from 'vuestudy';
 import { on } from 'element-ui/src/utils/dom';
 
 const nodeList = [];
@@ -40,7 +40,7 @@ function createDocumentHandler(el, binding, vnode) {
  * v-clickoutside
  * @desc 点击元素外面才会触发的事件
  * @example
- * ```vue
+ * ```vuestudy
  * <div v-element-clickoutside="handleClose">
  * ```
  */

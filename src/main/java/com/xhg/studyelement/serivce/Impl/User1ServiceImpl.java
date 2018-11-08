@@ -1,8 +1,8 @@
 package com.xhg.studyelement.serivce.Impl;
 
-import com.xhg.studyelement.dao.UserRepository;
-import com.xhg.studyelement.pojo.User;
-import com.xhg.studyelement.serivce.UserService;
+import com.xhg.studyelement.dao.User1Repository;
+import com.xhg.studyelement.pojo.User1;
+import com.xhg.studyelement.serivce.User1Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,18 +15,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.Predicate;
-import java.util.stream.IntStream;
 
 @Service(value = "userService")
-public class UserServiceImpl implements UserService {
+public class User1ServiceImpl implements User1Service {
 
-    Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+    Logger logger = LoggerFactory.getLogger(User1ServiceImpl.class);
 
     @Autowired
-    private UserRepository userRepository;
+    private User1Repository userRepository;
 
     @Override
-    public Page<User> findAll(Integer pageNo, Integer pageSize) {
+    public Page<User1> findAll(Integer pageNo, Integer pageSize) {
         if (pageNo < 1) {
             pageNo = 1;
         }
@@ -45,14 +44,14 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public Page<User> findAllByUsername(Integer pageNo, Integer pageSize, String username) {
+    public Page<User1> findAllByUsername(Integer pageNo, Integer pageSize, String username) {
         if (pageNo < 1) {
             pageNo = 1;
         }
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize, Sort.Direction.ASC, "id");
 
-        return userRepository.findAll((Specification<User>) (root, query, criteriaBuilder) -> {
+        return userRepository.findAll((Specification<User1>) (root, query, criteriaBuilder) -> {
             Predicate p1 = criteriaBuilder.like(root.get("username"), "%" + username + "%");
             query.where(criteriaBuilder.and(p1));
             return query.getRestriction();
@@ -60,13 +59,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByUsername(String username) {
+    public User1 findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
     @Override
-    public boolean saveUser(User user) {
-        User user1 = userRepository.findByUsername(user.getUsername());
+    public boolean saveUser(User1 user) {
+        User1 user1 = userRepository.findByUsername(user.getUsername());
         logger.info("对比：" + user1);
         boolean isSave = false;
         if (user1 == null) {
@@ -77,7 +76,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updateUser(User user){
+    public boolean updateUser(User1 user){
         if (user != null) {
             userRepository.save(user);
             return true;

@@ -71,7 +71,7 @@ function renderNode (node, isRoot, context) {
 }
 
 function registerComponentForCache (options, write) {
-  // exposed by vue-loader, need to call this if cache hit because
+  // exposed by vuestudy-loader, need to call this if cache hit because
   // component lifecycle hooks will not be called.
   const register = options._ssrRegister
   if (write.caching && isDef(register)) {

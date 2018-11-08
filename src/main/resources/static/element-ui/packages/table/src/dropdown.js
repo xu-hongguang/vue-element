@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import Vue from 'vuestudy';
 var dropdowns = [];
 
 !Vue.prototype.$isServer && document.addEventListener('click', function(event) {

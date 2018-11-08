@@ -18,7 +18,7 @@
   </transition>
 </template>
 <script>
-  import Popper from 'element-ui/src/utils/vue-popper';
+  import Popper from 'element-ui/src/utils/vuestudy-popper';
   import Emitter from 'element-ui/src/mixins/emitter';
   import ElScrollbar from 'element-ui/packages/scrollbar';
 

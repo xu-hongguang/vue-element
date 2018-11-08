@@ -1,6 +1,6 @@
 /* istanbul ignore next */
 
-import Vue from 'vue';
+import Vue from 'vuestudy';
 
 const isServer = Vue.prototype.$isServer;
 const SPECIAL_CHARS_REGEXP = /([\:\-\_]+(.))/g;

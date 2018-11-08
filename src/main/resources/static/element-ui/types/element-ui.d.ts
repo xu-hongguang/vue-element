@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import Vue from 'vuestudy'
 import { ElementUIComponent, ElementUIComponentSize, ElementUIHorizontalAlignment } from './component'
 
 import { ElAlert } from './alert'

@@ -1,4 +1,4 @@
-import { CreateElement, VNode } from 'vue'
+import { CreateElement, VNode } from 'vuestudy'
 import { ElementUIComponent, ElementUIHorizontalAlignment } from './component'
 import { PopoverPlacement } from './popover'
 

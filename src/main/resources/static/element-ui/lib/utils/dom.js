@@ -10,7 +10,7 @@ exports.addClass = addClass;
 exports.removeClass = removeClass;
 exports.setStyle = setStyle;
 
-var _vue = require('vue');
+var _vue = require('vuestudy');
 
 var _vue2 = _interopRequireDefault(_vue);
 

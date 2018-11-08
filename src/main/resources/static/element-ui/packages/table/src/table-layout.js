@@ -1,5 +1,5 @@
 import scrollbarWidth from 'element-ui/src/utils/scrollbar-width';
-import Vue from 'vue';
+import Vue from 'vuestudy';
 
 class TableLayout {
   constructor(options) {

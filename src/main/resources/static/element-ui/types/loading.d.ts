@@ -1,4 +1,4 @@
-import Vue, { VNodeDirective } from 'vue'
+import Vue, { VNodeDirective } from 'vuestudy'
 
 /** Options used in Loading service */
 export interface LoadingServiceOptions {

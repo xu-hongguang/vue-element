@@ -158,7 +158,7 @@ module.exports = function normalizeComponent (
       // for template-only hot-reload because in that case the render fn doesn't
       // go through the normalizer
       options._injectStyles = hook
-      // register for functioal component in vue file
+      // register for functioal component in vuestudy file
       options.render = function renderWithStyleInjection (h, context) {
         hook.call(context)
         return existing(h, context)
@@ -1270,7 +1270,7 @@ var esExports = { render: render, staticRenderFns: staticRenderFns }
 /***/ 45:
 /***/ (function(module, exports) {
 
-module.exports = require("babel-helper-vue-jsx-merge-props");
+module.exports = require("babel-helper-vuestudy-jsx-merge-props");
 
 /***/ }),
 

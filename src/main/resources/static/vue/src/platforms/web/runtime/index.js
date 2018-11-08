@@ -56,7 +56,7 @@ if (inBrowser) {
       ) {
         console[console.info ? 'info' : 'log'](
           'Download the Vue Devtools extension for a better development experience:\n' +
-          'https://github.com/vuejs/vue-devtools'
+          'https://github.com/vuejs/vuestudy-devtools'
         )
       }
     }
