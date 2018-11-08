@@ -72,6 +72,11 @@
                     axios({
                         type: 'post',
                         url: 'login',
+                        data:{
+                            username:login.user.username,
+                            password:login.user.password
+                        },
+                    }).then((response) => {
 
                     })
                 }

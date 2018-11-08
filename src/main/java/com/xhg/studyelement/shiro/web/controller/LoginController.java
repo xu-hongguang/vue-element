@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * @author 16033
+ */
 @Controller
 public class LoginController {
    /* @RequestMapping(value = "/login",method = RequestMethod.GET)
