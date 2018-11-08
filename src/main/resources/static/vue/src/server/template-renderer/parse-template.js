@@ -14,7 +14,7 @@ export type ParsedTemplate = {
 
 export function parseTemplate (
   template: string,
-  contentPlaceholder?: string = '<!--vue-ssr-outlet-->'
+  contentPlaceholder?: string = '<!--vuestudy-ssr-outlet-->'
 ): ParsedTemplate {
   if (typeof template === 'object') {
     return template

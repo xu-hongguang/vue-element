@@ -672,7 +672,7 @@ export function createPatchFunction (backend) {
 
   function assertNodeMatch (node, vnode, inVPre) {
     if (isDef(vnode.tag)) {
-      return vnode.tag.indexOf('vue-component') === 0 || (
+      return vnode.tag.indexOf('vuestudy-component') === 0 || (
         !isUnknownElement(vnode, inVPre) &&
         vnode.tag.toLowerCase() === (node.tagName && node.tagName.toLowerCase())
       )

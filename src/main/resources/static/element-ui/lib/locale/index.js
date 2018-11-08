@@ -7,7 +7,7 @@ var _zhCN = require('element-ui/lib/locale/lang/zh-CN');
 
 var _zhCN2 = _interopRequireDefault(_zhCN);
 
-var _vue = require('vue');
+var _vue = require('vuestudy');
 
 var _vue2 = _interopRequireDefault(_vue);
 

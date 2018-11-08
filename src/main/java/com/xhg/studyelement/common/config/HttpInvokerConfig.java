@@ -1,6 +1,6 @@
 package com.xhg.studyelement.common.config;
 
-import com.xhg.studyelement.serivce.UserService;
+import com.xhg.studyelement.serivce.User1Service;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.remoting.caucho.HessianProxyFactoryBean;
@@ -15,10 +15,10 @@ import org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter;
 public class HttpInvokerConfig {
 
     @Bean
-    public HttpInvokerServiceExporter burlapExporterUserService(UserService userService){
+    public HttpInvokerServiceExporter burlapExporterUserService(User1Service userService){
         HttpInvokerServiceExporter exporter = new HttpInvokerServiceExporter();
         exporter.setService(userService);
-        exporter.setServiceInterface(UserService.class);
+        exporter.setServiceInterface(User1Service.class);
         return exporter;
     }
 
@@ -30,7 +30,7 @@ public class HttpInvokerConfig {
     public HttpInvokerProxyFactoryBean userService(){
         HttpInvokerProxyFactoryBean invoker = new HttpInvokerProxyFactoryBean();
         invoker.setServiceUrl("http://localhost:8080/");
-        invoker.setServiceInterface(UserService.class);
+        invoker.setServiceInterface(User1Service.class);
         return invoker;
     }
 

@@ -383,14 +383,14 @@ module.exports = require("element-ui/lib/utils/dom");
 /***/ 4:
 /***/ (function(module, exports) {
 
-module.exports = require("vue");
+module.exports = require("vuestudy");
 
 /***/ }),
 
 /***/ 7:
 /***/ (function(module, exports) {
 
-module.exports = require("element-ui/lib/utils/vue-popper");
+module.exports = require("element-ui/lib/utils/vuestudy-popper");
 
 /***/ })
 

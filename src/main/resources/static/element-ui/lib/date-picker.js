@@ -158,7 +158,7 @@ module.exports = function normalizeComponent (
       // for template-only hot-reload because in that case the render fn doesn't
       // go through the normalizer
       options._injectStyles = hook
-      // register for functioal component in vue file
+      // register for functioal component in vuestudy file
       options.render = function renderWithStyleInjection (h, context) {
         hook.call(context)
         return existing(h, context)
@@ -3364,7 +3364,7 @@ exports.default = {
   },
 
   created: function created() {
-    // vue-popper
+    // vuestudy-popper
     this.popperOptions = {
       boundariesPadding: 0,
       gpuAcceleration: false
@@ -3820,7 +3820,7 @@ var Component = normalizeComponent(
 /***/ 4:
 /***/ (function(module, exports) {
 
-module.exports = require("vue");
+module.exports = require("vuestudy");
 
 /***/ }),
 
@@ -4410,7 +4410,7 @@ module.exports = require("element-ui/lib/input");
 /***/ 7:
 /***/ (function(module, exports) {
 
-module.exports = require("element-ui/lib/utils/vue-popper");
+module.exports = require("element-ui/lib/utils/vuestudy-popper");
 
 /***/ }),
 

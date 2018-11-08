@@ -1,5 +1,6 @@
 package com.xhg.studyelement.common.utils;
 
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,5 +46,9 @@ public class MD5Utils {
             logger.error("{} 加密失败。", password, e);
             return null;
         }
+    }
+
+    public static String md5(String pwd,String name,int n){
+        return new Md5Hash(pwd,name,n).toHex();
     }
 }

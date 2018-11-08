@@ -62,10 +62,10 @@
 </template>
 
 <script>
-import Vue from 'vue';
+import Vue from 'vuestudy';
 import ElCascaderMenu from './menu';
 import ElInput from 'element-ui/packages/input';
-import Popper from 'element-ui/src/utils/vue-popper';
+import Popper from 'element-ui/src/utils/vuestudy-popper';
 import Clickoutside from 'element-ui/src/utils/clickoutside';
 import emitter from 'element-ui/src/mixins/emitter';
 import Locale from 'element-ui/src/mixins/locale';

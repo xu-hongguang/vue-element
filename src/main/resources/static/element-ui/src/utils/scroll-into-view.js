@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import Vue from 'vuestudy';
 
 export default function scrollIntoView(container, selected) {
   if (Vue.prototype.$isServer) return;

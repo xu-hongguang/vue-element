@@ -14,7 +14,7 @@ const defer = typeof process !== 'undefined' && process.nextTick
 if (defer === noop) {
   throw new Error(
     'Your JavaScript runtime does not support any asynchronous primitives ' +
-    'that are required by vue-server-renderer. Please use a polyfill for ' +
+    'that are required by vuestudy-server-renderer. Please use a polyfill for ' +
     'either Promise or setTimeout.'
   )
 }

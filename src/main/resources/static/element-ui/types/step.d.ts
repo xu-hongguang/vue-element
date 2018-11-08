@@ -1,4 +1,4 @@
-import { VNode } from 'vue'
+import { VNode } from 'vuestudy'
 import { ElementUIComponent } from './component'
 
 export type StepStatus = 'wait' | 'process' | 'finish' | 'error' | 'success'

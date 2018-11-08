@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import Vue from 'vuestudy';
 import { addClass, removeClass } from 'element-ui/src/utils/dom';
 
 let hasModal = false;

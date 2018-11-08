@@ -112,7 +112,7 @@ export function createBundleRunner (entry, files, basedir, runInNewContext) {
           ? createSandbox()
           : global
         // the initial context is only used for collecting possible non-component
-        // styles injected by vue-style-loader.
+        // styles injected by vuestudy-style-loader.
         initialContext = sandbox.__VUE_SSR_CONTEXT__ = {}
         runner = evaluate(entry, sandbox)
         // On subsequent renders, __VUE_SSR_CONTEXT__ will not be available
@@ -127,12 +127,12 @@ export function createBundleRunner (entry, files, basedir, runInNewContext) {
       }
       userContext._registeredComponents = new Set()
 
-      // vue-style-loader styles imported outside of component lifecycle hooks
+      // vuestudy-style-loader styles imported outside of component lifecycle hooks
       if (initialContext._styles) {
         userContext._styles = deepClone(initialContext._styles)
         // #6353 ensure "styles" is exposed even if no styles are injected
         // in component lifecycles.
-        // the renderStyles fn is exposed by vue-style-loader >= 3.0.3
+        // the renderStyles fn is exposed by vuestudy-style-loader >= 3.0.3
         const renderStyles = initialContext._renderStyles
         if (renderStyles) {
           Object.defineProperty(userContext, 'styles', {

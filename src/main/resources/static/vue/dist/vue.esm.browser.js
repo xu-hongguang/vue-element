@@ -497,14 +497,14 @@ if (inBrowser) {
   } catch (e) {}
 }
 
-// this needs to be lazy-evaled because vue may be required before
-// vue-server-renderer can set VUE_ENV
+// this needs to be lazy-evaled because vuestudy may be required before
+// vuestudy-server-renderer can set VUE_ENV
 let _isServer;
 const isServerRendering = () => {
   if (_isServer === undefined) {
     /* istanbul ignore if */
     if (!inBrowser && typeof global !== 'undefined') {
-      // detect presence of vue-server-renderer and avoid
+      // detect presence of vuestudy-server-renderer and avoid
       // Webpack shimming the process
       _isServer = global['process'].env.VUE_ENV === 'server';
     } else {
@@ -4074,7 +4074,7 @@ const componentVNodeHooks = {
     }
     if (vnode.data.keepAlive) {
       if (context._isMounted) {
-        // vue-router#1212
+        // vuestudy-router#1212
         // During updates, a kept-alive component's child components may
         // change, so directly walking the tree here may call activated hooks
         // on incorrect children. Instead we push them into a queue which will
@@ -5921,7 +5921,7 @@ function createPatchFunction (backend) {
 
   function assertNodeMatch (node, vnode, inVPre) {
     if (isDef(vnode.tag)) {
-      return vnode.tag.indexOf('vue-component') === 0 || (
+      return vnode.tag.indexOf('vuestudy-component') === 0 || (
         !isUnknownElement$$1(vnode, inVPre) &&
         vnode.tag.toLowerCase() === (node.tagName && node.tagName.toLowerCase())
       )
@@ -8339,7 +8339,7 @@ Vue$3.nextTick(() => {
     } else if ("development" !== 'production' && isChrome) {
       console[console.info ? 'info' : 'log'](
         'Download the Vue Devtools extension for a better development experience:\n' +
-        'https://github.com/vuejs/vue-devtools'
+        'https://github.com/vuejs/vuestudy-devtools'
       );
     }
   }

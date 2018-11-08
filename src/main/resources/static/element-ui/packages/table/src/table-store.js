@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import Vue from 'vuestudy';
 import debounce from 'throttle-debounce/debounce';
 import merge from 'element-ui/src/utils/merge';
 import { hasClass, addClass, removeClass } from 'element-ui/src/utils/dom';

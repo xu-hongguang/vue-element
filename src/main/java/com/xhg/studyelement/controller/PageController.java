@@ -1,8 +1,8 @@
 package com.xhg.studyelement.controller;
 
 import com.google.gson.Gson;
-import com.xhg.studyelement.pojo.User;
-import com.xhg.studyelement.serivce.UserService;
+import com.xhg.studyelement.pojo.User1;
+import com.xhg.studyelement.serivce.User1Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +17,13 @@ public class PageController {
     private Logger logger = LoggerFactory.getLogger(PageController.class);
 
     @Autowired
-    private UserService userService;
+    private User1Service userService;
 
     @RequestMapping("/userList/{pageNo}/{pageSize}")
     public String userList(Map<String, Object> map,
                            @PathVariable("pageNo") Integer pageNo,
                            @PathVariable("pageSize") Integer pageSize, String username) {
-        Page<User> userPage = userService.findAllByUsername(pageNo, pageSize, username);
+        Page<User1> userPage = userService.findAllByUsername(pageNo, pageSize, username);
 
 //        所有内容
         map.put("userList", userPage.getContent());
@@ -47,7 +47,7 @@ public class PageController {
      * @return
      */
     @RequestMapping("/user/add")
-    public String add(@RequestBody User user) {
+    public String add(@RequestBody User1 user) {
         logger.info("添加：" + user);
 
         if (user != null && userService.saveUser(user)) {
@@ -64,7 +64,7 @@ public class PageController {
      * @return
      */
     @RequestMapping("/user/update")
-    public String update(@RequestBody User user) {
+    public String update(@RequestBody User1 user) {
         logger.info("修改为：" + user);
 
         if (user != null && userService.updateUser(user)) {

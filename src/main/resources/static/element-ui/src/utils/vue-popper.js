@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import Vue from 'vuestudy';
 import {
   PopupManager
 } from 'element-ui/src/utils/popup';

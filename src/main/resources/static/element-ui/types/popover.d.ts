@@ -1,4 +1,4 @@
-import { VNode, VNodeDirective } from 'vue'
+import { VNode, VNodeDirective } from 'vuestudy'
 import { ElementUIComponent } from './component'
 
 export type PopoverTrigger = 'click' | 'focus' | 'hover' | 'manual'

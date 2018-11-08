@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import Vue from 'vuestudy';
 import loadingVue from './loading.vue';
 import { addClass, removeClass, getStyle } from 'element-ui/src/utils/dom';
 import { PopupManager } from 'element-ui/src/utils/popup';

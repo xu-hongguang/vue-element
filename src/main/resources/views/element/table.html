@@ -24,14 +24,15 @@
 </head>
 <body>
 <div id="app">
-    <el-form inline="block" align="center" size="small" style="width: 600px;margin: 0 auto">
+    <el-form inline="block" align="center" size="small" style="width: 700px;margin: 0 auto">
         <el-form-item>
             <el-input v-model="username1" placeholder="用户名"></el-input>
         </el-form-item>
-        <el-button type="primary" @click="getUserList(1)" size="small" icon="el-icon-search">查询</el-button>
-        <el-button type="success" @click="toAdd" size="small" icon="el-icon-circle-plus-outline">添加</el-button>
-        <el-button type="info" @click="exportUserExcel" size="small" icon="el-icon-download">导出</el-button>
+        <el-button type="primary" @click="getUserList(1)" size="small" icon="el-icon-search">查 询</el-button>
+        <el-button type="success" @click="toAdd" size="small" icon="el-icon-circle-plus-outline">添 加</el-button>
+        <el-button type="info" @click="exportUserExcel" size="small" icon="el-icon-download">导 出</el-button>
         <el-button type="danger" @click="batchRemove" size="small" icon="el-icon-delete">批量删除</el-button>
+        <el-button type="warn" @click="logout" size="small">退  出</el-button>
     </el-form>
 
     <template>
@@ -111,8 +112,6 @@
                             <el-button type="primary" @click="submitForm('user',updateUser)">保 存</el-button>
                         </div>
                     </el-dialog>
-
-
                 </template>
             </el-table-column>
         </el-table>
@@ -138,7 +137,7 @@
         var vm = new Vue({
             el: '#app',
             data: {
-                //加载
+                //加载特效
                 listLoading: true,
                 //列表数据
                 userList: [],
@@ -177,9 +176,13 @@
 
             },
             methods: {
+                logout:function () {
+                  location.href = 'logout'
+                },
+
                 /*
-                     * 表格隔行变色
-                     */
+                 * 表格隔行变色
+                 */
                 tableRowClassName({row, rowIndex}) {
                     if (rowIndex % 2 === 1) {
                         return 'success-row';
@@ -346,6 +349,8 @@
                         } else {
                             vm.open('保存失败,用户名已存在！', 'error')
                         }
+                    }).catch(() => {
+                        vm.open('保存失败！', 'error')
                     })
                 },
 
@@ -420,8 +425,10 @@
                     }).then((response) => {
                         //.data不可去
                         if (response.data === 'suc') {
+                            vm.open("删除成功！", "success");
                             vm.getUserList(vm.currentPage)
                         } else {
+                            vm.open('删除失败！', 'error')
                         }
                     })
 
@@ -454,7 +461,7 @@
                         //批量删除数据
                         axios({
                             method: 'post',
-                            url: '/user/batchRemove',
+                            url: 'user/batchRemove',
                             headers: {
                                 'Content-type': 'application/json'
                             },
@@ -463,15 +470,11 @@
                         }).then((response) => {
                             //.data不可去
                             if (response.data === 'suc') {
+                                vm.open("删除成功！", "success");
                                 vm.getUserList(vm.currentPage)
                             } else {
+                                vm.open('删除失败！', 'error')
                             }
-                        });
-
-                        this.$message({
-                            showClose: true,
-                            type: 'success',
-                            message: '删除成功!'
                         });
                     }).catch(() => {
                         this.$message({
@@ -490,11 +493,6 @@
                     }).then(() => {
                         //删除数据
                         vm.handleDelete(index, row);
-                        this.$message({
-                            showClose: true,
-                            type: 'success',
-                            message: '删除成功!'
-                        });
                     }).catch(() => {
                         this.$message({
                             showClose: true,
@@ -503,30 +501,6 @@
                         });
                     });
                 },
-                delete(index, row) {
-                    this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
-                        confirmButtonText: '确定',
-                        cancelButtonText: '取消',
-                        type: 'warning'
-                    }).then(() => {
-                        //删除数据
-                        vm.handleDelete(index, row);
-                        this.$message({
-                            showClose: true,
-                            type: 'success',
-                            message: '删除成功!'
-                        });
-                    }).catch(() => {
-                        this.$message({
-                            showClose: true,
-                            type: 'info',
-                            message: '已取消删除'
-                        });
-                    });
-                },
-
-
-
 
                 //提示窗
                 open(message, type) {

@@ -26,7 +26,7 @@ exports.default = function (instance, callback) {
 };
 
 ; /**
-   * Bind after-leave event for vue instance. Make sure after-leave is called in any browsers.
+   * Bind after-leave event for vuestudy instance. Make sure after-leave is called in any browsers.
    *
    * @param {Vue} instance Vue instance.
    * @param {Function} callback callback of after-leave event

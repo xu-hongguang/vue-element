@@ -3,7 +3,7 @@
 exports.__esModule = true;
 exports.PopupManager = undefined;
 
-var _vue = require('vue');
+var _vue = require('vuestudy');
 
 var _vue2 = _interopRequireDefault(_vue);
 

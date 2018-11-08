@@ -43,7 +43,7 @@
 </template>
 
 <script type="text/babel">
-  import Popper from 'element-ui/src/utils/vue-popper';
+  import Popper from 'element-ui/src/utils/vuestudy-popper';
   import { PopupManager } from 'element-ui/src/utils/popup';
   import Locale from 'element-ui/src/mixins/locale';
   import Clickoutside from 'element-ui/src/utils/clickoutside';

@@ -1,4 +1,4 @@
-import Vue, { VNode } from 'vue'
+import Vue, { VNode } from 'vuestudy'
 import { MessageType } from './message'
 
 export type MessageBoxCloseAction = 'confirm' | 'cancel' | 'close'

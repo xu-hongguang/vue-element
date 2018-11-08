@@ -7,22 +7,22 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "user")
+@Table(name = "user1")
 @ToString
 @EqualsAndHashCode
-public class User implements Serializable {
+public class User1 implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String username;
     private String password;
 
-    public User(String username, String pwd) {
+    public User1(String username, String pwd) {
         this.username = username;
         this.password = pwd;
     }
 
-    public User() {
+    public User1() {
     }
 
     public int getId() {
