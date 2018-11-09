@@ -1,0 +1,136 @@
+.customer-login-page {
+    position: fixed;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    background-image: url(../img/welcome.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    -moz-background-size: 100% 100%;
+    -webkit-background-size: 100% 100%;
+    -o-background-size: 100% 100%;
+}
+
+/*login input*/
+#loginForm .form-control:focus {
+    border-color: #d2d6de !important;
+}
+
+/*end*/
+.customer-logo-text {
+    font-family: PingFangSC-Semibold;
+    font-size: 24px;
+    color: #FFFFFF;
+    letter-spacing: -0.58px;
+}
+
+.customer-qrcode-text {
+    font-family: PingFangSC-Regular;
+    font-size: 18px;
+    color: #FFFFFF;
+    letter-spacing: -0.43px;
+}
+
+.customer-login-box {
+    width: 540px;
+}
+
+@media (max-width: 768px) {
+    .customer-login-box {
+        width: 100%;
+        margin-top: 20px;
+    }
+}
+
+.customer-login-box-body {
+    background: #fff;
+    padding: 20px;
+    border-top: 0;
+    color: #666;
+}
+
+.customer-login-box-msg {
+    margin: 0;
+    text-align: center;
+    font-family: PingFangSC-Semibold;
+    font-size: 20px;
+    color: #333333;
+    letter-spacing: -0.48px;
+}
+
+.customer-login-input-group {
+    height: 50px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.customer-login-input-group-addon {
+    background-color: #fff;
+    border-width: 1px;
+    width: 50px;
+    padding: 0;
+}
+
+.customer-login-form-control-input {
+    border-width: 1px !important;
+    height: 50px;
+    font-size: 16px;
+}
+
+.customer-login-icon-loginname {
+    background: url('../img/user.png') no-repeat center center;
+    display: inline-block;
+    width: 26px;
+    height: 36px;
+    line-height: 32px;
+    font-size: 1px;
+    /*position: absolute;
+    top: 50%;
+    margin-top: -16px;
+    margin-left: -12px;*/
+}
+
+.customer-login-icon-password {
+    background: url('../img/password.png') no-repeat center center;
+    display: inline-block;
+    width: 26px;
+    height: 36px;
+    line-height: 32px;
+    font-size: 1px;
+    /*position: absolute;
+    top: 50%;
+    margin-top: -16px;
+
+    margin-left: -12px;*/
+}
+
+.customer-login-icon-captcha {
+    background: url('../img/captcha.png') no-repeat center center;
+    display: inline-block;
+    width: 26px;
+    height: 36px;
+    line-height: 32px;
+    font-size: 1px;
+    /*position: absolute;
+    top: 50%;
+    margin-top: -16px;
+
+    margin-left: -12px;*/
+}
+
+.customer-login-button {
+    height: 50px;
+    width: 100%;
+    font-family: PingFangHK-Semibold;
+    font-weight: bold;
+    font-size: 18px;
+    letter-spacing: -0.43px;
+    background: #ffaa00;
+    box-shadow: 0 0 4px 0 #ffaa00;
+    color: #333333;
+}
+
+.customer-login-button:hover {
+    background: #ffc44f;
+    box-shadow: 0 0 4px 0 #ffaa00;
+}

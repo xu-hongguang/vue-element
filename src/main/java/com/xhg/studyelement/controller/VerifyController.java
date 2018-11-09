@@ -1,6 +1,8 @@
 package com.xhg.studyelement.controller;
 
+import com.xhg.studyelement.common.utils.ShiroUtils;
 import com.xhg.studyelement.pojo.JsonUtil;
+import org.apache.shiro.session.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,18 +38,5 @@ public class VerifyController {
 
     }
 
-    /**
-     * 将验证码保存到session中
-     *
-     * @param verify
-     * @param session
-     */
-    @RequestMapping("/saveVerify")
-    public String saveVerify(@RequestParam("verify") String verify, HttpSession session) {
-        session.setAttribute("verify", verify);
 
-        logger.info("验证码保存成功");
-
-        return "suc";
-    }
 }

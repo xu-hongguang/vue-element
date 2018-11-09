@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>进项发票管理平台</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="icon" href="../../static/favicon.ico" mce_href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="../../static/favicon.ico" mce_href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css">
+    <!--<link rel="stylesheet" href="css/font-awesome.min.css">-->
+    <!--<link rel="stylesheet" href="css/AdminLTE.min.css">-->
+    <!--<link rel="stylesheet" href="css/all-skins.min.css">-->
+    <!--<link rel="stylesheet" href="css/main.css">-->
+    <link rel="stylesheet" href="../../static/css/login.css">
+</head>
+<body class="hold-transition">
+<header class="navbar navbar-inverse navbar-fixed-top" id="top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#bs-navbar"
+                    aria-controls="bs-navbar" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <!--     <a href="javascript:void(0);" class="pull-left"><img class="img-responsive" src="img/logo.png"></a>-->
+            <a href="javascript:void(0);" class="navbar-brand customer-logo-text">
+                <span style="color:#FFFFFF"><strong>进项发票管理平台</strong></span>
+            </a>
+        </div>
+        <!--        <nav class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right customer-qrcode-text">
+                        <li><a id="qrcode" href="javascript:void(0);" target="_blank" data-toggle="popover"
+                               data-placement="bottom">二维码</a></li>
+                    </ul>
+                </nav>-->
+    </div>
+</header>
+<div class="customer-login-page">
+    <div>
+        <div class="customer-login-box" id="rrapp" v-cloak
+             style="position:absolute;right:0;top:50%;margin-right: 9%;transform: translateY(-270px)">
+            <div class="login-box-body">
+                <div class="container">
+                    <form class="form-horizontal" id="loginForm">
+                        <div class="form-group">
+                            <div class="panel-heading col-xs-10">
+                                <p class="customer-login-box-msg"><strong>用户登录</strong></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-10">
+                                <div v-if="error" class="alert alert-danger alert-dismissible">
+                                    <h4 style="margin-bottom: 0px;"><i class="fa fa-exclamation-triangle"></i>{{errorMsg}}
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-10">
+                                <div class="input-group customer-login-input-group">
+                        <span class="input-group-addon customer-login-input-group-addon"
+                              style="border-radius: 4px 0px 0px 4px !important;"><i
+                                class="customer-login-icon-loginname"></i></span>
+                                    <input type="text"
+                                           style="BORDER-LEFT-STYLE: none !important;border-radius: 0px 4px 4px 0px !important;"
+                                           class="form-control customer-login-form-control-input"
+                                           v-model="username"
+                                           placeholder="请输入用户名">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <div class="col-xs-10">
+                                <div class="input-group customer-login-input-group">
+                        <span class="input-group-addon customer-login-input-group-addon"
+                              style="border-radius: 4px 0px 0px 4px !important;">
+                            <i class="customer-login-icon-password"></i></span>
+                                    <input type="password"
+                                           style="BORDER-LEFT-STYLE: none !important;border-radius: 0px 4px 4px 0px !important;"
+                                           class="form-control customer-login-form-control-input"
+                                           v-model="password"
+                                           placeholder="请输入密码">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <div class="col-xs-5">
+                                <div class="input-group customer-login-input-group">
+                                <span class="input-group-addon customer-login-input-group-addon"
+                                      style="border-radius: 4px 0px 0px 4px !important;">
+                                    <i class="customer-login-icon-captcha"></i></span>
+                                    <input type="text"
+                                           style="border-radius: 0px 4px 4px 0px !important;BORDER-LEFT-STYLE: none !important;"
+                                           class="form-control customer-login-form-control-input"
+                                           v-model="captcha" @keyup.enter="login"
+                                           placeholder="请输入验证码">
+                                </div>
+                            </div>
+                            <div class="col-xs-4">
+                                <img alt="如果看不清楚，请单击图片刷新！" class="pointer" :src="src" @click="refreshCode">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-10">
+                                <button type="button" v-show="showlogin" style="border-radius: 4px !important;"
+                                        class="btn  btn-block btn-flat customer-login-button"
+                                        @click="login">登录
+                                </button>
+                                <button type="button" v-show="showloging" style="border-radius: 4px !important;"
+                                        class="btn  btn-block btn-flat customer-login-button">正在登录......
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div style="clear: both"></div>
+    </div>
+</div>
+</body>
+</html>
+<script src="../../static/js/jquery.min.js"></script>
+<script src="../../static/vue/dist/vue.min.js"></script>
+<script src="../../static/css/bootstrap.min.css"></script>
+<script type="text/javascript">
+    //jquery
+    $(function () {
+        $('#qrcode').popover({
+            trigger: 'hover',//鼠标以上时触发弹出提示框
+            html: true,//开启html 为true的话，data-content里就能放html代码了
+            content: "<img width='200px' height='200px' src='img/qrcode.png'>"
+        });
+    });
+    //Vue
+    var vm = new Vue({
+        el: '#rrapp',
+        data: {
+            username: '',
+            password: '',
+            captcha: '',
+            error: false,
+            errorMsg: '',
+            src: 'captcha.jpg',
+            showlogin: true,
+            showloging: false
+        },
+        beforeCreate: function () {
+            if (self !== top) {
+                top.location.href = self.location.href;
+            }
+        },
+        methods: {
+            refreshCode: function () {
+                this.src = "captcha.jpg?t=" + $.now();
+            },
+            login: function () {
+                this.showlogin = false;
+                this.showloging = true;
+                var data = "username=" + vm.username + "&password=" + vm.password + "&captcha=" + vm.captcha;
+                $.ajax({
+                    type: "POST",
+                    url: baseURL + "sys/login",
+                    data: data,
+                    dataType: "json",
+                    success: function (r) {
+                        if (r.code === 0) {//登录成功
+                            localStorage.setItem("token", r.token);
+                            parent.location.href = 'index.html';
+                        } else if (r.code === 1) {
+                            vm.showlogin = true;
+                            vm.showloging = false;
+                            vm.error = true;
+                            vm.errorMsg = r.msg;
+                            vm.refreshCode();
+                            /*$('.hidespan').css('visibility','visible')*/
+
+                        } else if (r.code === 2) {
+                            vm.showlogin = true;
+                            vm.showloging = false;
+                            vm.error = true;
+                            vm.errorMsg = r.msg;
+                            vm.refreshCode();
+                        } else {
+                            vm.error = true;
+                            vm.errorMsg = r.msg;
+                            vm.showlogin = true;
+                            vm.showloging = false;
+                            vm.refreshCode();
+                        }
+                    }
+                });
+            }
+        }
+    });
+</script>

@@ -1,13 +1,14 @@
 package com.xhg.studyelement.shiro.web.controller;
 
+import com.xhg.studyelement.common.utils.R;
 import com.xhg.studyelement.shiro.dao.IPermissionDAO;
 import com.xhg.studyelement.shiro.domain.Permission;
 import com.xhg.studyelement.shiro.realm.PermissionName;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
@@ -15,8 +16,9 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
-@Controller
+@RestController
 public class PermissionController {
 
     //请求映射处理映射器
@@ -29,7 +31,7 @@ public class PermissionController {
     private IPermissionDAO permissionDAO;
 
     @RequestMapping("/reload")
-    public String reload() throws  Exception{
+    public R reload() throws  Exception{
         //将系统中所有权限表达式加载进入数据库
         //0：从数据库中查询出所有权限表达式，然后对比，如果已经存在了，跳过，不存在添加
         List<String> resourcesList = permissionDAO.getAllResources();
@@ -51,12 +53,12 @@ public class PermissionController {
                 Permission p = new Permission();
                 p.setResource(resource);
                 //设置权限名称
-                p.setName(method.getMethodAnnotation(PermissionName.class).value());
+                p.setName(Objects.requireNonNull(method.getMethodAnnotation(PermissionName.class)).value());
                 //保存
                 permissionDAO.save(p);
             }
         }
-        return "main";
+        return R.ok();
     }
 
 }

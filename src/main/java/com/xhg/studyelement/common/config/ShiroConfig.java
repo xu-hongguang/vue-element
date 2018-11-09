@@ -1,12 +1,12 @@
 package com.xhg.studyelement.common.config;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
+import com.xhg.studyelement.common.listener.ShiroSessionListener;
 import com.xhg.studyelement.shiro.realm.UserRealm;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
-import org.apache.shiro.realm.Realm;
 import org.apache.shiro.session.SessionListener;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -14,7 +14,6 @@ import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
@@ -39,6 +38,19 @@ public class ShiroConfig {
     }
 
     /**
+     * 配置用户realm
+     * @param credentialsMatcher
+     * @return
+     */
+    @Bean("userRealm")
+    public UserRealm userRealm(CredentialsMatcher credentialsMatcher){
+        UserRealm userRealm = new UserRealm();
+        //设置密码加密器
+        userRealm.setCredentialsMatcher(credentialsMatcher);
+        return userRealm;
+    }
+
+    /**
      * 配置安全管理器SecurityManager
      *
      * @param userRealm
@@ -47,26 +59,12 @@ public class ShiroConfig {
     @Bean
     public SecurityManager securityManager(UserRealm userRealm, CredentialsMatcher credentialsMatcher) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        userRealm.setCredentialsMatcher(credentialsMatcher);
         // 配置 rememberMeCookie
         securityManager.setRememberMeManager(rememberMeManager());
         securityManager.setRealm(userRealm);
 
         return securityManager;
     }
-
-    /**
-     * 配置用户realm
-     * @param credentialsMatcher
-     * @return
-     */
-    /*@Bean("userRealm")
-    public Realm userRealm(CredentialsMatcher credentialsMatcher){
-        UserRealm userRealm = new UserRealm();
-        userRealm.setCredentialsMatcher(credentialsMatcher);
-
-        return userRealm;
-    }*/
 
     /**
      * rememberMe cookie 效果是重开浏览器后无需重新登录
@@ -103,6 +101,7 @@ public class ShiroConfig {
     public DefaultWebSessionManager sessionManager() {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         Collection<SessionListener> listeners = new ArrayList<>();
+        listeners.add(new ShiroSessionListener());
         // 设置session超时时间，单位为毫秒
         sessionManager.setGlobalSessionTimeout(1800000L);
         sessionManager.setSessionListeners(listeners);
@@ -141,10 +140,13 @@ public class ShiroConfig {
         Map<String, String> filterMap = new HashMap<>();
         filterMap.put("/logout", "logout");
         filterMap.put("/login", "anon");
+        filterMap.put("/img/**", "anon");
+        filterMap.put("/favicon.ico", "anon");
         filterMap.put("/vue/**", "anon");
         filterMap.put("/axios/**", "anon");
         filterMap.put("/element-ui/**", "anon");
         filterMap.put("/table", "anon");
+        filterMap.put("/saveVerify", "anon");
         filterMap.put("/userList/**", "anon");
         filterMap.put("/**/*.css", "anon");
         filterMap.put("/**/*.js", "anon");

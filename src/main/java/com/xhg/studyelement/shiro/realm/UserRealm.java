@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * @author 16033
  */
-@Component
+//@Component
 public class UserRealm extends AuthorizingRealm {
 
     @Autowired
@@ -34,7 +34,7 @@ public class UserRealm extends AuthorizingRealm {
     @Autowired
     private IPermissionDAO permissionDAO;
 
-    //     认证操作
+    // 认证操作
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         //从token中获取登录的用户名， 查询数据库返回用户信息
@@ -63,7 +63,7 @@ public class UserRealm extends AuthorizingRealm {
         User user = (User) principals.getPrimaryPrincipal();
 
         List<String> permissions = new ArrayList<>();
-        List<String> roles = new ArrayList<>();
+        List<String> roles;
 
         if ("admin".equals(user.getUsername())) {
             //拥有所有权限

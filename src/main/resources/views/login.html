@@ -10,10 +10,11 @@
     <script src="axios/dist/axios.min.js"></script>
     <!-- import element-ui JavaScript -->
     <script src="element-ui/lib/index.js"></script>
+    <script src="js/util/verify.js"></script>
 </head>
 <body>
 <div id="loginDiv">
-    <el-form style="width: 500px;margin: 200px auto 0;" :model="user" :rules="rules" ref="user" size="small"
+    <el-form style="width: 500px;margin: 200px auto 0;" :model="user" status-icon :rules="rules" ref="user" size="small"
              :label-width="formLabelWidth" class="demo-ruleForm">
         <h2 style="width: 200px;margin: 15px auto;font: 500 25px 'Microsoft YaHei UI'">用户登录</h2>
         <el-form-item style="width: 350px" label="用户名" prop="username">
@@ -22,7 +23,11 @@
         <el-form-item style="width: 350px" label="密 码" prop="password">
             <el-input type="password" v-model="user.password" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item style="width: 350px" prop="rememberMe">
+        <el-form-item style="width: 220px;height:32px " label="验证码" prop="verify">
+            <el-input v-model="user.verify" autocomplete="off"></el-input>
+        </el-form-item>
+
+        <el-form-item align="left" style="width: 350px" prop="rememberMe">
             <el-checkbox v-model="user.rememberMe" name="rememberMe" autocomplete="off">记住我</el-checkbox>
         </el-form-item>
         <el-form-item align="left">
@@ -31,8 +36,13 @@
         </el-form-item>
     </el-form>
 </div>
+<canvas id="canvas" width="120" height="32" onclick="updateVerify()"
+        style="width:120px;position: relative;left: 939px;bottom: 163px;border-radius: 4px"></canvas>
 <script>
     window.onload = function () {
+        //初始化验证码
+        init();
+
         var vm = new Vue({
             el: '#loginDiv',
             data: {
@@ -40,7 +50,8 @@
                     id: 0,
                     username: '',
                     password: '',
-                    rememberMe:false
+                    verify: '',
+                    rememberMe: false
                 },
                 formLabelWidth: '120px',
                 //表单验证
@@ -51,6 +62,9 @@
                     password: [
                         {required: true, message: '请输入密码', trigger: 'blur'},
                         // {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'}
+                    ],
+                    verify: [
+                        {required: true, message: '验证码不能为空', trigger: 'blur'},
                     ],
                 }
             },
@@ -69,39 +83,44 @@
                     this.$refs[formName].resetFields();
                 },
                 loginUser: function () {
-                   /* axios({
-                        method: 'POST',
+                    /* axios({
+                         method: 'POST',
+                         url: 'login',
+                         data: {
+                             username: vm.user.username,
+                             password: vm.user.password,
+                             verify:vm.user.verify,
+                             rememberMe:vm.user.rememberMe
+                         },
+                         responseType:'json'
+                     }).then((response) => {
+                         if (response.data.code === 0) {
+                             // if (response.data.suc === 'suc') {
+                             location.href = 'table'
+                         } else {
+                             vm.open("用户名或密码错误，请重试！","error")
+                         }
+                     });*/
+
+                    $.ajax({
+                        type: 'POST',
                         url: 'login',
                         data: {
                             username: vm.user.username,
                             password: vm.user.password,
-                            rememberMe:vm.user.rememberMe
+                            verify: vm.user.verify,
+                            rememberMe: vm.user.rememberMe
                         },
-                        responseType:'json'
-                    }).then((response) => {
-                        if (response.data.code === 0) {
-                            // if (response.data.suc === 'suc') {
-                            location.href = 'table'
-                        } else {
-                            vm.open("用户名或密码错误，请重试！","error")
-                        }
-                    });*/
+                        dataType: 'json',
+                        success: function (data) {
 
-                    $.ajax({
-                        type:'POST',
-                        url:'login',
-                        data:{
-                            username: vm.user.username,
-                            password: vm.user.password,
-                            rememberMe:vm.user.rememberMe
-                        },
-                        dataType:'json',
-                        success:function (data) {
                             if (data.code === 0) {
                                 // if (response.data.suc === 'suc') {
                                 location.href = 'table'
                             } else {
-                                vm.open("用户名或密码错误，请重试！","error")
+                                //更新验证码
+                                updateVerify();
+                                vm.open(data.msg, "error")
                             }
                         }
                     })
@@ -113,10 +132,11 @@
                         message: message,
                         type: type
                     });
-                },
+                }
 
             }
         });
+
     }
 </script>
 </body>

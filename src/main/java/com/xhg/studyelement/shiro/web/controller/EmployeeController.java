@@ -15,7 +15,7 @@ public class EmployeeController {
     @PermissionName("员工列表")
     public String index() throws  Exception{
         System.out.println("执行了员工列表....");
-        return "employee";
+        return "jsp/employee.jsp";
     }
 
     @RequestMapping("/save")
@@ -23,7 +23,7 @@ public class EmployeeController {
     @PermissionName("员工保存")
     public String save() throws  Exception{
         System.out.println("执行了员工保存....");
-        return "employee";
+        return "jsp/employee.jsp";
     }
 
     @RequestMapping("/edit")
@@ -31,7 +31,7 @@ public class EmployeeController {
     @PermissionName("员工编辑")
     public String edit() throws  Exception{
         System.out.println("执行了员工编辑....");
-        return "employee";
+        return "jsp/employee.jsp";
     }
 
     @RequestMapping("/delete")
@@ -39,6 +39,6 @@ public class EmployeeController {
     @RequiresPermissions("employee:delete")
     public String delete() throws  Exception{
         System.out.println("执行了员工删除....");
-        return "employee";
+        return "jsp/employee.jsp";
     }
 }

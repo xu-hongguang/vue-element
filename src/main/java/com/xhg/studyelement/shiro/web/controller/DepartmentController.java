@@ -13,14 +13,14 @@ public class DepartmentController {
     @PermissionName("部门列表")
     public String index() throws  Exception{
         System.out.println("执行了部门列表....");
-        return "department";
+        return "jsp/department.jsp";
     }
     @RequestMapping("/save")
     @RequiresPermissions("department:save")
     @PermissionName("部门保存")
     public String save() throws Exception{
         System.out.println("执行了部门保存....");
-        return "department";
+        return "jsp/department.jsp";
     }
 
     @RequestMapping("/edit")
@@ -28,7 +28,7 @@ public class DepartmentController {
     @PermissionName("部门编辑")
     public String edit() throws  Exception{
         System.out.println("执行了部门编辑....");
-        return "department";
+        return "jsp/department.jsp";
     }
 
     @RequestMapping("/delete")
@@ -36,6 +36,6 @@ public class DepartmentController {
     @PermissionName("部门删除")
     public String delete() throws  Exception{
         System.out.println("执行了部门删除....");
-        return "department";
+        return "jsp/department.jsp";
     }
 }
