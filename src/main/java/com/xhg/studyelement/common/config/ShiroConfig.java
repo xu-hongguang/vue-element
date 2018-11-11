@@ -16,12 +16,11 @@ import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Configuration
 public class ShiroConfig {
@@ -116,7 +115,7 @@ public class ShiroConfig {
      * @return
      */
     @Bean
-    public CredentialsMatcher HashedCredentialsMatcher() {
+    public CredentialsMatcher hashedCredentialsMatcher() {
         HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
         credentialsMatcher.setHashAlgorithmName("md5");
         credentialsMatcher.setHashIterations(3);
@@ -134,18 +133,17 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
         shiroFilter.setSecurityManager(securityManager);
         shiroFilter.setLoginUrl("/login");
-        shiroFilter.setSuccessUrl("/table");
-        shiroFilter.setUnauthorizedUrl("/nopermission.jsp");
+        shiroFilter.setSuccessUrl("/index.html");
+        shiroFilter.setUnauthorizedUrl("noPermission.html");
 
-        Map<String, String> filterMap = new HashMap<>();
+        Map<String, String> filterMap = new HashMap<>(16);
         filterMap.put("/logout", "logout");
         filterMap.put("/login", "anon");
+        filterMap.put("/noPermission.html", "anon");
         filterMap.put("/img/**", "anon");
-        filterMap.put("/favicon.ico", "anon");
         filterMap.put("/vue/**", "anon");
         filterMap.put("/axios/**", "anon");
         filterMap.put("/element-ui/**", "anon");
-        filterMap.put("/table", "anon");
         filterMap.put("/saveVerify", "anon");
         filterMap.put("/userList/**", "anon");
         filterMap.put("/**/*.css", "anon");
@@ -154,6 +152,17 @@ public class ShiroConfig {
         shiroFilter.setFilterChainDefinitionMap(filterMap);
 
         return shiroFilter;
+    }
+
+    @Bean
+    public SimpleMappingExceptionResolver exceptionResolver(){
+        SimpleMappingExceptionResolver exceptionResolver = new SimpleMappingExceptionResolver();
+        Properties properties = new Properties();
+        properties.setProperty("org.apache.shiro.authz.UnauthorizedException","redirect:/nopermission.html");
+
+        exceptionResolver.setExceptionMappings(properties);
+
+        return exceptionResolver;
     }
 
     /**

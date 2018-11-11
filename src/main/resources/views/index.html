@@ -3,19 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>主页</title>
-    <!--<link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
-    <script src="js/jquery.min.js"></script>
-    &lt;!&ndash; import Vue before Element &ndash;&gt;
-    <script src="vue/dist/vue.min.js"></script>
-    <script src="axios/dist/axios.min.js"></script>
-    &lt;!&ndash; import element-ui JavaScript &ndash;&gt;
-    <script src="element-ui/lib/index.js"></script>-->
-
-    <link rel="stylesheet" href="../static/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
     <!-- import Vue before Element -->
-    <script src="../static/vue/dist/vue.min.js"></script>
+    <script src="vue/dist/vue.min.js"></script>
     <!-- import JavaScript -->
-    <script src="../static/element-ui/lib/index.js"></script>
+    <script src="element-ui/lib/index.js"></script>
+    <script src="js/customer/resources.js"></script>
 
     <style>
         /*布局容器*/
@@ -52,19 +45,33 @@
         .el-container:nth-child(7) .el-aside {
             line-height: 320px;
         }
+
+        .logout {
+            text-decoration: none;
+            color: black;
+        }
+
+        .logout:hover {
+            text-decoration: underline;
+            color: blue;
+        }
     </style>
 </head>
 <body>
 <div id="main">
     <el-container>
-        <el-header>
-            <el-form inline="block" align="center" size="small" style="width: 600px;margin: 0 auto">
-                <el-button type="primary" size="small" icon="el-icon-search">退出</el-button>
+        <el-header style="float: right;">
+            <el-form inline="block" size="small" style="text-align: right;margin-right: 15px;">
+                <span style=";font-size: 15px">欢迎{{username}}&nbsp;&nbsp;</span>
+                <a class="logout" href="#" @click="logout">退出</a>
             </el-form>
         </el-header>
         <el-container>
             <el-aside width="200px">Aside</el-aside>
-            <el-main>Main</el-main>
+            <el-main>
+                <iframe style="width:100%;min-height:200px;border: none;overflow:visible;background:#E9EEF3;height: 800px"
+                        src="table"></iframe>
+            </el-main>
         </el-container>
     </el-container>
 </div>
@@ -73,9 +80,14 @@
         var vm = new Vue({
             el: '#main',
             data: {
-
+                username: localStorage.getItem('username')
             },
             methods: {
+                logout() {
+                    localStorage.removeItem("username");
+                    location.href = 'logout'
+                },
+
                 submitForm(formName) {
                     this.$refs[formName].validate((valid) => {
                         if (valid) {
@@ -89,7 +101,7 @@
                 resetForm(formName) {
                     this.$refs[formName].resetFields();
                 },
-                
+
                 //提示窗
                 open(message, type) {
                     this.$message({

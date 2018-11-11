@@ -16,15 +16,22 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
     password: root
-    url: jdbc:mysql://localhost:3306/first?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://localhost:3306/logistics?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
   jpa:
     show-sql: true
   mvc:
     date-format: yyyy-MM-dd
+#    view:
+#      prefix: /view/
+#      suffix: .html
+
+
 # 取消thymeleaf模板的默认
   thymeleaf:
     cache: false
     enabled: false
+
+
 # 设置静态资源文件
   resources:
     static-locations: classpath:/views/,classpath:/static/

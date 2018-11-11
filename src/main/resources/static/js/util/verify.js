@@ -28,18 +28,6 @@ function saveVerify(verify) {
 
 var canvas, context;
 var str = ''; //获取验证码值
-/*window.onload = function () {
-    //先画验证码，在保存
-    draw();
-    saveVerify(str);
-    //点击更新
-    document.getElementById("canvas").onclick = function () {
-        context.clearRect(0, 0, 120, 40);//清掉canvas
-        draw();
-        saveVerify(str)
-    };
-    // document.getElementById("text").innerText = str;
-};*/
 
 /**
  * 初始化
@@ -50,16 +38,18 @@ function init() {
     saveVerify(str);
 }
 
+function isEquals(val) {
+    return val === str;
+}
+
 /**
  * 点击更新并保存
  */
 function updateVerify() {
     //点击更新
-    // document.getElementById("canvas").onclick = function () {
-        context.clearRect(0, 0, 120, 32);//清掉canvas
-        draw();
-        saveVerify(str)
-    // };
+    context.clearRect(0, 0, 120, 32);//清掉canvas
+    draw();
+    saveVerify(str)
 }
 
 //画出验证码
@@ -105,23 +95,3 @@ function draw() {
     }
 }
 
-/*
-$(function () {
-    $(".login").click(function () {
-        $.ajax({
-            type: 'post',
-            url: 'login/verify',
-            data: {
-                input: $("#text").val()
-            },
-            dataType: 'json',
-            success: function (data) {
-                if (data.isSuc === "suc") {
-                    alert("登录成功！")
-                } else {
-                    alert("登录失败！")
-                }
-            }
-        })
-    })
-});*/

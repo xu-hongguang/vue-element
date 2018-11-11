@@ -22,6 +22,11 @@ public class TestController {
         return "util/excel.html";
     }
 
+    /*@RequestMapping("/index")
+    public String login(){
+        return "index.html";
+    }*/
+
     @RequestMapping("/table")
     public String userTable(){
         return "element/table.html";

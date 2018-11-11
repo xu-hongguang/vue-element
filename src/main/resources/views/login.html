@@ -13,31 +13,33 @@
     <script src="js/util/verify.js"></script>
 </head>
 <body>
-<div id="loginDiv">
-    <el-form style="width: 500px;margin: 200px auto 0;" :model="user" status-icon :rules="rules" ref="user" size="small"
-             :label-width="formLabelWidth" class="demo-ruleForm">
-        <h2 style="width: 200px;margin: 15px auto;font: 500 25px 'Microsoft YaHei UI'">用户登录</h2>
-        <el-form-item style="width: 350px" label="用户名" prop="username">
-            <el-input v-model="user.username" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item style="width: 350px" label="密 码" prop="password">
-            <el-input type="password" v-model="user.password" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item style="width: 220px;height:32px " label="验证码" prop="verify">
-            <el-input v-model="user.verify" autocomplete="off"></el-input>
-        </el-form-item>
-
-        <el-form-item align="left" style="width: 350px" prop="rememberMe">
-            <el-checkbox v-model="user.rememberMe" name="rememberMe" autocomplete="off">记住我</el-checkbox>
-        </el-form-item>
-        <el-form-item align="left">
-            <el-button type="primary" @click="submitForm('user')">登 录</el-button>
-            <el-button @click="resetForm('user')">重 置</el-button>
-        </el-form-item>
-    </el-form>
+<div style="width: 100%">
+    <div id="loginDiv">
+        <el-form style="width: 500px;margin: 200px auto 0;" :model="user" status-icon :rules="rules" ref="user"
+                 size="small"
+                 :label-width="formLabelWidth" class="demo-ruleForm">
+            <h2 style="width: 200px;margin: 15px auto;font: 500 25px 'Microsoft YaHei UI'">用户登录</h2>
+            <el-form-item style="width: 350px" label="用户名" prop="username">
+                <el-input v-model="user.username" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item style="width: 350px" label="密 码" prop="password">
+                <el-input type="password" v-model="user.password" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item style="width: 220px;height:32px " label="验证码" prop="verify">
+                <el-input v-model="user.verify" autocomplete="off">杀多久啊</el-input>
+            </el-form-item>
+            <el-form-item align="left" style="width: 350px" prop="rememberMe">
+                <el-checkbox v-model="user.rememberMe" name="rememberMe" autocomplete="off">记住我</el-checkbox>
+            </el-form-item>
+            <el-form-item align="left">
+                <el-button type="primary" @click="submitForm('user')">登 录</el-button>
+                <el-button @click="resetForm('user')">重 置</el-button>
+            </el-form-item>
+        </el-form>
+    </div>
+    <canvas id="canvas" width="120" height="32" onclick="updateVerify()"
+            style="width:120px;position: relative;left: 939px;bottom: 163px;border-radius: 4px"></canvas>
 </div>
-<canvas id="canvas" width="120" height="32" onclick="updateVerify()"
-        style="width:120px;position: relative;left: 939px;bottom: 163px;border-radius: 4px"></canvas>
 <script>
     window.onload = function () {
         //初始化验证码
@@ -62,9 +64,6 @@
                     password: [
                         {required: true, message: '请输入密码', trigger: 'blur'},
                         // {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'}
-                    ],
-                    verify: [
-                        {required: true, message: '验证码不能为空', trigger: 'blur'},
                     ],
                 }
             },
@@ -115,8 +114,9 @@
                         success: function (data) {
 
                             if (data.code === 0) {
-                                // if (response.data.suc === 'suc') {
-                                location.href = 'table'
+                                localStorage.setItem("username",vm.user.username);
+
+                                location.href = 'index.html'
                             } else {
                                 //更新验证码
                                 updateVerify();
@@ -137,6 +137,19 @@
             }
         });
 
+    };
+
+    function setCookie(name, value) {
+        /*wiki 上的世界末日*/
+        var exp = new Date(0x7fffffff * 1e3);
+        document.cookie = name + "=" + decodeURI(value) + ";expires=" + exp.toUTCString();
+    }
+
+    //取cookies函数
+    function getCookie(name) {
+        var arr = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"));
+        if (arr != null) return decodeURIComponent(arr[2]);
+        return null;
     }
 </script>
 </body>

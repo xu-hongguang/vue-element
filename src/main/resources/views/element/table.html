@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:shiro="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>表格</title>
@@ -11,6 +11,7 @@
     <script src="vue/vue-resource@1.5.1.js"></script>
     <!-- import JavaScript -->
     <script src="element-ui/lib/index.js"></script>
+    <script src="js/customer/resources.js"></script>
     <style>
         .el-table .warning-row {
             background: oldlace;
@@ -20,23 +21,35 @@
             background: #f0f9eb;
         }
 
+        .el-row {
+            width: 900px;
+            margin: 10px auto;
+        }
+
+        .bg-purple {
+            /*background: #d3dce6;*/
+            text-align: right;
+        }
+
+        .grid-content {
+            border-radius: 4px;
+            min-height: 36px;
+        }
+
     </style>
 </head>
 <body>
+
 <div id="app">
-    <el-form inline="block" align="center" size="small" style="width: 700px;margin: 0 auto">
+    <el-form inline="block" align="center" size="small" style="width: 800px;margin: 0 auto">
         <el-form-item>
             <el-input v-model="username1" placeholder="用户名"></el-input>
         </el-form-item>
         <el-button type="primary" @click="getUserList(1)" size="small" icon="el-icon-search">查 询</el-button>
-        <div shiro:hasAnyPermissions="user:addUser,user:batchRemoveUser,user:exportUserList">
-            <el-button type="success" @click="toAdd" size="small" icon="el-icon-circle-plus-outline">添 加</el-button>
-            <el-button type="info" @click="exportUserExcel" size="small" icon="el-icon-download">导 出</el-button>
-            <el-button type="danger" @click="batchRemove" size="small" icon="el-icon-delete">批量删除</el-button>
-            <el-button type="primary" @click="init" :loading="loading" size="small" icon="el-icon-refresh">初始化权限
-            </el-button>
-        </div>
-        <el-button type="warn" @click="logout" size="small">退 出</el-button>
+        <el-button type="success" @click="toAdd" size="small" icon="el-icon-circle-plus-outline">添 加</el-button>
+        <el-button type="info" @click="exportUserExcel" size="small" icon="el-icon-download">导 出</el-button>
+        <el-button type="danger" @click="batchRemove" size="small" icon="el-icon-delete">批量删除</el-button>
+        <el-button type="primary" @click="init" :loading="loading" size="small" icon="el-icon-refresh">初始化权限</el-button>
     </el-form>
 
     <template>
@@ -59,7 +72,7 @@
         <!--表格-->
         <el-table align="center" border
                   :data="userList"
-                  style="width:1000px; margin: 0 auto"
+                  style="width:1000px; margin: 10px auto"
                   :row-class-name="tableRowClassName"
                   @selection-change="handleSelectionChange"
                   v-loading="listLoading"
@@ -158,6 +171,9 @@
                 //多选
                 multipleSelection: [],
 
+                //系统用户名
+                username:localStorage.getItem("username"),
+
                 //查询条件
                 username1: '',
 
@@ -184,9 +200,6 @@
 
             },
             methods: {
-                logout() {
-                    location.href = 'logout'
-                },
 
                 init() {
                     vm.loading = true;
@@ -373,7 +386,7 @@
                             vm.open('保存成功！', 'success');
                             vm.getUserList(vm.currentPage)
                         } else {
-                            vm.open('保存失败,用户名已存在！', 'error')
+                            vm.open('保存失败！', 'error')
                         }
                     }).catch(() => {
                         vm.open('保存失败！', 'error')
