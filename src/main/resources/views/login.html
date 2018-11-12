@@ -11,10 +11,15 @@
     <!-- import element-ui JavaScript -->
     <script src="element-ui/lib/index.js"></script>
     <script src="js/util/verify.js"></script>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
 </head>
 <body>
 <div style="width: 100%">
-    <div id="loginDiv">
+    <div id="loginDiv" v-cloak>
         <el-form style="width: 500px;margin: 200px auto 0;" :model="user" status-icon :rules="rules" ref="user"
                  size="small"
                  :label-width="formLabelWidth" class="demo-ruleForm">
@@ -26,7 +31,9 @@
                 <el-input type="password" v-model="user.password" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item style="width: 220px;height:32px " label="验证码" prop="verify">
-                <el-input v-model="user.verify" autocomplete="off">杀多久啊</el-input>
+                <el-input v-model="user.verify" autocomplete="off"></el-input>
+                <canvas id="canvas" width="120" height="32" onclick="updateVerify()"
+                        style="width:120px;border-radius: 4px;position: relative;left: 108px;top: -33px;"></canvas>
             </el-form-item>
             <el-form-item align="left" style="width: 350px" prop="rememberMe">
                 <el-checkbox v-model="user.rememberMe" name="rememberMe" autocomplete="off">记住我</el-checkbox>
@@ -37,13 +44,11 @@
             </el-form-item>
         </el-form>
     </div>
-    <canvas id="canvas" width="120" height="32" onclick="updateVerify()"
-            style="width:120px;position: relative;left: 939px;bottom: 163px;border-radius: 4px"></canvas>
 </div>
 <script>
     window.onload = function () {
         //初始化验证码
-        init();
+        // init();
 
         var vm = new Vue({
             el: '#loginDiv',
@@ -66,6 +71,10 @@
                         // {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'}
                     ],
                 }
+            },
+            created: function () {
+                init();
+                updateVerify();
             },
             methods: {
                 submitForm(formName) {
@@ -114,7 +123,7 @@
                         success: function (data) {
 
                             if (data.code === 0) {
-                                localStorage.setItem("username",vm.user.username);
+                                localStorage.setItem("username", vm.user.username);
 
                                 location.href = 'index.html'
                             } else {

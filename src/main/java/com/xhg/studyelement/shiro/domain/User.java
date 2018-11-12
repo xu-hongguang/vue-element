@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Setter
 @Getter
@@ -15,4 +16,6 @@ public class User implements Serializable {
     private Long id;
     private String username;
     private String password;
+    private String status;
+    private Date createDate;
 }

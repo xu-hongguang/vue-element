@@ -9,22 +9,23 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class UserDAOImpl implements IUserDAO {
 
-    @Autowired
-    private JdbcOperations template;
+    private final JdbcOperations template;
 
-//    @Autowired
-//    private void setDataSource(DataSource dataSource){
-//        this.template = new JdbcTemplate(dataSource);
-//    }
+    @Autowired
+    public UserDAOImpl(JdbcOperations template) {
+        this.template = template;
+    }
 
     @Override
     public User getUserByUsername(String username) {
         try {
-            return template.queryForObject("select id,username,password from `user` where username = ? ", (rs, rowNum) -> {
+            return template.queryForObject("select id,username,password,status,create_date from `user` where username = ? ", (rs, rowNum) -> {
                 User user = new User();
                 user.setUsername(rs.getString("username"));
                 user.setId(rs.getLong("id"));
                 user.setPassword(rs.getString("password"));
+                user.setStatus(rs.getString("status"));
+                user.setCreateDate(rs.getDate("create_date"));
                 return user;
             }, username);
         } catch (Exception e) {

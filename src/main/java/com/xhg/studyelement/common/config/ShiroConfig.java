@@ -56,7 +56,7 @@ public class ShiroConfig {
      * @return
      */
     @Bean
-    public SecurityManager securityManager(UserRealm userRealm, CredentialsMatcher credentialsMatcher) {
+    public SecurityManager securityManager(UserRealm userRealm) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         // 配置 rememberMeCookie
         securityManager.setRememberMeManager(rememberMeManager());

@@ -81,7 +81,6 @@ public class PageController {
         if (user != null && userService.updateUser(user)) {
             return "suc";
         }
-
         return "err";
     }
 

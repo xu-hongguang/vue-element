@@ -31,6 +31,8 @@ public class PermissionController {
     private IPermissionDAO permissionDAO;
 
     @RequestMapping("/reload")
+    @RequiresPermissions("sys:reloadPermission")
+    @PermissionName("加载所有权限")
     public R reload() throws  Exception{
         //将系统中所有权限表达式加载进入数据库
         //0：从数据库中查询出所有权限表达式，然后对比，如果已经存在了，跳过，不存在添加

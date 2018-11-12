@@ -55,10 +55,14 @@
             text-decoration: underline;
             color: blue;
         }
+
+        [v-cloak]{
+            display: none;
+        }
     </style>
 </head>
 <body>
-<div id="main">
+<div id="main" v-cloak>
     <el-container>
         <el-header style="float: right;">
             <el-form inline="block" size="small" style="text-align: right;margin-right: 15px;">
