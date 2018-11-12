@@ -70,6 +70,8 @@ public class LoginController {
             return R.error(2,"账号已被锁定或不可用,请联系管理员");
         }
 
+        logger.info("rememberMe:" + rememberMe);
+
 
         UsernamePasswordToken token = new UsernamePasswordToken(username, password, rememberMe);
         logger.info("加密密码：" + password + username);

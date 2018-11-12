@@ -58,9 +58,10 @@ public class ShiroConfig {
     @Bean
     public SecurityManager securityManager(UserRealm userRealm) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+        securityManager.setRealm(userRealm);
+        securityManager.setSessionManager(sessionManager());
         // 配置 rememberMeCookie
         securityManager.setRememberMeManager(rememberMeManager());
-        securityManager.setRealm(userRealm);
 
         return securityManager;
     }
@@ -74,6 +75,7 @@ public class ShiroConfig {
         // 设置 cookie 名称，对应 login.html 页面的 <input type="checkbox" name="rememberMe"/>
         SimpleCookie cookie = new SimpleCookie("rememberMe");
 //        cookie.setSecure(true);  // 只在 https中有效 注释掉 正常
+        cookie.setHttpOnly(true);
         // 设置 cookie 的过期时间，单位为秒，这里为一天
         cookie.setMaxAge(86400);
         return cookie;
@@ -101,9 +103,11 @@ public class ShiroConfig {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         Collection<SessionListener> listeners = new ArrayList<>();
         listeners.add(new ShiroSessionListener());
+        sessionManager.setSessionListeners(listeners);
         // 设置session超时时间，单位为毫秒
         sessionManager.setGlobalSessionTimeout(1800000L);
-        sessionManager.setSessionListeners(listeners);
+        //相隔多久检查一次session的有效性
+        sessionManager.setSessionValidationInterval(1800000L);
         sessionManager.setSessionIdUrlRewritingEnabled(false);
         sessionManager.setSessionValidationSchedulerEnabled(true);
         return sessionManager;
