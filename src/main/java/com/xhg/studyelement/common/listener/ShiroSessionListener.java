@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class ShiroSessionListener implements SessionListener{
 
-	private final AtomicInteger sessionCount = new AtomicInteger(0);
+	private final static AtomicInteger sessionCount = new AtomicInteger(0);
 	
 	@Override
 	public void onStart(Session session) {
@@ -23,5 +23,10 @@ public class ShiroSessionListener implements SessionListener{
 	@Override
 	public void onExpiration(Session session) {
 		sessionCount.decrementAndGet();
+	}
+
+	public static void main(String[] args) {
+		System.out.println(sessionCount.get());
+		System.out.println();
 	}
 }

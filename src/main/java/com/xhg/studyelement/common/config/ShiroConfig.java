@@ -158,6 +158,11 @@ public class ShiroConfig {
         return shiroFilter;
     }
 
+    /**
+     * 配置没有权限时跳转的页面（等级没有@ExceptionHandler标注的异常处理方式高）
+     *
+     * @return
+     */
     @Bean
     public SimpleMappingExceptionResolver exceptionResolver(){
         SimpleMappingExceptionResolver exceptionResolver = new SimpleMappingExceptionResolver();

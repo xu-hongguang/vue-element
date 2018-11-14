@@ -74,7 +74,6 @@ public class LoginController {
 
 
         UsernamePasswordToken token = new UsernamePasswordToken(username, password, rememberMe);
-        logger.info("加密密码：" + password + username);
         try {
             Subject subject = ShiroUtils.getSubject();
             if (subject != null) {
