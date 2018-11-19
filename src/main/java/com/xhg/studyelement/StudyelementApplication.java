@@ -7,6 +7,8 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
+ * 运行
+ *
  * @author 16033
  */
 @SpringBootApplication(scanBasePackages = {"com.xhg.studyelement"})
