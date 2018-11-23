@@ -56,11 +56,15 @@
         <!--添加弹出框内容-->
         <el-dialog title="添加用户" :visible.sync="dialogFormVisible">
             <el-form :model="user" :rules="rules" ref="user">
-                <el-form-item style="width: 500px" label="用户名" prop="username" :label-width="formLabelWidth">
-                    <el-input v-model="user.username" autocomplete="off"></el-input>
+                <el-form-item label="用户名" prop="username" :label-width="formLabelWidth">
+                    <el-col :span="12">
+                        <el-input v-model="user.username" autocomplete="off"></el-input>
+                    </el-col>
                 </el-form-item>
-                <el-form-item style="width: 500px" label="密 码" prop="password" :label-width="formLabelWidth">
-                    <el-input v-model="user.password" autocomplete="off"></el-input>
+                <el-form-item label="密 码" prop="password" :label-width="formLabelWidth">
+                    <el-col :span="12">
+                        <el-input v-model="user.password" autocomplete="off"></el-input>
+                    </el-col>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -115,13 +119,15 @@
                         <el-form :model="user" :rules="rules" ref="user">
                             <!--用于spring data jpa修改数据，必须要主键-->
                             <input type="hidden" v-model="user.id">
-                            <el-form-item style="width: 500px" label="用户名" prop="username"
-                                          :label-width="formLabelWidth">
-                                <el-input v-model="user.username" autocomplete="off"></el-input>
+                            <el-form-item label="用户名" prop="username" :label-width="formLabelWidth">
+                                <el-col :span="12">
+                                    <el-input v-model="user.username" autocomplete="off"></el-input>
+                                </el-col>
                             </el-form-item>
-                            <el-form-item style="width: 500px" label="密 码" prop="password"
-                                          :label-width="formLabelWidth">
-                                <el-input v-model="user.password" autocomplete="off"></el-input>
+                            <el-form-item label="密 码" prop="password" :label-width="formLabelWidth">
+                                <el-col :span="12">
+                                    <el-input v-model="user.password" autocomplete="off"></el-input>
+                                </el-col>
                             </el-form-item>
                         </el-form>
                         <div slot="footer" class="dialog-footer">
@@ -496,6 +502,7 @@
                         cancelButtonText: '取消',
                         type: 'warning'
                     }).then(() => {
+                        //获取要删除的id
                         const ids = vm.getDeleteIds();
                         //批量删除数据
                         axios({
