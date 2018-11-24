@@ -14,7 +14,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 @Service(value = "userService")
 public class User1ServiceImpl implements User1Service {
@@ -51,7 +54,7 @@ public class User1ServiceImpl implements User1Service {
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize, Sort.Direction.ASC, "id");
 
-        return userRepository.findAll((Specification<User1>) (root, query, criteriaBuilder) -> {
+        return userRepository.findAll((Specification<User1>) (Root<User1> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
             Predicate p1 = criteriaBuilder.like(root.get("username"), "%" + username + "%");
             query.where(criteriaBuilder.and(p1));
             return query.getRestriction();
