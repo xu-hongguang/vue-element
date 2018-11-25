@@ -22,7 +22,7 @@ public class PageController {
     private Logger logger = LoggerFactory.getLogger(PageController.class);
 
     @Autowired
-    private User1Service userService;
+    private User1Service user1Service;
 
     @RequestMapping("/userList/{pageNo}/{pageSize}")
     @RequiresPermissions("user:getUserList")
@@ -30,7 +30,7 @@ public class PageController {
     public String userList(Map<String, Object> map,
                            @PathVariable("pageNo") Integer pageNo,
                            @PathVariable("pageSize") Integer pageSize, String username) {
-        Page<User1> userPage = userService.findAllByUsername(pageNo, pageSize, username);
+        Page<User1> userPage = user1Service.findAllByUsername(pageNo, pageSize, username);
 
 //        所有内容
         map.put("userList", userPage.getContent());
@@ -59,7 +59,7 @@ public class PageController {
     public String add(@RequestBody User1 user) {
         logger.info("添加：" + user);
 
-        if (user != null && userService.saveUser(user)) {
+        if (user != null && user1Service.saveUser(user)) {
             return "suc";
         }
 
@@ -78,7 +78,7 @@ public class PageController {
     public String update(@RequestBody User1 user) {
         logger.info("修改为：" + user);
 
-        if (user != null && userService.updateUser(user)) {
+        if (user != null && user1Service.updateUser(user)) {
             return "suc";
         }
         return "err";
@@ -96,7 +96,7 @@ public class PageController {
         logger.info("删除：" + id);
 
         if ((id != null) && (id > 0)) {
-            userService.deleteUser(id);
+            user1Service.deleteUser(id);
             return "suc";
         }
 
@@ -115,7 +115,7 @@ public class PageController {
         logger.info("删除ids：" + Arrays.toString(ids));
 
         if (ids != null && ids.length > 0) {
-            userService.deleteMap(ids);
+            user1Service.deleteMap(ids);
             return "suc";
         }
         return "err";

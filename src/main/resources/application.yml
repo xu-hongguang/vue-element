@@ -18,6 +18,7 @@ spring:
 # 设置静态资源文件
   resources:
     static-locations: classpath:/views/,classpath:/static/
+#  环境选择
   profiles:
     active: dev
 

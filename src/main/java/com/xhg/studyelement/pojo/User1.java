@@ -1,5 +1,6 @@
 package com.xhg.studyelement.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -24,7 +25,7 @@ public class User1 implements Serializable {
      * 客户和货品是一对多关系
      */
 //    @OneToMany(fetch = FetchType.EAGER,targetEntity = Invoice.class,mappedBy = "user1")
-    @OneToMany(targetEntity = Invoice.class, fetch = FetchType.EAGER,mappedBy = "user1")
+    @OneToMany(targetEntity = Invoice.class, fetch = FetchType.EAGER,mappedBy = "user1",orphanRemoval = true)
     private Set<Invoice> invoices = new HashSet<>();
 
     public User1(String username, String pwd) {

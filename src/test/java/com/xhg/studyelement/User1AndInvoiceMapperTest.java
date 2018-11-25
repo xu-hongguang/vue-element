@@ -4,6 +4,7 @@ import com.xhg.studyelement.dao.InvoiceRepository;
 import com.xhg.studyelement.dao.User1Repository;
 import com.xhg.studyelement.pojo.Invoice;
 import com.xhg.studyelement.pojo.User1;
+import com.xhg.studyelement.serivce.User1Service;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class User1AndInvoiceMapperTest {
 
     @Resource
     private User1Repository user1Repository;
+
+    @Autowired
+    private User1Service user1Service;
 
     @Autowired
     private InvoiceRepository invoiceRepository;
@@ -73,6 +77,10 @@ public class User1AndInvoiceMapperTest {
         System.out.println(invoice.getUser1());
     }
 
+    @Test
+    public void testUser1Page(){
+        System.out.println(user1Service.findAllByUsername(4,5,"").getContent());
+    }
 
     @Test
     public void testPage(){

@@ -1,5 +1,6 @@
 package com.xhg.studyelement.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 

@@ -6,6 +6,7 @@ import com.xhg.studyelement.serivce.User1Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +20,11 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-@Service(value = "userService")
+/**
+ * @author 16033
+ */
+@Service(value = "user1Service")
+@CacheConfig(cacheNames = "user1")
 public class User1ServiceImpl implements User1Service {
 
     Logger logger = LoggerFactory.getLogger(User1ServiceImpl.class);
@@ -62,11 +67,13 @@ public class User1ServiceImpl implements User1Service {
     }
 
     @Override
+    @Cacheable(key = "#p0")
     public User1 findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public boolean saveUser(User1 user) {
         User1 user1 = userRepository.findByUsername(user.getUsername());
         logger.info("对比：" + user1);
@@ -79,6 +86,7 @@ public class User1ServiceImpl implements User1Service {
     }
 
     @Override
+    @CachePut(key = "#p0.id")
     public boolean updateUser(User1 user){
         if (user != null) {
             userRepository.save(user);
@@ -88,6 +96,7 @@ public class User1ServiceImpl implements User1Service {
     }
 
     @Override
+    @CacheEvict(key = "#p0")
     public void deleteUser(Integer id) {
         userRepository.deleteById(id);
     }

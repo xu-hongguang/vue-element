@@ -21,6 +21,10 @@ spring:
   thymeleaf:
     cache: false
     enabled: false
+#  Ehcache缓存
+  cache:
+    ehcache:
+      config: classpath:ehcache.xml
 
 #日志文件路径
 logging:

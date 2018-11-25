@@ -17,6 +17,7 @@ public class XssFilter implements Filter {
     public void init(FilterConfig config) {
     }
 
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         XssHttpServletRequestWrapper xssRequest = new XssHttpServletRequestWrapper(

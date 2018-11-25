@@ -43,7 +43,7 @@ public class StudyelementApplicationTests {
 
 		System.out.println(user.toString());
 
-        Page<User1> userPage = userService.findAllByUsername(1, 1, "z");
+        Page<User1> userPage = userService.findAllByUsername(1, 1, "");
 
         System.out.println(userPage.getTotalElements());
 
