@@ -32,6 +32,7 @@ public class Invoice implements Serializable {
 //    @ManyToOne(cascade = CascadeType.PERSIST)
     @ManyToOne(cascade = CascadeType.MERGE,fetch = FetchType.EAGER,targetEntity = User1.class)
     @JoinColumn(name = "user1_Id",referencedColumnName = "id")
+//    @JsonIgnore
     private User1 user1;
 
     public Invoice() {

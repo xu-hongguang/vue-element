@@ -7,7 +7,7 @@ server:
         uri-encoding: UTF-8
     servlet:
       context-path: /vue-element
-    port: 8080
+    port: 8086
 
 spring:
 # 取消thymeleaf模板的默认

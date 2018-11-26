@@ -18,10 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import javax.persistence.criteria.*;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = StudyelementApplication.class)
@@ -43,11 +40,11 @@ public class User1AndInvoiceMapperTest {
     @Test
     public void testSave() {
 //        创建客户
-        User1 user1 = new User1("一对多3", "123456");
-        user1.setId(41);
+        User1 user1 = new User1("一对多3", "123456",new Date());
+        user1.setId(4);
 
 //        创建货品
-        Invoice invoice = new Invoice("电视机8", 2180.3,
+        Invoice invoice = new Invoice("电视机2", 2180.3,
                 new GregorianCalendar(2018, 11 - 1, 10).getTime());
 
 //        关联
@@ -79,13 +76,13 @@ public class User1AndInvoiceMapperTest {
 
     @Test
     public void testUser1Page(){
-        System.out.println(user1Service.findAllByUsername(4,5,"").getContent());
+        System.out.println(user1Service.findAllByUsername(0,5,"").getContent());
     }
 
     @Test
     public void testPage(){
 
-        String username = "测试服";
+        String username = "一对多";
 
         Pageable pageable = PageRequest.of(0,2, Sort.Direction.DESC,"no");
 
@@ -98,7 +95,7 @@ public class User1AndInvoiceMapperTest {
 //            指定关联属性
             root.join("user1", JoinType.INNER);
             List<Predicate> predicateList = new ArrayList<>();
-            predicateList.add(criteriaBuilder.equal(root.get("user1").get("id"),41));
+            predicateList.add(criteriaBuilder.equal(root.get("user1").get("id"),4));
             predicateList.add(criteriaBuilder.like(root.get("user1").get("username"),"%" + username + "%"));
             predicateList.add(criteriaBuilder.greaterThanOrEqualTo(root.get("invoicePrice"),500));
 

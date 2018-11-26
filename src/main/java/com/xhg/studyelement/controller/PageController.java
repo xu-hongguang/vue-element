@@ -1,6 +1,7 @@
 package com.xhg.studyelement.controller;
 
 import com.google.gson.Gson;
+import com.xhg.studyelement.common.utils.R;
 import com.xhg.studyelement.pojo.User1;
 import com.xhg.studyelement.serivce.User1Service;
 import com.xhg.studyelement.shiro.realm.PermissionName;
@@ -27,24 +28,24 @@ public class PageController {
     @RequestMapping("/userList/{pageNo}/{pageSize}")
     @RequiresPermissions("user:getUserList")
     @PermissionName("查询用户列表")
-    public String userList(Map<String, Object> map,
-                           @PathVariable("pageNo") Integer pageNo,
-                           @PathVariable("pageSize") Integer pageSize, String username) {
+    public R userList(@PathVariable("pageNo") Integer pageNo,
+                      @PathVariable("pageSize") Integer pageSize, String username) {
         Page<User1> userPage = user1Service.findAllByUsername(pageNo, pageSize, username);
 
+        R r = new R();
 //        所有内容
-        map.put("userList", userPage.getContent());
+        r.put("userList", userPage.getContent());
 //        总记录数
-        map.put("totalCount", (int) userPage.getTotalElements());
+        r.put("totalCount", (int) userPage.getTotalElements());
 //        页码
-        map.put("pageNo", pageNo);
+        r.put("pageNo", pageNo);
 //        当前页记录数（这里不需要向前端传）
-        map.put("pageSize", pageSize);
+        r.put("pageSize", pageSize);
 
         logger.info("获取的数据：" + userPage.getContent());
 
-//        return map;
-        return new Gson().toJson(map);
+        return r;
+//        return new Gson().toJson(map);
     }
 
     /**

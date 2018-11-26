@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Date;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -23,16 +24,16 @@ public class EhcacheTest {
 	User1Repository userRepository;
 
 	@Autowired
-	private User1Service userService;
+	private User1Service user1Service;
 
 	@Test
 	public void test(){
 
-		System.out.println(userService.findAllByUsername(0,20,"").getTotalElements());
+		System.out.println(user1Service.findAllByUsername(0,20,"").getTotalElements());
 
-		userService.saveUser(new User1("水天2","123swwq"));
+		user1Service.saveUser(new User1("水天2","123swwq",new Date()));
 
-		System.out.println(userService.findAllByUsername(0,20,"").getTotalElements());
+		System.out.println(user1Service.findAllByUsername(0,20,"").getTotalElements());
 	}
 
 }

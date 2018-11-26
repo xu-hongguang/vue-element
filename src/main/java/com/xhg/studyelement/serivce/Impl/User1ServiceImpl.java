@@ -30,7 +30,7 @@ public class User1ServiceImpl implements User1Service {
     Logger logger = LoggerFactory.getLogger(User1ServiceImpl.class);
 
     @Autowired
-    private User1Repository userRepository;
+    private User1Repository user1Repository;
 
     @Override
     public Page<User1> findAll(Integer pageNo, Integer pageSize) {
@@ -40,7 +40,7 @@ public class User1ServiceImpl implements User1Service {
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize, Sort.Direction.ASC, "id");
 
-        return userRepository.findAll(pageable);
+        return user1Repository.findAll(pageable);
     }
 
     /**
@@ -59,7 +59,7 @@ public class User1ServiceImpl implements User1Service {
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize, Sort.Direction.ASC, "id");
 
-        return userRepository.findAll((Specification<User1>) (Root<User1> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
+        return user1Repository.findAll((Specification<User1>) (Root<User1> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
             Predicate p1 = criteriaBuilder.like(root.get("username"), "%" + username + "%");
             query.where(criteriaBuilder.and(p1));
             return query.getRestriction();
@@ -69,17 +69,18 @@ public class User1ServiceImpl implements User1Service {
     @Override
     @Cacheable(key = "#p0")
     public User1 findByUsername(String username) {
-        return userRepository.findByUsername(username);
+        return user1Repository.findByUsername(username);
     }
 
     @Override
+//    删除所有缓存
     @CacheEvict(allEntries = true)
     public boolean saveUser(User1 user) {
-        User1 user1 = userRepository.findByUsername(user.getUsername());
+        User1 user1 = user1Repository.findByUsername(user.getUsername());
         logger.info("对比：" + user1);
         boolean isSave = false;
         if (user1 == null) {
-            userRepository.save(user);
+            user1Repository.save(user);
             isSave = true;
         }
         return isSave;
@@ -89,7 +90,7 @@ public class User1ServiceImpl implements User1Service {
     @CachePut(key = "#p0.id")
     public boolean updateUser(User1 user){
         if (user != null) {
-            userRepository.save(user);
+            user1Repository.save(user);
             return true;
         }
         return false;
@@ -98,7 +99,7 @@ public class User1ServiceImpl implements User1Service {
     @Override
     @CacheEvict(key = "#p0")
     public void deleteUser(Integer id) {
-        userRepository.deleteById(id);
+        user1Repository.deleteById(id);
     }
 
     @Override
