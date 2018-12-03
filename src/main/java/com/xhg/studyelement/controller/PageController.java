@@ -1,6 +1,5 @@
 package com.xhg.studyelement.controller;
 
-import com.google.gson.Gson;
 import com.xhg.studyelement.common.utils.R;
 import com.xhg.studyelement.pojo.User1;
 import com.xhg.studyelement.serivce.User1Service;
@@ -10,10 +9,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
-import java.util.Map;
 
 /**
  * @author 16033
@@ -26,7 +27,7 @@ public class PageController {
     private User1Service user1Service;
 
     @RequestMapping("/userList/{pageNo}/{pageSize}")
-    @RequiresPermissions("user:getUserList")
+//    @RequiresPermissions("user:getUserList")
     @PermissionName("查询用户列表")
     public R userList(@PathVariable("pageNo") Integer pageNo,
                       @PathVariable("pageSize") Integer pageSize, String username) {

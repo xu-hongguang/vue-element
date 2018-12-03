@@ -13,14 +13,13 @@ spring:
       ddl-auto: update
   mvc:
     date-format: yyyy-MM-dd
-#    view:
-#      prefix: /view/
-#      suffix: .html
 
-# 取消thymeleaf模板的默认
+# 设置thymeleaf模板的默认
   thymeleaf:
     cache: false
-    enabled: false
+    enabled: true
+    prefix: classpath:/views/
+
 #  Ehcache缓存
   cache:
     ehcache:

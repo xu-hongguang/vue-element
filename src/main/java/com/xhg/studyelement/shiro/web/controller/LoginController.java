@@ -16,9 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -52,22 +49,23 @@ public class LoginController {
     public Map<String, Object> login(String username, String password, String verify, Boolean rememberMe) {
 
 
-        if(StringUtils.isBlank(verify)){
+        if (StringUtils.isBlank(verify)) {
             return R.error(2, "验证码不可为空");
         }
         String kaptcha = ShiroUtils.getKaptcha("verify");
         if (!verify.equalsIgnoreCase(kaptcha)) {
-            return R.error(2,"验证码不正确");
+            return R.error(2, "验证码不正确");
         }
         User user = userService.getByUsername(username);
 
-        if (user!=null && !user.getPassword().equals(MD5Utils.md5(password,username,3))){
-            return R.error(2,"用户名或密码错误，请重试！");
+        if (user == null) {
+            return R.error(2, "用户名不正确!");
+        } else if (!user.getPassword().equals(MD5Utils.md5(password, username, 3))) {
+            return R.error(2, "用户名或密码错误，请重试！");
         }
         //账号锁定
-        assert user != null;
         if (!"1".equals(user.getStatus())) {
-            return R.error(2,"账号已被锁定或不可用,请联系管理员");
+            return R.error(2, "账号已被锁定或不可用,请联系管理员");
         }
 
         logger.info("rememberMe:" + rememberMe);
@@ -83,9 +81,9 @@ public class LoginController {
             subject.login(token);
             return R.ok();
         } catch (UnknownAccountException | IncorrectCredentialsException | LockedAccountException e) {
-            return R.error(2,"用户名或密码错误，请重试！");
+            return R.error(2, "用户名或密码错误，请重试！");
         } catch (AuthenticationException e) {
-            return R.error(2,"认证失败！");
+            return R.error(2, "认证失败！");
         }
 
     }

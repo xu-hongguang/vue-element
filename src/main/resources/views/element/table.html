@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:shiro="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>表格</title>
@@ -46,10 +46,13 @@
             <el-input v-model="username1" placeholder="用户名"></el-input>
         </el-form-item>
         <el-button type="primary" @click="getUserList(1)" size="small" icon="el-icon-search">查 询</el-button>
-        <el-button type="success" @click="toAdd" size="small" icon="el-icon-circle-plus-outline">添 加</el-button>
-        <el-button type="info" @click="exportUserExcel" size="small" icon="el-icon-download">导 出</el-button>
-        <el-button type="danger" @click="batchRemove" size="small" icon="el-icon-delete">批量删除</el-button>
-        <el-button type="primary" @click="init" :loading="loading" size="small" icon="el-icon-refresh">初始化权限</el-button>
+        <span shiro:hasAnyPermissions="user:addUser,export:exportUser1List,user:batchRemoveUser,sys:reloadPermission">
+            <el-button type="success" @click="toAdd" size="small" icon="el-icon-circle-plus-outline">添 加</el-button>
+            <el-button type="info" @click="exportUserExcel" size="small" icon="el-icon-download">导 出</el-button>
+            <el-button type="danger" @click="batchRemove" size="small" icon="el-icon-delete">批量删除</el-button>
+            <el-button type="primary" @click="init" :loading="loading" size="small" icon="el-icon-refresh">初始化权限
+            </el-button>
+        </span>
     </el-form>
 
     <template>
@@ -83,7 +86,9 @@
                   element-loading-text="正在拼命加载中">
             <el-table-column
                     type="selection"
-                    width="55" prop="id">
+                    width="55"
+                    prop="id"
+                    align="center">
             </el-table-column>
             <el-table-column
                     prop="id"
@@ -94,7 +99,6 @@
             <el-table-column
                     prop="username"
                     label="用户名"
-                    width="180"
                     align="center">
             </el-table-column>
             <el-table-column
@@ -102,17 +106,17 @@
                     label="密码"
                     align="center">
             </el-table-column>
-            <el-table-column label="操作" align="center">
+            <el-table-column label="操作" align="center" shiro:hasAnyPermissions="user:updateUser,user:removeUser">
                 <template slot-scope="scope">
                     <!--跳转到编辑弹出框-->
-                    <el-button
-                            size="mini"
-                            @click="handleEdit(scope.$index, scope.row)" icon="el-icon-edit-outline">编辑
+                    <el-button shiro:hasPermission="user:updateUser"
+                               size="mini"
+                               @click="handleEdit(scope.$index, scope.row)" icon="el-icon-edit-outline">编辑
                     </el-button>
-                    <el-button
-                            size="mini"
-                            type="danger"
-                            @click="open2(scope.$index, scope.row)" icon="el-icon-delete">删除
+                    <el-button shiro:hasPermission="user:removeUser"
+                               size="mini"
+                               type="danger"
+                               @click="open2(scope.$index, scope.row)" icon="el-icon-delete">删除
                     </el-button>
                     <!--编辑弹出框内容-->
                     <el-dialog title="修改用户信息" :visible.sync="dialogFormVisible2">
@@ -178,7 +182,7 @@
                 multipleSelection: [],
 
                 //系统用户名
-                username:localStorage.getItem("username"),
+                username: localStorage.getItem("username"),
 
                 //查询条件
                 username1: '',

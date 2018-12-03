@@ -10,11 +10,6 @@ server:
     port: 8086
 
 spring:
-# 取消thymeleaf模板的默认
-  thymeleaf:
-    cache: false
-    enabled: false
-
 # 设置静态资源文件
   resources:
     static-locations: classpath:/views/,classpath:/static/

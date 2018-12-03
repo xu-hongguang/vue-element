@@ -35,6 +35,10 @@ public class ShiroUtils {
         return getSession().getAttribute(key);
     }
 
+    public static void removeSessionAttribute(Object key) {
+        getSession().removeAttribute(key);
+    }
+
     /**
      * 判断是否登录
      * @return boolean
@@ -43,10 +47,16 @@ public class ShiroUtils {
         return SecurityUtils.getSubject().getPrincipal() != null;
     }
 
-    public static void logout() {
+    public static void logout(Object key) {
+        removeSessionAttribute(key);
         SecurityUtils.getSubject().logout();
     }
 
+    /**
+     * 获取验证码
+     * @param key
+     * @return
+     */
     public static String getKaptcha(String key) {
         Object kaptcha = getSessionAttribute(key);
         if (kaptcha == null) {
