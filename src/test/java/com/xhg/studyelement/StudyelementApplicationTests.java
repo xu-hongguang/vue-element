@@ -24,7 +24,7 @@ public class StudyelementApplicationTests {
 	User1Repository userRepository;
 
 	@Autowired
-	private User1Service userService;
+	private User1Service user1Service;
 
 	@Test
 	public void contextLoads() {
@@ -43,7 +43,7 @@ public class StudyelementApplicationTests {
 
 		System.out.println(user.toString());
 
-        Page<User1> userPage = userService.findAllByUsername(1, 1, "");
+        Page<User1> userPage = user1Service.findAllByUsername(1, 1, "");
 
         System.out.println(userPage.getTotalElements());
 
@@ -51,7 +51,7 @@ public class StudyelementApplicationTests {
 
     @Test
     public void  test2(){
-		userService.deleteUser(5);
+		user1Service.deleteUser(5);
 
 	}
 

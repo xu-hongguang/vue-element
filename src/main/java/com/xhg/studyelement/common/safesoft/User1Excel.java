@@ -15,15 +15,18 @@ import java.util.List;
  */
 public class User1Excel extends AbstractExportExcel {
 
-    private List<User1> list;
+    private final String excelName ;
 
-    public User1Excel(List<User1> list) {
+    private final List<User1> list;
+
+    public User1Excel(List<User1> list, String excelName) {
         this.list = list;
+        this.excelName = excelName;
     }
 
     @Override
     protected String getExcelUri() {
-        return "export/user.xlsx";
+        return excelName;
     }
 
     @Override
@@ -41,6 +44,7 @@ public class User1Excel extends AbstractExportExcel {
         font.setFontName("宋体");
         style.setFont(font);
 
+        // 数据填入Excel
         for (User1 user : users) {
             setSheetValue(sheet, lineNum, 0, String.valueOf(user.getId()), style);
             setSheetValue(sheet, lineNum, 1, user.getUsername(), style);
@@ -49,22 +53,4 @@ public class User1Excel extends AbstractExportExcel {
         }
     }
 
-    /*private String getQsType(String type) {
-        String qsType = "";
-        if (ELECTRON_INVOICE_QS_TYPE_ZERO.equals(type)) {
-            qsType = "扫码签收";
-        } else if (ELECTRON_INVOICE_QS_TYPE_ONE.equals(type)) {
-            qsType = "扫描仪签收";
-        } else if (ELECTRON_INVOICE_QS_TYPE_TWO.equals(type)) {
-            qsType = "app签收";
-        } else if (ELECTRON_INVOICE_QS_TYPE_THREE.equals(type)) {
-            qsType = "导入签收";
-        } else if (ELECTRON_INVOICE_QS_TYPE_FOUR.equals(type)) {
-            qsType = "手工签收";
-        } else if (ELECTRON_INVOICE_QS_TYPE_FIVE.equals(type)) {
-            qsType = "pdf上传";
-        }
-
-        return qsType;
-    }*/
 }

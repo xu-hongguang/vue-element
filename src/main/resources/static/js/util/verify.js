@@ -43,7 +43,7 @@ function isEquals(val) {
 }
 
 /**
- * 点击更新并保存
+ * 更新并保存
  */
 function updateVerify() {
     //点击更新

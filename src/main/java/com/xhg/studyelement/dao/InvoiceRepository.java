@@ -10,4 +10,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
  * @author 16033
  */
 public interface InvoiceRepository extends JpaRepository<Invoice,Integer>,JpaSpecificationExecutor<Invoice> {
+    Invoice findByNo(Integer no);
 }

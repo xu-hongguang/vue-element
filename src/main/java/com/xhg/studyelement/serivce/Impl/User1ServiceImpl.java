@@ -19,6 +19,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author 16033
@@ -31,6 +33,11 @@ public class User1ServiceImpl implements User1Service {
 
     @Autowired
     private User1Repository user1Repository;
+
+    @Override
+    public List<User1> findAll(){
+        return user1Repository.findAll();
+    }
 
     @Override
     public Page<User1> findAll(Integer pageNo, Integer pageSize) {
@@ -80,6 +87,7 @@ public class User1ServiceImpl implements User1Service {
         logger.info("对比：" + user1);
         boolean isSave = false;
         if (user1 == null) {
+            user.setCreateDate(new Date());
             user1Repository.save(user);
             isSave = true;
         }
