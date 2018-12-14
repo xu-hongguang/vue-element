@@ -1,8 +1,6 @@
 package com.xhg.studyelement.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -22,6 +20,7 @@ public class User1 implements Serializable {
     private String username;
     private String password;
     private Date createDate;
+    private String remark;
 
     /**
      * 客户和货品是一对多关系
@@ -80,12 +79,21 @@ public class User1 implements Serializable {
         this.createDate = createDate;
     }
 
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
     @Override
     public String toString() {
         return "User1{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", remark='" + remark + '\'' +
                 ", invoices's size =" + invoices.size() +
                 '}';
     }

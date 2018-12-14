@@ -47,10 +47,10 @@
         </el-form-item>
         <el-button type="primary" @click="getUserList(1)" size="small" icon="el-icon-search">查 询</el-button>
         <span shiro:hasAnyPermissions="user:addUser,export:exportUser1List,user:batchRemoveUser,sys:reloadPermission">
-            <el-button type="success" @click="toAdd" size="small" icon="el-icon-circle-plus-outline">添 加</el-button>
-            <el-button type="info" @click="exportUserExcel" size="small" icon="el-icon-download">导 出</el-button>
-            <el-button type="danger" @click="batchRemove" size="small" icon="el-icon-delete">批量删除</el-button>
-            <el-button type="primary" @click="init" :loading="loading" size="small" icon="el-icon-refresh">初始化权限
+            <el-button type="success" @click="toAdd" size="small" icon="el-icon-circle-plus-outline" shiro:hasPermission="user:addUser">添 加</el-button>
+            <el-button type="info" @click="exportUserExcel" size="small" icon="el-icon-download" shiro:hasPermission="export:exportUser1List">导 出</el-button>
+            <el-button type="danger" @click="batchRemove" size="small" icon="el-icon-delete" shiro:hasPermission="user:batchRemoveUser">批量删除</el-button>
+            <el-button type="primary" @click="init" :loading="loading" size="small" icon="el-icon-refresh" shiro:hasPermission="sys:reloadPermission">初始化权限
             </el-button>
         </span>
     </el-form>
