@@ -146,11 +146,11 @@
                 /**
                  * 注册登录
                  */
-                login() {
+                login:function() {
                     location.href = "login.html";
                 },
 
-                logout() {
+                logout:function() {
                     localStorage.removeItem("username");
                     location.href = 'logout'
                 },
@@ -158,7 +158,7 @@
                 /**
                  * 表单提交验证
                  */
-                submitForm(formName) {
+                submitForm:function(formName) {
                     this.$refs[formName].validate((valid) => {
                         if (valid) {
                             vm.loginUser();
@@ -168,12 +168,12 @@
                         }
                     });
                 },
-                resetForm(formName) {
+                resetForm:function(formName) {
                     this.$refs[formName].resetFields();
                 },
 
                 //提示窗
-                open(message, type) {
+                open:function(message, type) {
                     this.$message({
                         showClose: true,
                         message: message,
@@ -188,10 +188,10 @@
                  * @param key
                  * @param keyPath
                  */
-                handleOpen(key, keyPath) {
+                handleOpen:function(key, keyPath) {
                     console.log(key, keyPath);
                 },
-                handleClose(key, keyPath) {
+                handleClose:function(key, keyPath) {
                     console.log(key, keyPath);
                 }
 

@@ -76,11 +76,11 @@
             },
             mounted: function () {
                 init();
-                updateVerify();
+                // updateVerify();
             },
             methods: {
-                submitForm(formName) {
-                    this.$refs[formName].validate((valid) => {
+                submitForm:function(formName) {
+                    this.$refs[formName].validate(function(valid) {
                         if (valid) {
                             vm.loginUser();
                         } else {
@@ -89,7 +89,7 @@
                         }
                     });
                 },
-                resetForm(formName) {
+                resetForm:function(formName) {
                     this.$refs[formName].resetFields();
                 },
                 loginUser: function () {
@@ -103,7 +103,7 @@
                              rememberMe:vm.user.rememberMe
                          },
                          responseType:'json'
-                     }).then((response) => {
+                     }).then((response) => {    //IE11不兼容 => 形式
                          if (response.data.code === 0) {
                              // if (response.data.suc === 'suc') {
                              location.href = 'table'
@@ -137,7 +137,7 @@
                     })
                 },
                 //提示窗
-                open(message, type) {
+                open:function(message, type) {
                     this.$message({
                         showClose: true,
                         message: message,

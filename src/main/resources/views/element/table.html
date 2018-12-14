@@ -211,7 +211,7 @@
             },
             methods: {
 
-                init() {
+                init:function() {
                     vm.loading = true;
                     axios({
                         method: 'get',
@@ -232,7 +232,7 @@
                 /*
                  * 表格隔行变色
                  */
-                tableRowClassName({row, rowIndex}) {
+                tableRowClassName:function({row, rowIndex}) {
                     if (rowIndex % 2 === 1) {
                         return 'success-row';
                     }
@@ -240,13 +240,13 @@
                 },
 
                 //修改重置表单
-                updateResetForm(formName) {
+                updateResetForm:function(formName) {
                     vm.dialogFormVisible2 = false;
                     this.$refs[formName].resetFields();
                 },
                 //提交表单,成功则执行isFunction()方法
-                submitForm(formName, isFunction) {
-                    this.$refs[formName].validate((valid) => {
+                submitForm:function(formName, isFunction) {
+                    this.$refs[formName].validate(function(valid) {
                         if (valid) {
                             if ((typeof isFunction) === 'function') {
                                 isFunction();
@@ -258,7 +258,7 @@
                     });
                 },
                 //保存重置表单
-                resetForm(formName) {
+                resetForm:function(formName) {
                     vm.dialogFormVisible = false;
                     this.$refs[formName].resetFields();
                 },
@@ -267,14 +267,14 @@
                 /*
                  * 处理当页容量和当前页码
                  */
-                handleSizeChange(val) {
+                handleSizeChange:function(val) {
                     if (vm.total > 0) {
                         console.log(`每页 ${val} 条`);
                         vm.pageSize = val;
                         vm.getUserList(vm.currentPage);
                     }
                 },
-                handleCurrentChange(currentPage) {
+                handleCurrentChange:function(currentPage) {
                     if (vm.total > 0) {
                         console.log(`当前页: ${currentPage}`);
                         vm.currentPage = currentPage;
@@ -340,7 +340,7 @@
                         url: 'userList/' + pageNo + '/' + vm.pageSize + '?username=' + vm.username1,
                         data: {},
                         dataType: 'json'
-                    }).then((response) => {
+                    }).then(function(response) {
                         //.data不可去
                         vm.currentPage = response.data.pageNo;
                         vm.total = response.data.totalCount;
@@ -348,7 +348,7 @@
 
                         //关闭加载显示
                         vm.listLoading = false;
-                    }).catch((error) => {
+                    }).catch(function(error) {
                         vm.listLoading = false;
                     });
                     // 简写版
@@ -362,7 +362,7 @@
 
                 },
 
-                toAdd() {
+                toAdd:function() {
                     this.user.username = '';
                     this.user.password = '';
 
@@ -372,7 +372,7 @@
                 /**
                  *  保存用户
                  */
-                addUser() {
+                addUser:function() {
                     // vm.submitForm('user');
 
                     const data = {
@@ -387,7 +387,7 @@
                         },
                         data: JSON.stringify(data),
                         dataType: 'text',
-                    }).then((response) => {
+                    }).then(function(response) {
                         //.data不可去
                         if (response.data === 'suc') {
                             //关闭弹窗
@@ -406,7 +406,7 @@
                 /**
                  * 导出Excel文件
                  */
-                exportUserExcel() {
+                exportUserExcel:function() {
                     location.href = "export/userExcel"
                 },
 
@@ -416,7 +416,7 @@
                  * @param index
                  * @param row
                  */
-                handleEdit(index, row) {
+                handleEdit:function(index, row) {
                     console.log(index, row);
                     //打开修改弹窗
                     vm.dialogFormVisible2 = true;
@@ -430,7 +430,7 @@
                 /**
                  * 修改
                  */
-                updateUser() {
+                updateUser:function() {
                     const data = {
                         id: vm.user.id,
                         username: vm.user.username,
@@ -445,7 +445,7 @@
                         },
                         data: JSON.stringify(data),
                         dataType: 'text',
-                    }).then((response) => {
+                    }).then(function(response) {
                         //.data不可去
                         if (response.data === 'suc') {
                             vm.dialogFormVisible2 = false;
@@ -463,7 +463,7 @@
                  * @param index
                  * @param row
                  */
-                handleDelete(index, row) {
+                handleDelete:function(index, row) {
                     console.log(index, row);
                     axios({
                         //delete请求方式需要在url路径后传参
@@ -483,11 +483,11 @@
 
                 },
                 //处理多选框改变
-                handleSelectionChange(val) {
+                handleSelectionChange:function(val) {
                     vm.multipleSelection = val;
                 },
                 //获取删除数据的所有id
-                getDeleteIds() {
+                getDeleteIds:function() {
                     let ids = [];
                     for (let i = 0; i < this.multipleSelection.length; i++) {
                         ids.push(this.multipleSelection[i].id);
@@ -495,7 +495,7 @@
                     return ids;
                 },
                 //批量删除
-                batchRemove() {
+                batchRemove:function() {
                     if (this.multipleSelection.length === 0) {
                         this.$alert('请先选择要删除的数据!', '提示');
                         return;
@@ -505,7 +505,7 @@
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
                         type: 'warning'
-                    }).then(() => {
+                    }).then(function(){
                         //获取要删除的id
                         const ids = vm.getDeleteIds();
                         //批量删除数据
@@ -517,7 +517,7 @@
                             },
                             data: JSON.stringify(ids),
                             dataType: 'text',
-                        }).then((response) => {
+                        }).then(function(response){
                             //.data不可去
                             if (response.data === 'suc') {
                                 vm.open("删除成功！", "success");
@@ -526,7 +526,7 @@
                                 vm.open('删除失败！', 'error')
                             }
                         });
-                    }).catch(() => {
+                    }).catch(function(){
                         this.$message({
                             showClose: true,
                             type: 'info',
@@ -535,15 +535,15 @@
                     });
                 },
                 //提示警告是否删除
-                open2(index, row) {
+                open2:function(index, row) {
                     this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
                         type: 'warning'
-                    }).then(() => {
+                    }).then(function(){
                         //删除数据
                         vm.handleDelete(index, row);
-                    }).catch(() => {
+                    }).catch(function() {
                         this.$message({
                             showClose: true,
                             type: 'info',
@@ -553,7 +553,7 @@
                 },
 
                 //提示窗
-                open(message, type) {
+                open:function(message, type) {
                     this.$message({
                         showClose: true,
                         message: message,
