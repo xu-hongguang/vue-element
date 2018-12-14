@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xhg.studyelement.shiro.dao.CarsDAO">
+    <resultMap id="BaseResultMap" type="com.xhg.studyelement.shiro.domain.Cars">
+        <id column="cars_id" jdbcType="INTEGER" property="id"/>
+        <result column="cars_carNumber" jdbcType="VARCHAR" property="carnumber"/>
+        <result column="cars_driver" jdbcType="VARCHAR" property="driver"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    cars.id as cars_id, cars.carNumber as cars_carNumber, cars.driver as cars_driver
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from cars cars
+        where cars.id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM cars
+    </select>
+
+    <select id="selectByDriver" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM cars
+        <where>
+            <if test="driver != null and driver != ''">
+                AND driver LIKE "%"#{driver}"%"
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from cars
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.xhg.studyelement.shiro.domain.Cars">
+    insert into cars (id, carNumber, driver
+      )
+    values (#{id,jdbcType=INTEGER}, #{carnumber,jdbcType=VARCHAR}, #{driver,jdbcType=VARCHAR}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.xhg.studyelement.shiro.domain.Cars">
+        insert into cars
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="carnumber != null">
+                carNumber,
+            </if>
+            <if test="driver != null">
+                driver,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="carnumber != null">
+                #{carnumber,jdbcType=VARCHAR},
+            </if>
+            <if test="driver != null">
+                #{driver,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.xhg.studyelement.shiro.domain.Cars">
+        update cars
+        <set>
+            <if test="carnumber != null">
+                carNumber = #{carnumber,jdbcType=VARCHAR},
+            </if>
+            <if test="driver != null">
+                driver = #{driver,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.xhg.studyelement.shiro.domain.Cars">
+    update cars
+    set carNumber = #{carnumber,jdbcType=VARCHAR},
+      driver = #{driver,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

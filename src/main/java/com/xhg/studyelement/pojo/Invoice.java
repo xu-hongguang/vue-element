@@ -2,7 +2,6 @@ package com.xhg.studyelement.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -32,7 +31,7 @@ public class Invoice implements Serializable {
 //    @ManyToOne(cascade = CascadeType.PERSIST)
     @ManyToOne(cascade = CascadeType.MERGE,fetch = FetchType.EAGER,targetEntity = User1.class)
     @JoinColumn(name = "user1_Id",referencedColumnName = "id")
-//    @JsonIgnore
+    @JsonIgnore // 会导致关联查询不到数据
     private User1 user1;
 
     public Invoice() {

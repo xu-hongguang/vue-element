@@ -13,6 +13,8 @@ import java.io.Serializable;
 @EqualsAndHashCode
 public class Role implements Serializable {
     private Long id;
-    private String name;  //角色名称
-    private String sn;  //角色表达式： empMgr
+    /** 角色名称 */
+    private String name;
+    /** 角色表达式： empMgr */
+    private String sn;
 }

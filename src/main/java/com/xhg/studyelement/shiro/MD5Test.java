@@ -2,6 +2,9 @@ package com.xhg.studyelement.shiro;
 
 import org.apache.shiro.crypto.hash.Md5Hash;
 
+/**
+ * @author 16033
+ */
 public class MD5Test {
 
     public static void main(String[] args) {

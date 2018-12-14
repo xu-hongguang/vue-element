@@ -3,6 +3,7 @@ package com.xhg.studyelement.common.utils;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.*;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeUnit;
@@ -38,11 +39,30 @@ public class RedisUtils {
     @Autowired
     private ZSetOperations<String, Object> zSetOperations;
 
+
+
+    public void setValue(String key,Object value) {
+
+
+        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(value.getClass()));
+        redisTemplate.opsForValue().set(key,value);
+    }
+
+    public <T> T getValue(String key,Class<?> clazz) {
+
+
+        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(clazz));
+        return (T)redisTemplate.opsForValue().get(key);
+    }
+
     public void set(String key, Object value, long expire) {
         valueOperations.set(key, toJson(value));
         if (expire != NOT_EXPIRE) {
             redisTemplate.expire(key, expire, TimeUnit.SECONDS);
         }
+
+//        redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
+//        redisTemplate.opsForValue().set(key,value,expire);
     }
 
     public void set(String key, Object value) {
