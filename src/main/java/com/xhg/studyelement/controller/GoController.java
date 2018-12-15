@@ -4,13 +4,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-
 /**
  * @author 16033
  */
 @Controller
-public class TestController {
+public class GoController {
 
     @GetMapping("/verify")
     public String first(){
@@ -22,10 +20,10 @@ public class TestController {
         return "util/excel.html";
     }
 
-    /*@RequestMapping("/index")
-    public String login(){
-        return "index.html";
-    }*/
+    @RequestMapping("/easyPOI")
+    public String easy(){
+        return "util/excelPOI.html";
+    }
 
     @RequestMapping("/table")
     public String userTable(){
