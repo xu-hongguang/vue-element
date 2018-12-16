@@ -17,10 +17,24 @@
         [v-cloak] {
             display: none;
         }
+
+        #login {
+            margin: 0 auto;
+            width: 600px;
+            height: 350px;
+            box-shadow: 0 0 10px #000;
+            position: relative;
+        }
+        #loginDiv{
+            width: 450px;
+            margin: 50px auto;
+            position: relative;
+            top: 30px;
+        }
     </style>
 </head>
 <body>
-<div style="width: 100%">
+<div id="login">
     <div id="loginDiv" v-cloak>
         <el-form style="width: 500px;margin: 200px auto 0;" :model="user" status-icon :rules="rules" ref="user"
                  size="small"
@@ -79,8 +93,8 @@
                 // updateVerify();
             },
             methods: {
-                submitForm:function(formName) {
-                    this.$refs[formName].validate(function(valid) {
+                submitForm: function (formName) {
+                    this.$refs[formName].validate(function (valid) {
                         if (valid) {
                             vm.loginUser();
                         } else {
@@ -89,7 +103,7 @@
                         }
                     });
                 },
-                resetForm:function(formName) {
+                resetForm: function (formName) {
                     this.$refs[formName].resetFields();
                 },
                 loginUser: function () {
@@ -137,7 +151,7 @@
                     })
                 },
                 //提示窗
-                open:function(message, type) {
+                open: function (message, type) {
                     this.$message({
                         showClose: true,
                         message: message,
