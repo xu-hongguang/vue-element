@@ -16,7 +16,7 @@ import java.util.Set;
 public class User1 implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     private String username;
     private String password;
     private Date createDate;
@@ -39,11 +39,11 @@ public class User1 implements Serializable {
     public User1() {
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

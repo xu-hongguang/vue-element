@@ -1,7 +1,7 @@
 package com.xhg.studyelement.common.exception;
 
 /**
- * Created by vito.xing on 2018/4/14
+ * 表格处理异常类
  */
 public final class ExcelException extends Exception{
     private static final long serialVersionUID = 4057608403796027088L;

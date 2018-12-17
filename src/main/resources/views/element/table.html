@@ -39,20 +39,52 @@
     </style>
 </head>
 <body>
-
+<iframe id="ifile" style="display: none;"></iframe>
 <div id="app">
     <el-form inline="block" align="center" size="small" style="width: 800px;margin: 0 auto">
-        <el-form-item>
-            <el-input v-model="username1" placeholder="用户名"></el-input>
-        </el-form-item>
-        <el-button type="primary" @click="getUserList(1)" size="small" icon="el-icon-search">查 询</el-button>
-        <span shiro:hasAnyPermissions="user:addUser,export:exportUser1List,user:batchRemoveUser,sys:reloadPermission">
-            <el-button type="success" @click="toAdd" size="small" icon="el-icon-circle-plus-outline" shiro:hasPermission="user:addUser">添 加</el-button>
-            <el-button type="info" @click="exportUserExcel" size="small" icon="el-icon-download" shiro:hasPermission="export:exportUser1List">导 出</el-button>
-            <el-button type="danger" @click="batchRemove" size="small" icon="el-icon-delete" shiro:hasPermission="user:batchRemoveUser">批量删除</el-button>
-            <el-button type="primary" @click="init" :loading="loading" size="small" icon="el-icon-refresh" shiro:hasPermission="sys:reloadPermission">初始化权限
-            </el-button>
-        </span>
+        <el-row>
+            <el-col :span="24">
+                <el-form-item>
+                    <el-input v-model="username1" placeholder="用户名"></el-input>
+                </el-form-item>
+                <el-button type="primary" @click="getUserList(1)" size="small" icon="el-icon-search">查 询</el-button>
+                <template shiro:hasAnyPermissions="user:addUser,export:exportUser1List,user:batchRemoveUser,sys:reloadPermission">
+                    <el-button type="success" @click="toAdd" size="small" icon="el-icon-circle-plus-outline"
+                               shiro:hasPermission="user:addUser">添 加
+                    </el-button>
+                    <el-button type="info" @click="exportUserExcel" size="small" icon="el-icon-download"
+                               shiro:hasPermission="export:exportUser1List">导 出
+                    </el-button>
+                    <el-button type="danger" @click="batchRemove" size="small" icon="el-icon-delete"
+                               shiro:hasPermission="user:batchRemoveUser">批量删除
+                    </el-button>
+                    <el-button type="primary" @click="init" :loading="loading" size="small" icon="el-icon-refresh"
+                               shiro:hasPermission="sys:reloadPermission">初始化权限
+                    </el-button>
+                </template>
+            </el-col>
+        </el-row>
+        <el-row>
+            <div class="col-xs-4" style="margin-top:0.05rem;">
+                <div class="form-group">
+                    <label class="col-xs-4 control-label">选择上传文件:</label>
+                    <div class="col-xs-8" id="upload">
+                        <span v-html="selectFileFlag"></span>
+                        <input type="file" @change="onChangeFile($event)" id="file" name="file" class="text-input"
+                               hidden>
+                    </div>
+                </div>
+            </div>
+            <el-col :span="1" :offset="1">
+                <el-button  class="btnexport" @click="showSelectFileWin()">浏览</el-button>
+            </el-col>
+            <el-col :span="1" :offset="1">
+                <el-button  class="btnexport" @click="uploadFile($event)">批量上传</el-button>
+            </el-col>
+            <el-col :span="1" :offset="1">
+                <el-button  class="btnexport" @click="exportData()">模板下载</el-button>
+            </el-col>
+        </el-row>
     </el-form>
 
     <template>
@@ -181,6 +213,8 @@
                 //多选
                 multipleSelection: [],
 
+                selectFileFlag: '',
+
                 //系统用户名
                 username: localStorage.getItem("username"),
 
@@ -211,7 +245,7 @@
             },
             methods: {
 
-                init:function() {
+                init: function () {
                     vm.loading = true;
                     axios({
                         method: 'get',
@@ -232,7 +266,7 @@
                 /*
                  * 表格隔行变色
                  */
-                tableRowClassName:function({row, rowIndex}) {
+                tableRowClassName: function ({row, rowIndex}) {
                     if (rowIndex % 2 === 1) {
                         return 'success-row';
                     }
@@ -240,13 +274,13 @@
                 },
 
                 //修改重置表单
-                updateResetForm:function(formName) {
+                updateResetForm: function (formName) {
                     vm.dialogFormVisible2 = false;
                     this.$refs[formName].resetFields();
                 },
                 //提交表单,成功则执行isFunction()方法
-                submitForm:function(formName, isFunction) {
-                    this.$refs[formName].validate(function(valid) {
+                submitForm: function (formName, isFunction) {
+                    this.$refs[formName].validate(function (valid) {
                         if (valid) {
                             if ((typeof isFunction) === 'function') {
                                 isFunction();
@@ -258,7 +292,7 @@
                     });
                 },
                 //保存重置表单
-                resetForm:function(formName) {
+                resetForm: function (formName) {
                     vm.dialogFormVisible = false;
                     this.$refs[formName].resetFields();
                 },
@@ -267,14 +301,14 @@
                 /*
                  * 处理当页容量和当前页码
                  */
-                handleSizeChange:function(val) {
+                handleSizeChange: function (val) {
                     if (vm.total > 0) {
                         console.log(`每页 ${val} 条`);
                         vm.pageSize = val;
                         vm.getUserList(vm.currentPage);
                     }
                 },
-                handleCurrentChange:function(currentPage) {
+                handleCurrentChange: function (currentPage) {
                     if (vm.total > 0) {
                         console.log(`当前页: ${currentPage}`);
                         vm.currentPage = currentPage;
@@ -340,7 +374,7 @@
                         url: 'userList/' + pageNo + '/' + vm.pageSize + '?username=' + vm.username1,
                         data: {},
                         dataType: 'json'
-                    }).then(function(response) {
+                    }).then(function (response) {
                         //.data不可去
                         vm.currentPage = response.data.pageNo;
                         vm.total = response.data.totalCount;
@@ -348,7 +382,7 @@
 
                         //关闭加载显示
                         vm.listLoading = false;
-                    }).catch(function(error) {
+                    }).catch(function (error) {
                         vm.listLoading = false;
                     });
                     // 简写版
@@ -362,7 +396,7 @@
 
                 },
 
-                toAdd:function() {
+                toAdd: function () {
                     this.user.username = '';
                     this.user.password = '';
 
@@ -372,7 +406,7 @@
                 /**
                  *  保存用户
                  */
-                addUser:function() {
+                addUser: function () {
                     // vm.submitForm('user');
 
                     const data = {
@@ -387,7 +421,7 @@
                         },
                         data: JSON.stringify(data),
                         dataType: 'text',
-                    }).then(function(response) {
+                    }).then(function (response) {
                         //.data不可去
                         if (response.data === 'suc') {
                             //关闭弹窗
@@ -403,10 +437,117 @@
                     })
                 },
 
+                onChangeFile: function (event) {
+                    const str = $("#file").val();
+                    const index = str.lastIndexOf('.');
+                    var photoExt = str.substr(index, 4);
+                    photoExt = photoExt.toLowerCase();
+                    if (photoExt != '' && !(photoExt == '.xls' || photoExt == '.xlsx')) {
+                        alert("请上传excel文件格式!");
+                        this.isNeedFileExtension = false;
+                        return false;
+                    } else {
+                        this.selectFileFlag = '';
+                        this.file = '';
+                        var meFile = event.target.files[0];
+                        if (event != undefined && meFile != null && meFile != '') {
+                            this.file = event.target.files[0];
+                            this.isNeedFileExtension = true;
+                            //截取名称最后18位
+                            this.selectFileFlag = event.target.files[0].name;
+                        }
+                    }
+                },
+                showSelectFileWin:function() {
+                    this.selectFileFlag = '';
+                    this.file = '';
+                    $("#upload_form")[0].reset();
+                    $("#file").click();
+                },
+                exportData:function() {
+                    document.getElementById("ifile").src = "export/UserExcelTemplate";
+                },
+                uploadFile: function (event) {
+                    if (!this.isNeedFileExtension) {
+                        alert("请上传excel文件格式!");
+                    } else {
+                        event.preventDefault();
+                        if (this.file == '' || this.file == undefined) {
+                            alert("请选择excel文件!");
+                            return;
+                        }
+                        allDataList=[];
+                        const formData = new FormData();
+                        formData.append('file', this.file);
+                        formData.append('token', this.token);
+                        formData.append('redTicketType', vm.upload_form.redTicketType);
+                        const config = {
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            }
+                        };
+                        this.tempTableData = this.tableData;
+                        this.tableData = [];
+                        this.listLoading = true;
+                        var flag = false
+                        var hh;
+                        const url = "redNotice/redNoticeImport";
+                        this.axios.post(url, formData, config).then(function (response) {
+                            this.listLoading = false;
+                            flag = true;
+                            if(response.data.code !=undefined && response.data.code == 401) {
+                                return;
+                            }
+                            this.selectFileFlag = '';
+                            this.file = '';
+                            if(response.data.errorCount>0){
+                                alert("请检查数据是否完整！");
+                                return;
+                            }
+                            if (response.data.success) {
+                                if (this.tempTableData.length + response.data.reason.length + response.data.errorCount +response.data.errorCount1+response.data.errorCount2> 500) {
+                                    this.tableData = this.tempTableData;
+                                    alert('导入数据超过500条，请修改模板！');
+                                    return;
+                                }
+                                var str = "";
+                                if(response.data.errorEntityList1.length>0){
+
+                                    for (var i = 0; i < response.data.errorEntityList1.length; i++) {
+                                        str=str +  response.data.errorEntityList1[i].redTicketDataSerialNumber+"、";
+                                    }
+
+                                }
+                                // this.tableData = allDataList;
+                                // alert("共计导入" + (response.data.reason.length + response.data.errorCount) + "条，成功" + response.data.reason.length + "条,失败" + response.data.errorCount + "条");
+                                alert("共计导入" + (response.data.reason.length + response.data.errorCount +  response.data.errorCount1  +  response.data.errorCount2+response.data.errorEntityList3.length) + "条，成功" + response.data.reason.length + "条,库里已存在红字通知单:"+response.data.errorCount1+"条,对应的序列号："+str+",excel表格重复"+
+                                    response.data.errorCount2+"条"+ str2 +",数据错误"+response.data.errorEntityList3.length+"条，对应序列号"+str3 );
+                            } else {
+                                //this.tableData = this.tempTableData;
+                                //alert(response.data.reason);
+                            }
+                        }, (err) => {
+                            // this.tableData = this.tempTableData;
+                            this.listLoading = false;
+                            if (err.status == 408) {
+                                alert(err.statusText);
+                            }
+                        })
+                        var intervelId = setInterval(function () {
+                            if (flag) {
+                                hh=$(document).height();
+                                $("body",parent.document).find("#myiframe").css('height',hh+'px');
+                                clearInterval(intervelId);
+                                return;
+                            }
+                        },50);
+                    }
+                },
+
                 /**
                  * 导出Excel文件
                  */
-                exportUserExcel:function() {
+                exportUserExcel: function () {
                     location.href = "export/userExcel"
                 },
 
@@ -416,7 +557,7 @@
                  * @param index
                  * @param row
                  */
-                handleEdit:function(index, row) {
+                handleEdit: function (index, row) {
                     console.log(index, row);
                     //打开修改弹窗
                     vm.dialogFormVisible2 = true;
@@ -430,7 +571,7 @@
                 /**
                  * 修改
                  */
-                updateUser:function() {
+                updateUser: function () {
                     const data = {
                         id: vm.user.id,
                         username: vm.user.username,
@@ -445,7 +586,7 @@
                         },
                         data: JSON.stringify(data),
                         dataType: 'text',
-                    }).then(function(response) {
+                    }).then(function (response) {
                         //.data不可去
                         if (response.data === 'suc') {
                             vm.dialogFormVisible2 = false;
@@ -463,7 +604,7 @@
                  * @param index
                  * @param row
                  */
-                handleDelete:function(index, row) {
+                handleDelete: function (index, row) {
                     console.log(index, row);
                     axios({
                         //delete请求方式需要在url路径后传参
@@ -483,11 +624,11 @@
 
                 },
                 //处理多选框改变
-                handleSelectionChange:function(val) {
+                handleSelectionChange: function (val) {
                     vm.multipleSelection = val;
                 },
                 //获取删除数据的所有id
-                getDeleteIds:function() {
+                getDeleteIds: function () {
                     let ids = [];
                     for (let i = 0; i < this.multipleSelection.length; i++) {
                         ids.push(this.multipleSelection[i].id);
@@ -495,7 +636,7 @@
                     return ids;
                 },
                 //批量删除
-                batchRemove:function() {
+                batchRemove: function () {
                     if (this.multipleSelection.length === 0) {
                         this.$alert('请先选择要删除的数据!', '提示');
                         return;
@@ -505,7 +646,7 @@
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
                         type: 'warning'
-                    }).then(function(){
+                    }).then(function () {
                         //获取要删除的id
                         const ids = vm.getDeleteIds();
                         //批量删除数据
@@ -517,7 +658,7 @@
                             },
                             data: JSON.stringify(ids),
                             dataType: 'text',
-                        }).then(function(response){
+                        }).then(function (response) {
                             //.data不可去
                             if (response.data === 'suc') {
                                 vm.open("删除成功！", "success");
@@ -526,7 +667,7 @@
                                 vm.open('删除失败！', 'error')
                             }
                         });
-                    }).catch(function(){
+                    }).catch(function () {
                         this.$message({
                             showClose: true,
                             type: 'info',
@@ -535,15 +676,15 @@
                     });
                 },
                 //提示警告是否删除
-                open2:function(index, row) {
+                open2: function (index, row) {
                     this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
                         type: 'warning'
-                    }).then(function(){
+                    }).then(function () {
                         //删除数据
                         vm.handleDelete(index, row);
-                    }).catch(function() {
+                    }).catch(function () {
                         this.$message({
                             showClose: true,
                             type: 'info',
@@ -553,7 +694,7 @@
                 },
 
                 //提示窗
-                open:function(message, type) {
+                open: function (message, type) {
                     this.$message({
                         showClose: true,
                         message: message,
