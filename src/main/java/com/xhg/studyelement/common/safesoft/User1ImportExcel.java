@@ -35,7 +35,7 @@ public class User1ImportExcel extends AbstractImportExcel {
 
         int index = 0;
         //获取数据 行数从0开始，数据从第2开始取 当没有实际数据时rowCount为1（两行）
-        for (int i = 2; i < rowCount + 1; i++) {
+        for (int i = 1; i < rowCount + 1; i++) {
             final Row row = sheet.getRow(i);
             //如果不是空行
             if(!isRowEmpty(row)) {
@@ -49,14 +49,14 @@ public class User1ImportExcel extends AbstractImportExcel {
     }
 
     /**
-     * 构建导入红字通知单实体
+     * 构建导入用户实体
      * @param row 行
-     * @return 红字通知单实体
+     * @return 用户实体
      */
     private User1 createImportCertificationEntity(Row row, int index) {
         final User1 user1 = new User1();
         //序号id
-        user1.setId(index);
+//        user1.setId(index);
 
         //用户名
         final String userName = getCellData(row, 1);

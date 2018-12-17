@@ -1,6 +1,5 @@
 package com.xhg.studyelement.serivce.Impl;
 
-import com.xhg.studyelement.common.exception.ExcelException;
 import com.xhg.studyelement.common.safesoft.User1ImportExcel;
 import com.xhg.studyelement.dao.User1Repository;
 import com.xhg.studyelement.pojo.User1;
@@ -41,7 +40,11 @@ public class User1ServiceImpl implements User1Service {
 
     Logger logger = LoggerFactory.getLogger(User1ServiceImpl.class);
 
+    // 错误条数
     private int errorCount;
+
+    // 重复条数
+    private int repeatCount;
 
     @Autowired
     private User1Repository user1Repository;
@@ -103,15 +106,18 @@ public class User1ServiceImpl implements User1Service {
                 map.put("success", Boolean.TRUE);
                 Map<String, List<User1>> entityMap = user1ImportData(user1List);
                 map.put("errorCount", errorCount);
+                map.put("repeatCount", repeatCount);
                 map.put("reason", entityMap.get("successEntityList"));
                 map.put("errorEntityList", entityMap.get("errorEntityList"));
+                map.put("repeatEntityList", entityMap.get("repeatEntityList"));
+
+                logger.info("总数据：" + (entityMap.get("successEntityList").size() + entityMap.get("errorEntityList").size() + entityMap.get("repeatEntityList").size() ));
             } else {
                 // LOGGER.info("读取到excel无数据");
                 map.put("success", Boolean.FALSE);
                 map.put("reason", "读取到excel无数据！");
             }
-        } catch (ExcelException e) {
-            //LOGGER.error("读取excel文件异常:{}", e);
+        } catch (Exception e){
             map.put("success", Boolean.FALSE);
             map.put("reason", "读取excel文件异常！");
         }
@@ -169,23 +175,25 @@ public class User1ServiceImpl implements User1Service {
         final Map<String, List<User1>> map = newHashMap();
         //导入成功的数据集
         final List<User1> successEntityList = newArrayList();
-        //导入失败的数据集
+        //导入错误的数据集
         final List<User1> errorEntityList = newArrayList();
+        //导入重复的数据集
+        final List<User1> repeatEntityList = newArrayList();
 
         user1List.forEach(user1Data -> {
-            Integer user1Id = user1Data.getId();
+//            Integer user1Id = user1Data.getId();
             String username = user1Data.getUsername();
             String password = user1Data.getPassword();
 
-            if (user1Id != null && !username.isEmpty() && !password.isEmpty()) {
+            if (/*user1Id != null && */!username.isEmpty() && !password.isEmpty()) {
                 // 判断是否已经有此用户
                 User1 user1 = user1Repository.findByUsername(username);
                 if (user1 != null) {
-                    errorCount ++;
-                    errorEntityList.add(user1Data);
+                    repeatCount ++;
+                    repeatEntityList.add(user1Data);
                 } else {
-                    user1Repository.save(user1Data);
                     successEntityList.add(user1Data);
+                    user1Repository.save(user1Data);
                 }
             } else {
                 errorCount ++;
@@ -201,14 +209,14 @@ public class User1ServiceImpl implements User1Service {
                 str = successEntityList.get(j).getUsername();
                 str2 = successEntityList.get(j).getUsername();
                 if (str.equals(str2)) {
-                    errorCount ++;
+                    repeatCount ++;
                     errorEntityList.add(successEntityList.get(j));
                     successEntityList.remove(j);
                 }
             }
         }*/
 
-        if (errorEntityList.size() == 0) {
+        if (errorEntityList.size() == 0 && repeatEntityList.size() == 0) {
             //如果都校验通过，保存入库
             for (User1 user1 : successEntityList) {
                 user1Repository.save(user1);
@@ -217,6 +225,7 @@ public class User1ServiceImpl implements User1Service {
 
         map.put("successEntityList", successEntityList);
         map.put("errorEntityList", errorEntityList);
+        map.put("repeatEntityList", repeatEntityList);
         return map;
     }
 

@@ -7,6 +7,7 @@ import com.xhg.studyelement.shiro.realm.PermissionName;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,7 +52,7 @@ public class User1ExcelController {
      *
      * @param multipartFile 文件
      */
-    @RequestMapping("/export/importUserExcel")
+    @PostMapping("/export/importUserExcel")
     public Map<String, Object> importExcel(@RequestParam("file") MultipartFile multipartFile){
         LOGGER.info("用户Excel导入,params {}", multipartFile);
         return user1Service.parseExcel(multipartFile);
