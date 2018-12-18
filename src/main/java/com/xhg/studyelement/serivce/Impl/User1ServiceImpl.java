@@ -111,15 +111,15 @@ public class User1ServiceImpl implements User1Service {
                 map.put("errorEntityList", entityMap.get("errorEntityList"));
                 map.put("repeatEntityList", entityMap.get("repeatEntityList"));
 
-                logger.info("总数据：" + (entityMap.get("successEntityList").size() + entityMap.get("errorEntityList").size() + entityMap.get("repeatEntityList").size() ));
+                logger.info("总数据：" + (entityMap.get("successEntityList").size() + entityMap.get("errorEntityList").size() + entityMap.get("repeatEntityList").size()));
             } else {
                 // LOGGER.info("读取到excel无数据");
                 map.put("success", Boolean.FALSE);
-                map.put("reason", "读取到excel无数据！");
+                map.put("reason", "excel中无数据！");
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             map.put("success", Boolean.FALSE);
-            map.put("reason", "读取excel文件异常！");
+            map.put("reason", "读取excel文件错误！");
         }
         return map;
     }
@@ -181,22 +181,30 @@ public class User1ServiceImpl implements User1Service {
         final List<User1> repeatEntityList = newArrayList();
 
         user1List.forEach(user1Data -> {
-//            Integer user1Id = user1Data.getId();
+            Integer user1Id = user1Data.getId();
             String username = user1Data.getUsername();
             String password = user1Data.getPassword();
 
-            if (/*user1Id != null && */!username.isEmpty() && !password.isEmpty()) {
-                // 判断是否已经有此用户
-                User1 user1 = user1Repository.findByUsername(username);
-                if (user1 != null) {
-                    repeatCount ++;
-                    repeatEntityList.add(user1Data);
+            User1 user;
+            if (user1Id != null && !username.isEmpty() && !password.isEmpty()) {
+                // 判断是否已经存在此用户id
+                user = user1Repository.selectById(user1Id);
+                if (user == null) {
+                    // 判断是否已经有此用户名
+                    user = user1Repository.findByUsername(username);
+                    if (user != null) {
+                        repeatCount++;
+                        repeatEntityList.add(user1Data);
+                    } else {
+                        successEntityList.add(user1Data);
+                        user1Repository.save(user1Data);
+                    }
                 } else {
-                    successEntityList.add(user1Data);
-                    user1Repository.save(user1Data);
+                    repeatCount++;
+                    repeatEntityList.add(user1Data);
                 }
             } else {
-                errorCount ++;
+                errorCount++;
                 errorEntityList.add(user1Data);
             }
         });

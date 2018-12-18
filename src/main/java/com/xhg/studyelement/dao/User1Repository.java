@@ -3,6 +3,9 @@ package com.xhg.studyelement.dao;
 import com.xhg.studyelement.pojo.User1;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.Optional;
 
 /**
  * @author 16033
@@ -14,5 +17,10 @@ public interface User1Repository extends JpaRepository<User1, Integer>, JpaSpeci
      * @return
      */
     User1 findByUsername(String username);
+
+    Optional<User1> findById(Integer id);
+
+    @Query(value = "select * from user1 where id = ?1",nativeQuery = true)
+    User1 selectById(Integer id);
 
 }

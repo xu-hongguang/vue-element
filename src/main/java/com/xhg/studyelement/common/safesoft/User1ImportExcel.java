@@ -55,8 +55,9 @@ public class User1ImportExcel extends AbstractImportExcel {
      */
     private User1 createImportCertificationEntity(Row row, int index) {
         final User1 user1 = new User1();
-        //序号id
-//        user1.setId(index);
+        //用户id
+        final String user1Id = getCellData(row,0);
+        user1.setId(Integer.parseInt(user1Id));
 
         //用户名
         final String userName = getCellData(row, 1);

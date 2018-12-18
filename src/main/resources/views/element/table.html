@@ -36,12 +36,40 @@
             min-height: 36px;
         }
 
+        #file {
+            outline: 0.01rem;
+            background-color: transparent;
+            filter: alpha(opacity=0);
+            -moz-opacity: 0;
+            -khtml-opacity: 0;
+            opacity: 0;
+            height: 0.4rem;
+            width: 100%;
+        }
+
+        .control-label {
+            display: block;
+            margin-bottom: 0.0rem;
+            height: 0.4rem;
+            line-height: 0.4rem;
+            overflow: hidden;
+        }
+
+        #upload {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            line-height: 0.4rem;
+            border: 0.01rem solid #dedede;
+            height: 0.4rem;
+        }
+
     </style>
 </head>
 <body>
 <iframe id="ifile" style="display: none;"></iframe>
 <div id="app">
-    <el-form inline="block" align="center" size="small" style="width: 800px;margin: 0 auto">
+    <el-form id="upload_form" inline="block" align="center" size="small" style="width: 800px;margin: 0 auto">
         <el-row>
             <el-col :span="24">
                 <el-form-item>
@@ -112,7 +140,7 @@
         </el-dialog>
 
         <!--表格-->
-        <el-table align="center" border
+        <el-table height="4rem" highlight-current-row align="center" border
                   :data="userList"
                   style="width:1000px; margin: 10px auto"
                   :row-class-name="tableRowClassName"
@@ -253,6 +281,9 @@
             },
             methods: {
 
+                /*
+                 * 初始化权限
+                 */
                 init: function () {
                     vm.loading = true;
                     axios({
@@ -456,8 +487,8 @@
                         this.isNeedFileExtension = false;
                         return false;
                     } else {
-                        // this.selectFileFlag = '';
-                        // this.file = '';
+                        this.selectFileFlag = '';
+                        this.file = '';
                         let meFile = event.target.files[0];
                         if (event !== undefined && meFile != null && meFile !== '') {
                             this.file = event.target.files[0];
@@ -470,7 +501,7 @@
                 showSelectFileWin: function () {
                     this.selectFileFlag = '';
                     this.file = '';
-                    // $("#upload_form")[0].reset();
+                    $("#upload_form")[0].reset();
                     $("#file").click();
                 },
                 exportData: function () {
@@ -492,8 +523,8 @@
                                 'Content-Type': 'multipart/form-data'
                             }
                         };
-                        // this.tempTableData = this.tableData;
-                        // this.tableData = [];
+                        this.tempTableData = this.userList;
+                        this.userList = [];
                         this.loading = true;
                         let flag = false;
                         let hh;
@@ -503,31 +534,33 @@
                             if (response.data.code !== undefined && response.data.code === 401) {
                                 return;
                             }
-                            // vm.selectFileFlag = '';
-                            // vm.file = '';
+                            vm.selectFileFlag = '';
+                            vm.file = '';
                             if (response.data.errorCount > 0) {
+                                vm.userList = vm.tempTableData;
                                 vm.$alert("请检查数据是否完整！");
+                                vm.loading = false;
                                 return;
                             }
                             if (response.data.success) {
-                                /*if (/!*vm.tempTableData.length + *!/response.data.reason.length + response.data.errorCount + response.data.repeatCount > 500) {
-                                    // vm.tableData = vm.tempTableData;
+                                if (vm.tempTableData.length + response.data.reason.length + response.data.errorCount + response.data.repeatCount > 500) {
+                                    vm.userList = vm.tempTableData;
                                     vm.$alert('导入数据超过500条，请修改模板！');
                                     return;
-                                }*/
+                                }
                                 let str = "";
                                 let str2 = "";
                                 if (response.data.repeatEntityList.length > 0) {
 
                                     for (let i = 0; i < response.data.repeatEntityList.length; i++) {
-                                        str = str + response.data.repeatEntityList[i].username + "、";
+                                        str = str + response.data.repeatEntityList[i].id + '和' + response.data.repeatEntityList[i].username + "、";
                                     }
 
                                 }
                                 if (response.data.errorEntityList.length > 0) {
 
                                     for (let i = 0; i < response.data.errorEntityList.length; i++) {
-                                        str2 = str2 + response.data.errorEntityList[i].username + "、";
+                                        str2 = str2 + response.data.errorEntityList[i].id + '和' + response.data.errorEntityList[i].username + "、";
                                     }
                                 }
                                 if (str === '') {
@@ -541,19 +574,17 @@
                                     str2 = vm.formatStr(str2);
                                 }
 
-                                vm.$alert("共计准备导入" + (response.data.reason.length + response.data.errorCount + response.data.repeatCount) + "条，成功" + response.data.reason.length + "条，库里已存在：" + response.data.repeatCount + "条；对应的序列号：" + str + "；错误数据" + response.data.errorEntityList.length + "条，对应序列号: " + str2 + "。");
+                                vm.$alert("共计准备导入" + (response.data.reason.length + response.data.errorCount + response.data.repeatCount) + "条，成功" + response.data.reason.length + "条；库里已存在" + response.data.repeatCount + "条，对应的用户id和用户名：" + str + "；错误数据" + response.data.errorEntityList.length + "条，对应用户id和用户名: " + str2 + "。");
                                 vm.getUserList(1);
-                                vm.selectFileFlag = '';
-                                vm.file = '';
                             } else {
-                                vm.tableData = vm.tempTableData;
+                                vm.userList = vm.tempTableData;
                                 vm.$alert(response.data.reason);
                             }
                             vm.loading = false;
                         }, (err) => {
                             vm.loading = false;
                             if (err.status === 408) {
-                                vm.$alert(err.statusText);
+                                vm.$alert("导入出错!");
                             }
                         });
                         let intervelId = setInterval(function () {
