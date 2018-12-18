@@ -43,16 +43,20 @@ public class User1ExcelController {
      * @param response
      */
     @RequestMapping("/export/UserExcelTemplate")
+    @RequiresPermissions("export:exportUserExcelTemplate")
+    @PermissionName("导出用户列表Excel模板")
     public void getExcelTemplate(HttpServletResponse response){
         User1ExcelTemplate user1ExcelTemplate = new User1ExcelTemplate();
         user1ExcelTemplate.write(response,"userExcel");
     }
 
     /**
-     *
+     * 批量导入表格数据
      * @param multipartFile 文件
      */
-    @PostMapping("/export/importUserExcel")
+    @PostMapping("/import/importUserExcel")
+    @RequiresPermissions("import:importUserExcel")
+    @PermissionName("导入用户列表Excel")
     public Map<String, Object> importExcel(@RequestParam("file") MultipartFile multipartFile){
         LOGGER.info("用户Excel导入,params {}", multipartFile);
         return user1Service.parseExcel(multipartFile);

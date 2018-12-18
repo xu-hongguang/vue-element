@@ -32,13 +32,13 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 
 /**
- * @author 16033
+ * @author xhg
  */
 @Service(value = "user1Service")
 @CacheConfig(cacheNames = "user1")
 public class User1ServiceImpl implements User1Service {
 
-    Logger logger = LoggerFactory.getLogger(User1ServiceImpl.class);
+    private Logger logger = LoggerFactory.getLogger(User1ServiceImpl.class);
 
     // 错误条数
     private int errorCount;
@@ -46,8 +46,12 @@ public class User1ServiceImpl implements User1Service {
     // 重复条数
     private int repeatCount;
 
+    private final User1Repository user1Repository;
+
     @Autowired
-    private User1Repository user1Repository;
+    public User1ServiceImpl(User1Repository user1Repository) {
+        this.user1Repository = user1Repository;
+    }
 
     @Override
     public List<User1> findAll() {
@@ -181,15 +185,17 @@ public class User1ServiceImpl implements User1Service {
         final List<User1> repeatEntityList = newArrayList();
 
         user1List.forEach(user1Data -> {
-            Integer user1Id = user1Data.getId();
+//            Integer user1Id = user1Data.getId();
             String username = user1Data.getUsername();
             String password = user1Data.getPassword();
+            Date createDate = user1Data.getCreateDate();
+            String remark = user1Data.getRemark();
 
             User1 user;
-            if (user1Id != null && !username.isEmpty() && !password.isEmpty()) {
+            if (/*user1Id != null && */!username.isEmpty() && !password.isEmpty() && createDate != null && !remark.isEmpty() ) {
                 // 判断是否已经存在此用户id
-                user = user1Repository.selectById(user1Id);
-                if (user == null) {
+//                user = user1Repository.selectById(user1Id);
+//                if (user == null) {
                     // 判断是否已经有此用户名
                     user = user1Repository.findByUsername(username);
                     if (user != null) {
@@ -199,30 +205,15 @@ public class User1ServiceImpl implements User1Service {
                         successEntityList.add(user1Data);
                         user1Repository.save(user1Data);
                     }
-                } else {
-                    repeatCount++;
-                    repeatEntityList.add(user1Data);
-                }
+//                } else {
+//                    repeatCount++;
+//                    repeatEntityList.add(user1Data);
+//                }
             } else {
                 errorCount++;
                 errorEntityList.add(user1Data);
             }
         });
-
-        //去重
-        /*for (int i = 0; i < successEntityList.size() - 1; i++) {
-            for (int j = successEntityList.size() - 1; j > i; j--) {
-                String str = "";
-                String str2 = "";
-                str = successEntityList.get(j).getUsername();
-                str2 = successEntityList.get(j).getUsername();
-                if (str.equals(str2)) {
-                    repeatCount ++;
-                    errorEntityList.add(successEntityList.get(j));
-                    successEntityList.remove(j);
-                }
-            }
-        }*/
 
         if (errorEntityList.size() == 0 && repeatEntityList.size() == 0) {
             //如果都校验通过，保存入库

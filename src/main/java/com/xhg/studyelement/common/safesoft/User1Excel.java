@@ -6,6 +6,8 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -49,8 +51,17 @@ public class User1Excel extends AbstractExportExcel {
             setSheetValue(sheet, lineNum, 0, String.valueOf(user.getId()), style);
             setSheetValue(sheet, lineNum, 1, user.getUsername(), style);
             setSheetValue(sheet, lineNum, 2, user.getPassword(), style);
+            setSheetValue(sheet, lineNum, 3, formatDate(user.getCreateDate()), style);
+            setSheetValue(sheet, lineNum, 4, user.getRemark(), style);
             lineNum++;
         }
+    }
+
+    private String formatDate(Date date){
+        if (date != null) {
+            return new SimpleDateFormat("yyyy-MM-dd").format(date);
+        }
+        return "";
     }
 
 }

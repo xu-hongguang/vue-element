@@ -36,7 +36,7 @@
             min-height: 36px;
         }
 
-        #file {
+        /*#file {
             outline: 0.01rem;
             background-color: transparent;
             filter: alpha(opacity=0);
@@ -62,14 +62,14 @@
             line-height: 0.4rem;
             border: 0.01rem solid #dedede;
             height: 0.4rem;
-        }
+        }*/
 
     </style>
 </head>
 <body>
 <iframe id="ifile" style="display: none;"></iframe>
 <div id="app">
-    <el-form id="upload_form" inline="block" align="center" size="small" style="width: 800px;margin: 0 auto">
+    <el-form id="upload_form" inline="block" align="center" size="small" style="width: 100%;margin: 0 auto">
         <el-row>
             <el-col :span="24">
                 <el-form-item>
@@ -93,7 +93,7 @@
                 </template>
             </el-col>
         </el-row>
-        <el-row>
+        <el-row shiro:hasAnyPermissions="export:exportUserExcelTemplate,import:exportImportUserExcel">
             <el-col :span="10">
                 <div class="col-xs-4">
                     <div class="form-group">
@@ -140,9 +140,9 @@
         </el-dialog>
 
         <!--表格-->
-        <el-table height="4rem" highlight-current-row align="center" border
+        <el-table height="350" highlight-current-row align="center" border
                   :data="userList"
-                  style="width:1000px; margin: 10px auto"
+                  style="width:100%; margin: 10px auto"
                   :row-class-name="tableRowClassName"
                   @selection-change="handleSelectionChange"
                   v-loading="listLoading"
@@ -156,7 +156,6 @@
             <el-table-column
                     prop="id"
                     label="编号"
-                    width="180"
                     align="center">
             </el-table-column>
             <el-table-column
@@ -169,7 +168,17 @@
                     label="密码"
                     align="center">
             </el-table-column>
-            <el-table-column label="操作" align="center" shiro:hasAnyPermissions="user:updateUser,user:removeUser">
+            <el-table-column
+                    prop="createDate"
+                    label="创建日期"
+                    align="center" :formatter="dateFormat">
+            </el-table-column>
+            <el-table-column
+                    prop="remark"
+                    label="描述"
+                    align="center" :formatter="tableDataFormat">
+            </el-table-column>
+            <el-table-column label="操作" align="center" width="200" shiro:hasAnyPermissions="user:updateUser,user:removeUser">
                 <template slot-scope="scope">
                     <!--跳转到编辑弹出框-->
                     <el-button shiro:hasPermission="user:updateUser"
@@ -228,7 +237,7 @@
             el: '#app',
             data: {
                 //加载特效
-                listLoading: true,
+                listLoading: false,
 
                 //加载按钮
                 loading: false,
@@ -528,7 +537,7 @@
                         this.loading = true;
                         let flag = false;
                         let hh;
-                        const url = "export/importUserExcel";
+                        const url = "import/importUserExcel";
                         axios.post(url, formData, config).then(function (response) {
                             flag = true;
                             if (response.data.code !== undefined && response.data.code === 401) {
@@ -553,14 +562,14 @@
                                 if (response.data.repeatEntityList.length > 0) {
 
                                     for (let i = 0; i < response.data.repeatEntityList.length; i++) {
-                                        str = str + response.data.repeatEntityList[i].id + '和' + response.data.repeatEntityList[i].username + "、";
+                                        str = str + /*response.data.repeatEntityList[i].id + '和' + */response.data.repeatEntityList[i].username + "、";
                                     }
 
                                 }
                                 if (response.data.errorEntityList.length > 0) {
 
                                     for (let i = 0; i < response.data.errorEntityList.length; i++) {
-                                        str2 = str2 + response.data.errorEntityList[i].id + '和' + response.data.errorEntityList[i].username + "、";
+                                        str2 = str2 +/* response.data.errorEntityList[i].id + '和' +*/ response.data.errorEntityList[i].username + "、";
                                     }
                                 }
                                 if (str === '') {
@@ -574,7 +583,7 @@
                                     str2 = vm.formatStr(str2);
                                 }
 
-                                vm.$alert("共计准备导入" + (response.data.reason.length + response.data.errorCount + response.data.repeatCount) + "条，成功" + response.data.reason.length + "条；库里已存在" + response.data.repeatCount + "条，对应的用户id和用户名：" + str + "；错误数据" + response.data.errorEntityList.length + "条，对应用户id和用户名: " + str2 + "。");
+                                vm.$alert("共计准备导入" + (response.data.reason.length + response.data.errorCount + response.data.repeatCount) + "条，成功" + response.data.reason.length + "条；库里已存在" + response.data.repeatCount + "条，对应的用户名：" + str + "；错误数据" + response.data.errorEntityList.length + "条，对应用户名: " + str2 + "。");
                                 vm.getUserList(1);
                             } else {
                                 vm.userList = vm.tempTableData;
@@ -597,9 +606,52 @@
                         }, 50);
                     }
                 },
-
                 formatStr: function (str) {
                     return str.substring(0, str.lastIndexOf('、'))
+                },
+
+                //日期格式
+                dateFormat: function(row, column, cellValue, index){
+                    if(cellValue==null){
+                        return '—— ——';
+                    }
+                    return cellValue.substring(0, 10);
+                },
+                //数字格式
+                numberFormat: function (row, column, cellValue) {
+                    var number = cellValue;
+                    var decimals = 2;
+                    var dec_point = ".";
+                    var thousands_sep = ",";
+                    number = (number + '').replace(/[^0-9+-Ee.]/g, '');
+                    var n = !isFinite(+number) ? 0 : +number,
+                        prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+                        sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+                        dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+                        s = '',
+                        toFixedFix = function (n, prec) {
+                            var k = Math.pow(10, prec);
+                            return '' + Math.round(n * k) / k;
+                        };
+
+                    s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+                    var re = /(-?\d+)(\d{3})/;
+                    while (re.test(s[0])) {
+                        s[0] = s[0].replace(re, "$1" + sep + "$2");
+                    }
+
+                    if ((s[1] || '').length < prec) {
+                        s[1] = s[1] || '';
+                        s[1] += new Array(prec - s[1].length + 1).join('0');
+                    }
+                    return s.join(dec);
+                },
+                //给表格设置默认值
+                tableDataFormat:function (row, column, cellValue) {
+                    if(cellValue==null){
+                        return '—— ——';
+                    }
+                    return cellValue;
                 },
 
                 /**
@@ -764,7 +816,7 @@
         });
 
 
-        vm.getUserList(1);
+        // vm.getUserList(1);
     }
 
 
