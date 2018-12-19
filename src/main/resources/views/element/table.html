@@ -12,6 +12,9 @@
     <!-- import JavaScript -->
     <script src="element-ui/lib/index.js"></script>
     <script src="js/customer/resources.js"></script>
+    <!--引入ueditor-->
+    <script src="ueditor/ueditor.config.js"></script>
+    <script src="ueditor/ueditor.all.js"></script>
     <style>
         .el-table .warning-row {
             background: oldlace;
@@ -132,6 +135,25 @@
                         <el-input v-model="user.password" autocomplete="off"></el-input>
                     </el-col>
                 </el-form-item>
+                <el-form-item label="创建日期" prop="createDate" :label-width="formLabelWidth">
+                    <el-col :span="12">
+                        <el-date-picker type="date" placeholder="选择日期" v-model="user.createDate"
+                                        :clearable="false" :editable="false"
+                                        :picker-options="createDateOptions"
+                                        format="yyyy-MM-dd" value-format="yyyy-MM-dd"
+                                        @change="createDateChange">
+                        </el-date-picker>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="描述" prop="remark" :label-width="formLabelWidth">
+                    <el-col :span="12">
+                        <!--<div id="editor"></div>-->
+                        <script type="text/plain" id="editor" v-model="user.remark"></script>
+                        <!--<script>-->
+                        <!--UE.getEditor('editor');-->
+                        <!--</script>-->
+                    </el-col>
+                </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="resetForm('user')">取 消</el-button>
@@ -178,7 +200,8 @@
                     label="描述"
                     align="center" :formatter="tableDataFormat">
             </el-table-column>
-            <el-table-column label="操作" align="center" width="200" shiro:hasAnyPermissions="user:updateUser,user:removeUser">
+            <el-table-column label="操作" align="center" width="200"
+                             shiro:hasAnyPermissions="user:updateUser,user:removeUser">
                 <template slot-scope="scope">
                     <!--跳转到编辑弹出框-->
                     <el-button shiro:hasPermission="user:updateUser"
@@ -232,7 +255,12 @@
 </body>
 
 <script>
+    // UE.getEditor('ueditor');
+
     window.onload = function () {
+        // Vue.component("UE",);
+
+
         const vm = new Vue({
             el: '#app',
             data: {
@@ -273,7 +301,9 @@
                 user: {
                     id: 0,
                     username: '',
-                    password: ''
+                    password: '',
+                    createDate: new Date().getFullYear() + "-" + format2(new Date().getMonth() + 1) + "-" + format2(new Date().getDate()),
+                    remark: ''
                 },
                 formLabelWidth: '100px',
                 //表单验证
@@ -285,10 +315,51 @@
                         {required: true, message: '请输入密码', trigger: 'blur'},
                         {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'}
                     ],
-                }
+                },
+
+                //日期显示
+                createDateOptions: {},
+
+                //ueditor
+                editor: null,
 
             },
+            mounted: function () {
+                //设置日期显示规则
+                this.createDateOptions = {
+                    disabledDate: function (time) {
+                        let currentTime = new Date(vm.formatDate(vm.user.createDate));
+                        return time.getTime() < currentTime;
+                    }
+                };
+
+                // 实例化editor编辑器
+                UE.getEditor('editor');
+            },
             methods: {
+                //日期实时改变
+                createDateChange: function (val) {
+                    vm.user.createDate = val;
+                },
+
+                /**
+                 * 格式化日期
+                 * @param time
+                 * @return {string}
+                 */
+                formatDate: function (time) {
+                    const date = new Date(time.toString().replace(/-/g, "/"));
+                    const seperator1 = "-";
+                    let month = date.getMonth() + 1;
+                    let strDate = date.getDate();
+                    if (month >= 1 && month <= 9) {
+                        month = "0" + month;
+                    }
+                    if (strDate >= 0 && strDate <= 9) {
+                        strDate = "0" + strDate;
+                    }
+                    return date.getFullYear() + seperator1 + month + seperator1 + strDate;
+                },
 
                 /*
                  * 初始化权限
@@ -459,7 +530,9 @@
 
                     const data = {
                         username: vm.user.username,
-                        password: vm.user.password
+                        password: vm.user.password,
+                        createDate: vm.user.createDate,
+                        remark: vm.user.remark
                     };
                     axios({
                         method: 'post',
@@ -569,7 +642,7 @@
                                 if (response.data.errorEntityList.length > 0) {
 
                                     for (let i = 0; i < response.data.errorEntityList.length; i++) {
-                                        str2 = str2 +/* response.data.errorEntityList[i].id + '和' +*/ response.data.errorEntityList[i].username + "、";
+                                        str2 = str2 + /* response.data.errorEntityList[i].id + '和' +*/ response.data.errorEntityList[i].username + "、";
                                     }
                                 }
                                 if (str === '') {
@@ -611,8 +684,8 @@
                 },
 
                 //日期格式
-                dateFormat: function(row, column, cellValue, index){
-                    if(cellValue==null){
+                dateFormat: function (row, column, cellValue, index) {
+                    if (cellValue == null) {
                         return '—— ——';
                     }
                     return cellValue.substring(0, 10);
@@ -647,8 +720,8 @@
                     return s.join(dec);
                 },
                 //给表格设置默认值
-                tableDataFormat:function (row, column, cellValue) {
-                    if(cellValue==null){
+                tableDataFormat: function (row, column, cellValue) {
+                    if (cellValue == null) {
                         return '—— ——';
                     }
                     return cellValue;
@@ -815,6 +888,13 @@
             },
         });
 
+        function format2(value) {
+            if (value < 10) {
+                return "0" + value;
+            } else {
+                return value;
+            }
+        }
 
         // vm.getUserList(1);
     }
