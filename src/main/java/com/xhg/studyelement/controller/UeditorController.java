@@ -11,6 +11,7 @@ import java.io.UnsupportedEncodingException;
 
 /**
  * 用于处理ueditor插件相关请求
+ * @author xhg
  */
 @RestController
 @CrossOrigin
