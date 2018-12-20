@@ -123,35 +123,32 @@
 
     <template>
         <!--添加弹出框内容-->
-        <el-dialog title="添加用户" :visible.sync="dialogFormVisible">
+        <el-dialog title="添加用户" :visible.sync="dialogFormVisible" width="1350px" >
             <el-form :model="user" :rules="rules" ref="user">
                 <el-form-item label="用户名" prop="username" :label-width="formLabelWidth">
-                    <el-col :span="12">
+                    <el-col >
                         <el-input v-model="user.username" autocomplete="off"></el-input>
                     </el-col>
                 </el-form-item>
                 <el-form-item label="密 码" prop="password" :label-width="formLabelWidth">
-                    <el-col :span="12">
+                    <el-col>
                         <el-input v-model="user.password" autocomplete="off"></el-input>
                     </el-col>
                 </el-form-item>
                 <el-form-item label="创建日期" prop="createDate" :label-width="formLabelWidth">
-                    <el-col :span="12">
+                    <el-col>
                         <el-date-picker type="date" placeholder="选择日期" v-model="user.createDate"
                                         :clearable="false" :editable="false"
                                         :picker-options="createDateOptions"
                                         format="yyyy-MM-dd" value-format="yyyy-MM-dd"
-                                        @change="createDateChange">
+                                        @change="createDateChange" style="width: 100%">
                         </el-date-picker>
                     </el-col>
                 </el-form-item>
-                <el-form-item label="描述" prop="remark" :label-width="formLabelWidth">
-                    <el-col :span="12">
-                        <!--<div id="editor"></div>-->
-                        <script type="text/plain" id="editor" v-model="user.remark"></script>
-                        <!--<script>-->
-                        <!--UE.getEditor('editor');-->
-                        <!--</script>-->
+                <el-form-item label="店铺介绍" prop="remark" :label-width="formLabelWidth">
+                    <el-col>
+                        <div type="text/plain" id="editor"></div>
+                        <!--<UE :id="editor"></UE>-->
                     </el-col>
                 </el-form-item>
             </el-form>
@@ -197,8 +194,13 @@
             </el-table-column>
             <el-table-column
                     prop="remark"
-                    label="描述"
+                    label="店铺介绍"
                     align="center" :formatter="tableDataFormat">
+                <template slot-scope="scope">
+                    <p v-if='scope.row.remark == null || scope.row.remark.length === 0'>—— ——</p>
+                    <!--显示html代码串-->
+                    <p v-else v-html='scope.row.remark'></p>
+                </template>
             </el-table-column>
             <el-table-column label="操作" align="center" width="200"
                              shiro:hasAnyPermissions="user:updateUser,user:removeUser">
@@ -214,18 +216,33 @@
                                @click="open2(scope.$index, scope.row)" icon="el-icon-delete">删除
                     </el-button>
                     <!--编辑弹出框内容-->
-                    <el-dialog title="修改用户信息" :visible.sync="dialogFormVisible2">
+                    <el-dialog title="修改用户信息" :visible.sync="dialogFormVisible2" width="1350px">
                         <el-form :model="user" :rules="rules" ref="user">
                             <!--用于spring data jpa修改数据，必须要主键-->
                             <input type="hidden" v-model="user.id">
                             <el-form-item label="用户名" prop="username" :label-width="formLabelWidth">
-                                <el-col :span="12">
+                                <el-col>
                                     <el-input v-model="user.username" autocomplete="off"></el-input>
                                 </el-col>
                             </el-form-item>
                             <el-form-item label="密 码" prop="password" :label-width="formLabelWidth">
-                                <el-col :span="12">
+                                <el-col>
                                     <el-input v-model="user.password" autocomplete="off"></el-input>
+                                </el-col>
+                            </el-form-item>
+                            <el-form-item label="创建日期" prop="createDate" :label-width="formLabelWidth">
+                                <el-col>
+                                    <el-date-picker type="date" placeholder="选择日期" v-model="user.createDate"
+                                                    :clearable="false" :editable="false"
+                                                    :picker-options="createDateOptions"
+                                                    format="yyyy-MM-dd" value-format="yyyy-MM-dd"
+                                                    @change="createDateChange" style="width: 100%">
+                                    </el-date-picker>
+                                </el-col>
+                            </el-form-item>
+                            <el-form-item label="店铺介绍" prop="remark" :label-width="formLabelWidth">
+                                <el-col>
+                                    <div type="text/plain" id="editor2" name="editor"></div>
                                 </el-col>
                             </el-form-item>
                         </el-form>
@@ -258,8 +275,18 @@
     // UE.getEditor('ueditor');
 
     window.onload = function () {
-        // Vue.component("UE",);
+        /*const ueditor = Vue.extend({
+            name: 'UE',
+            props: {
+                id: String,
+                /!*config: {
+                    type: Object
+                }*!/
+            },
+            template: '<div id="id" type="text/plain"> </div><span>{{id}}</span>'
+        });
 
+        Vue.component('UE',ueditor);*/
 
         const vm = new Vue({
             el: '#app',
@@ -322,19 +349,24 @@
 
                 //ueditor
                 editor: null,
+                editor2: null,
 
             },
             mounted: function () {
                 //设置日期显示规则
                 this.createDateOptions = {
                     disabledDate: function (time) {
-                        let currentTime = new Date(vm.formatDate(vm.user.createDate));
-                        return time.getTime() < currentTime;
+                        let currentTime = new Date();
+                        return time.getTime() <= currentTime.getTime();
                     }
                 };
 
                 // 实例化editor编辑器
-                UE.getEditor('editor');
+                // UE.getEditor('editor');
+            },
+            destroyed: function(){
+                this.editor.destroy();
+                // this.editor2.destroy();
             },
             methods: {
                 //日期实时改变
@@ -395,7 +427,9 @@
                 //修改重置表单
                 updateResetForm: function (formName) {
                     vm.dialogFormVisible2 = false;
+                    // this.editor2.setContent('');
                     this.$refs[formName].resetFields();
+                    // this.editor2.destroy();
                 },
                 //提交表单,成功则执行isFunction()方法
                 submitForm: function (formName, isFunction) {
@@ -413,7 +447,9 @@
                 //保存重置表单
                 resetForm: function (formName) {
                     vm.dialogFormVisible = false;
+                    this.editor.setContent('');
                     this.$refs[formName].resetFields();
+                    // this.editor.destroy();
                 },
 
 
@@ -519,8 +555,9 @@
                     this.user.username = '';
                     this.user.password = '';
 
+                    this.editor = UE.getEditor('editor');
                     //打开保存弹窗
-                    vm.dialogFormVisible = true
+                    vm.dialogFormVisible = true;
                 },
                 /**
                  *  保存用户
@@ -528,11 +565,13 @@
                 addUser: function () {
                     // vm.submitForm('user');
 
+                    let remark = this.editor.getContent();
+
                     const data = {
                         username: vm.user.username,
                         password: vm.user.password,
                         createDate: vm.user.createDate,
-                        remark: vm.user.remark
+                        remark: remark
                     };
                     axios({
                         method: 'post',
@@ -742,23 +781,33 @@
                  */
                 handleEdit: function (index, row) {
                     console.log(index, row);
+
+                    // this.editor2 = UE.getEditor('editor2');
+
                     //打开修改弹窗
                     vm.dialogFormVisible2 = true;
 
                     //给修改表单赋值
                     this.user.id = vm.userList[index].id;
                     this.user.username = vm.userList[index].username;
-                    this.user.password = vm.userList[index].password
+                    this.user.password = vm.userList[index].password;
+                    this.user.createDate = vm.userList[index].createDate;
+                    // this.user.remark = vm.userList[index].remark;
+                    // this.editor2.setContent(vm.userList[index].remark)
 
                 },
                 /**
                  * 修改
                  */
                 updateUser: function () {
+                    // let remark = this.editor2.getContent();
+
                     const data = {
                         id: vm.user.id,
                         username: vm.user.username,
-                        password: vm.user.password
+                        password: vm.user.password,
+                        createDate: vm.user.createDate,
+                        // remark: remark
                     };
 
                     axios({

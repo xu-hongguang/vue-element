@@ -19,6 +19,7 @@ public class User1 implements Serializable {
     private Integer id;
     private String username;
     private String password;
+    @Column(name = "create_date")
     private Date createDate;
     private String remark;
 
@@ -93,6 +94,7 @@ public class User1 implements Serializable {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", createDate='" + createDate + '\'' +
                 ", remark='" + remark + '\'' +
                 ", invoices's size =" + invoices.size() +
                 '}';

@@ -142,7 +142,7 @@ public class User1ServiceImpl implements User1Service {
         logger.info("对比：" + user1);
         boolean isSave = false;
         if (user1 == null) {
-            user.setCreateDate(new Date());
+//            user.setCreateDate(new Date());
             user1Repository.save(user);
             isSave = true;
         }
