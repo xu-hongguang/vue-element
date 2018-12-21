@@ -41,7 +41,7 @@ public class User1ServiceImpl implements User1Service {
     private Logger logger = LoggerFactory.getLogger(User1ServiceImpl.class);
 
     // 错误条数
-    private int errorCount;
+    private int errorCount = 0;
 
     // 重复条数
     private int repeatCount;

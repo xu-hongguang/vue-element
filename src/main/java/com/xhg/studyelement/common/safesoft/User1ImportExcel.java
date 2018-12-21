@@ -41,7 +41,7 @@ public class User1ImportExcel extends AbstractImportExcel {
 
         int index = 0;
         //获取数据 行数从0开始，数据从第2开始取 当没有实际数据时rowCount为1（两行）
-        for (int i = 1; i < rowCount + 1; i++) {
+        for (int i = 2; i < rowCount + 1; i++) {
             final Row row = sheet.getRow(i);
             //如果不是空行
             if (!isRowEmpty(row)) {

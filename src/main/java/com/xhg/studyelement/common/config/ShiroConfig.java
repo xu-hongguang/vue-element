@@ -142,6 +142,7 @@ public class ShiroConfig {
         Map<String, String> filterMap = new HashMap<>(16);
         filterMap.put("/logout", "logout");
         filterMap.put("/login", "anon");
+//        filterMap.put("/index.html", "anon");
         filterMap.put("/noPermission.html", "anon");
         filterMap.put("/img/**", "anon");
         filterMap.put("/vue/**", "anon");

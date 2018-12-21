@@ -34,7 +34,7 @@ public class User1Excel extends AbstractExportExcel {
     @Override
     protected void buildExcel(XSSFWorkbook workBook) {
         final XSSFSheet sheet = workBook.getSheetAt(0);
-        final int beginLine = 1;
+        final int beginLine = 2;
 
         final List<User1> users = list;
         int lineNum = beginLine;

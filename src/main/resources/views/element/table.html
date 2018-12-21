@@ -159,7 +159,7 @@
         </el-dialog>
 
         <!--表格-->
-        <el-table height="350" highlight-current-row align="center" border
+        <el-table height="500" highlight-current-row align="center" border
                   :data="userList"
                   style="width:100%; margin: 10px auto"
                   :row-class-name="tableRowClassName"
@@ -255,17 +255,18 @@
             </el-table-column>
         </el-table>
     </template>
-    <!--分页-->
+    <!--分页  默认layout="total, sizes, prev, pager, next, jumper" -->
     <div class="block" style="margin-top: 10px;">
-        <el-pagination align="center"
+        <el-pagination align="right"
                        background
                        @size-change="handleSizeChange"
                        @current-change="handleCurrentChange"
                        :current-page="currentPage"
                        :page-sizes="pageSizes"
                        :page-size="pageSize"
-                       layout="total, sizes, prev, pager, next, jumper"
+                       layout="slot, sizes, prev, pager, next"
                        :total="total">
+            <span>共{{total}}条记录，第{{currentPage}}页，共{{totalPage}}页</span>
         </el-pagination>
     </div>
 </div>
@@ -301,6 +302,7 @@
                 userList: [],
                 //分页
                 currentPage: 1,
+                totalPage: 0,
                 pageSizes: [2, 5, 20, 50],
                 pageSize: 5,
                 total: 0,
@@ -532,6 +534,7 @@
                     }).then(function (response) {
                         //.data不可去
                         vm.currentPage = response.data.pageNo;
+                        vm.totalPage = response.data.totalPage;
                         vm.total = response.data.totalCount;
                         vm.userList = response.data.userList;
 
@@ -566,6 +569,7 @@
                     // vm.submitForm('user');
 
                     let remark = this.editor.getContent();
+                    console.log(remark);
 
                     const data = {
                         username: vm.user.username,
@@ -592,7 +596,7 @@
                         } else {
                             vm.open('保存失败！', 'error')
                         }
-                    }).catch(() => {
+                    }).catch(function() {
                         vm.open('保存失败！', 'error')
                     })
                 },

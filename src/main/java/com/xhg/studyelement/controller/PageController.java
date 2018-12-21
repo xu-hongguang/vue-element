@@ -40,6 +40,8 @@ public class PageController {
         r.put("totalCount", (int) userPage.getTotalElements());
 //        页码
         r.put("pageNo", pageNo);
+//        总页数
+        r.put("totalPage", userPage.getTotalPages());
 //        当前页记录数（这里不需要向前端传）
         r.put("pageSize", pageSize);
 
