@@ -123,7 +123,7 @@
 
     <template>
         <!--添加弹出框内容-->
-        <el-dialog title="添加用户" :visible.sync="dialogFormVisible" width="1350px" >
+        <el-dialog title="添加用户" :visible.sync="dialogFormVisible" width="1000px" >
             <el-form :model="user" :rules="rules" ref="user">
                 <el-form-item label="用户名" prop="username" :label-width="formLabelWidth">
                     <el-col >
@@ -216,7 +216,7 @@
                                @click="open2(scope.$index, scope.row)" icon="el-icon-delete">删除
                     </el-button>
                     <!--编辑弹出框内容-->
-                    <el-dialog title="修改用户信息" :visible.sync="dialogFormVisible2" width="1350px">
+                    <el-dialog title="修改用户信息" :visible.sync="dialogFormVisible2" width="1000px">
                         <el-form :model="user" :rules="rules" ref="user">
                             <!--用于spring data jpa修改数据，必须要主键-->
                             <input type="hidden" v-model="user.id">
@@ -242,7 +242,7 @@
                             </el-form-item>
                             <el-form-item label="店铺介绍" prop="remark" :label-width="formLabelWidth">
                                 <el-col>
-                                    <div type="text/plain" id="editor2" name="editor"></div>
+                                    <div type="text/plain" id="editor2"></div>
                                 </el-col>
                             </el-form-item>
                         </el-form>
