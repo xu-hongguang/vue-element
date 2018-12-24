@@ -2,7 +2,6 @@ package com.xhg.studyelement.common.config;
 
 import com.xhg.studyelement.common.xss.XssFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.DelegatingFilterProxy;
 
@@ -18,7 +17,7 @@ import javax.servlet.DispatcherType;
 @Configuration
 public class FilterConfig {
 
-    @Bean
+//    @Bean
     public FilterRegistrationBean shiroFilterRegistration() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setFilter(new DelegatingFilterProxy("shiroFilter"));
@@ -30,7 +29,7 @@ public class FilterConfig {
         return registration;
     }
 
-    @Bean
+//    @Bean
     public FilterRegistrationBean xssFilterRegistration() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setDispatcherTypes(DispatcherType.REQUEST);

@@ -23,8 +23,12 @@ import java.util.Arrays;
 public class PageController {
     private Logger logger = LoggerFactory.getLogger(PageController.class);
 
+    private final User1Service user1Service;
+
     @Autowired
-    private User1Service user1Service;
+    public PageController(User1Service user1Service) {
+        this.user1Service = user1Service;
+    }
 
     @RequestMapping("/userList/{pageNo}/{pageSize}")
 //    @RequiresPermissions("user:getUserList")

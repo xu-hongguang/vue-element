@@ -36,12 +36,12 @@ public final class ConfigManager {
 		this.rootPath = rootPath;
 		this.contextPath = contextPath;
 		
-		/*if ( contextPath.length() > 0 ) {
+		if ( contextPath.length() > 0 ) {
 			this.originalPath = this.rootPath + uri.substring( contextPath.length() );
 		} else {
 			this.originalPath = this.rootPath + uri;
-		}*/
-		this.originalPath = "src/main/resources/config.json";
+		}
+//		this.originalPath = "src/main/resources/config.json";
 		
 		this.initEnv();
 		
