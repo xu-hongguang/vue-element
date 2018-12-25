@@ -1,9 +1,10 @@
-package com.xhg.studyelement.shiro.service;
+package com.xhg.studyelement.shiro.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.xhg.studyelement.shiro.dao.CarsDAO;
 import com.xhg.studyelement.shiro.domain.Cars;
+import com.xhg.studyelement.shiro.service.CarsService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -54,4 +55,5 @@ public class CarsServiceImpl implements CarsService {
 
         return new PageInfo<>(cars);
     }
+
 }

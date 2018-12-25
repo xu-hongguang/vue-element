@@ -34,8 +34,7 @@ public class PageUtils<T> implements Serializable {
      */
     private String summationTaxAmount;
 
-    public PageUtils() {
-    }
+    public PageUtils() { }
 
     /**
      * 分页
