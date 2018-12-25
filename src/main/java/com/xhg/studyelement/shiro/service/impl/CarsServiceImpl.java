@@ -5,9 +5,9 @@ import com.github.pagehelper.PageInfo;
 import com.xhg.studyelement.shiro.dao.CarsDAO;
 import com.xhg.studyelement.shiro.domain.Cars;
 import com.xhg.studyelement.shiro.service.CarsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +18,7 @@ import java.util.Map;
 @Service
 public class CarsServiceImpl implements CarsService {
 
-    @Resource
+    @Autowired
     private CarsDAO carsDAO;
 
     /**
