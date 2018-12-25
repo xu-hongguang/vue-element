@@ -68,7 +68,7 @@
 		</dependency>
 
 		<!-- mybatis-plus 工具包 -->
-		<dependency>
+		<!--<dependency>
 			<groupId>com.baomidou</groupId>
 			<artifactId>mybatisplus-spring-boot-starter</artifactId>
 			<version>1.0.5</version>
@@ -77,7 +77,7 @@
 			<groupId>com.baomidou</groupId>
 			<artifactId>mybatis-plus</artifactId>
 			<version>2.1.8</version>
-		</dependency>
+		</dependency>-->
 
 
 		<dependency>
