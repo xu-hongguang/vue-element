@@ -664,8 +664,7 @@
                     ,
                     exportData: function () {
                         document.getElementById("ifile").src = "export/UserExcelTemplate";
-                    }
-                    ,
+                    },
                     uploadFile: function (event) {
                         if (!this.isNeedFileExtension) {
                             this.$alert("请上传excel文件格式!");
@@ -733,7 +732,7 @@
                                         str2 = vm.formatStr(str2);
                                     }
 
-                                    vm.$alert("共计准备导入" + (response.data.reason.length + response.data.errorCount + response.data.repeatCount) + "条，成功" + response.data.reason.length + "条；库里已存在" + response.data.repeatCount + "条，对应的用户名：" + str + "；错误数据" + response.data.errorEntityList.length + "条，对应用户名: " + str2 + "。");
+                                    vm.$alert("共计准备导入" + response.data.importTotalCount + "条，成功" + response.data.reason.length + "条；库里已存在" + response.data.repeatCount + "条，对应的用户名：" + str + "；错误数据" + response.data.errorEntityList.length + "条，对应用户名: " + str2 + "。");
                                     vm.getUserList(1);
                                 } else {
                                     vm.userList = vm.tempTableData;
@@ -755,12 +754,10 @@
                                 }
                             }, 50);
                         }
-                    }
-                    ,
+                    },
                     formatStr: function (str) {
                         return str.substring(0, str.lastIndexOf('、'))
-                    }
-                    ,
+                    },
 
                     //日期格式
                     dateFormat: function (row, column, cellValue, index) {
@@ -768,8 +765,8 @@
                             return '—— ——';
                         }
                         return cellValue.substring(0, 10);
-                    }
-                    ,
+                    },
+
                     //数字格式
                     numberFormat: function (row, column, cellValue) {
                         var number = cellValue;
@@ -873,9 +870,7 @@
                                 vm.open('修改失败！', 'error')
                             }
                         })
-                    }
-                    ,
-
+                    },
 
                     /**
                      * 删除

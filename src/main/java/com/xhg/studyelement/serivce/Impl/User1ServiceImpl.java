@@ -111,11 +111,11 @@ public class User1ServiceImpl implements User1Service {
                 Map<String, List<User1>> entityMap = user1ImportData(user1List);
                 map.put("errorCount", errorCount);
                 map.put("repeatCount", repeatCount);
+                // 表格中准备导入的总数据数量
+                map.put("importTotalCount", entityMap.get("successEntityList").size() + entityMap.get("errorEntityList").size() + entityMap.get("repeatEntityList").size());
                 map.put("reason", entityMap.get("successEntityList"));
                 map.put("errorEntityList", entityMap.get("errorEntityList"));
                 map.put("repeatEntityList", entityMap.get("repeatEntityList"));
-
-                logger.info("总数据：" + (entityMap.get("successEntityList").size() + entityMap.get("errorEntityList").size() + entityMap.get("repeatEntityList").size()));
             } else {
                 // LOGGER.info("读取到excel无数据");
                 map.put("success", Boolean.FALSE);
