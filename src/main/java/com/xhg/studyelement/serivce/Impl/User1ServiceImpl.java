@@ -125,6 +125,8 @@ public class User1ServiceImpl implements User1Service {
             map.put("success", Boolean.FALSE);
             map.put("reason", "读取excel文件错误！");
         }
+        errorCount = 0;
+        repeatCount = 0;
         return map;
     }
 

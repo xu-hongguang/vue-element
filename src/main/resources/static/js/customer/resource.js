@@ -1,4 +1,9 @@
-
+document.write('<script src="js/jquery.min.js"></script>');
+document.write('<script src="vue/dist/vue.js"></script>');
+document.write('<script src="axios/dist/axios.min.js"></script>');
+document.write('<script src="vue/vue-resource@1.5.1.js"></script>');
+document.write('<script src="element-ui/lib/index.js"></script>');
+document.write('<script src="js/bootstrap.min.js"></script>');
 
 //url
 document.write('<script type="text/javascript" charset="utf-8" src="js/customer/weburi.js"></script> ');
@@ -10,3 +15,14 @@ document.write('<script type="text/javascript" charset="utf-8" src="js/customer/
 document.write('<script type="text/javascript" charset="utf-8" src="js/customer/loading.js"></script> ');
 
 document.write('<script type="text/babel" src="js/customer/vuecommon.js"></script> ');
+
+
+//CSS
+document.write('<link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">');
+// document.write('<link rel="stylesheet" href="css/bootstrap.min.css">');
+// document.write('<link rel="stylesheet" href="js/customer/index.css">');
+
+
+
+
+
