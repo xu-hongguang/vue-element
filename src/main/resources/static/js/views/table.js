@@ -350,7 +350,9 @@ const vm = new Vue({
                 let photoExt = str.substr(index, 4);
                 photoExt = photoExt.toLowerCase();
                 if (photoExt !== '' && !(photoExt === '.xls' || photoExt === '.xlsx')) {
-                    this.$alert("请上传excel文件格式!");
+                    // this.$alert("请上传excel文件格式!");
+                    // 此alert方法已经在common.js文件中重写过
+                    alert("请上传excel文件格式!");
                     this.isNeedFileExtension = false;
                     return false;
                 } else {
@@ -378,11 +380,11 @@ const vm = new Vue({
             },
             uploadFile: function (event) {
                 if (!this.isNeedFileExtension) {
-                    this.$alert("请上传excel文件格式!");
+                    alert("请上传excel文件格式!");
                 } else {
                     event.preventDefault();
                     if (this.file === '' || this.file === undefined) {
-                        vm.$alert("请选择excel文件!");
+                        alert("请选择excel文件!");
                         return;
                     }
                     const formData = new FormData();
@@ -407,14 +409,14 @@ const vm = new Vue({
                         vm.file = '';
                         if (response.data.errorCount > 0) {
                             vm.userList = vm.tempTableData;
-                            vm.$alert("请检查数据是否完整！");
+                            alert("请检查数据是否完整！");
                             vm.loading = false;
                             return;
                         }
                         if (response.data.success) {
                             if (vm.tempTableData.length + response.data.reason.length + response.data.errorCount + response.data.repeatCount > 500) {
                                 vm.userList = vm.tempTableData;
-                                vm.$alert('导入数据超过500条，请修改模板！');
+                                alert('导入数据超过500条，请修改模板！');
                                 return;
                             }
                             let str = "";
@@ -443,17 +445,17 @@ const vm = new Vue({
                                 str2 = vm.formatStr(str2);
                             }
 
-                            vm.$alert("共计准备导入" + response.data.importTotalCount + "条，成功" + response.data.reason.length + "条；库里已存在" + response.data.repeatCount + "条，对应的用户名：" + str + "；错误数据" + response.data.errorEntityList.length + "条，对应用户名: " + str2 + "。");
+                            alert("共计准备导入" + response.data.importTotalCount + "条，成功" + response.data.reason.length + "条；库里已存在" + response.data.repeatCount + "条，对应的用户名：" + str + "；错误数据" + response.data.errorEntityList.length + "条，对应用户名: " + str2 + "。");
                             vm.getUserList(1);
                         } else {
                             vm.userList = vm.tempTableData;
-                            vm.$alert(response.data.reason);
+                            alert(response.data.reason);
                         }
                         vm.loading = false;
                     }, (err) => {
                         vm.loading = false;
                         if (err.status === 408) {
-                            vm.$alert("导入出错!");
+                            alert("导入出错!");
                         }
                     });
                     let intervelId = setInterval(function () {
@@ -625,11 +627,12 @@ const vm = new Vue({
             //批量删除
             batchRemove: function () {
                 if (this.multipleSelection.length === 0) {
-                    this.$alert('请先选择要删除的数据!', '提示');
+                    alert('请先选择要删除的数据!');
                     return;
                 }
 
                 this.$confirm('此操作将永久删除这些数据, 是否继续?', '提示', {
+                // confirm('此操作将永久删除这些数据, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
