@@ -5,13 +5,14 @@
     <title>登录</title>
     <link rel="icon" href="favicon.ico" mce_href="favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="favicon.ico" mce_href="favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+    <!--<link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
     <script src="js/jquery.min.js"></script>
-    <!-- import Vue before Element -->
+    &lt;!&ndash; import Vue before Element &ndash;&gt;
     <script src="vue/dist/vue.min.js"></script>
     <script src="axios/dist/axios.min.js"></script>
-    <!-- import element-ui JavaScript -->
-    <script src="element-ui/lib/index.js"></script>
+    &lt;!&ndash; import element-ui JavaScript &ndash;&gt;
+    <script src="element-ui/lib/index.js"></script>-->
+    <script src="js/customer/resource.js"></script>
     <script src="js/util/verify.js"></script>
     <style>
         [v-cloak] {
@@ -47,7 +48,7 @@
                 <el-input type="password" v-model="user.password" autocomplete="off" placeholder="密码"></el-input>
             </el-form-item>
             <el-form-item style="width: 220px;height:32px " label="验证码" prop="verify">
-                <el-input v-model="user.verify" autocomplete="off" placeholder="验证码"></el-input>
+                <el-input v-model="user.verify" autocomplete="off" placeholder="验证码" @keyup.enter.native="submitForm('user')"></el-input>
                 <canvas id="canvas" width="120" height="32" onclick="updateVerify()"
                         style="width:120px;border-radius: 4px;position: relative;left: 108px;top: -33px;"></canvas>
             </el-form-item>
@@ -55,7 +56,8 @@
                 <el-checkbox v-model="user.rememberMe" name="rememberMe" autocomplete="off">记住我</el-checkbox>
             </el-form-item>
             <el-form-item align="left">
-                <el-button type="primary" @click="submitForm('user')">登 录</el-button>
+                <el-button v-show="showlogin" type="primary" @click="submitForm('user')">登 录</el-button>
+                <el-button v-show="showloging" type="primary">登录中...</el-button>
                 <el-button @click="resetForm('user')">重 置</el-button>
             </el-form-item>
         </el-form>
@@ -66,7 +68,7 @@
         //初始化验证码
         // init();
 
-        var vm = new Vue({
+        const vm = new Vue({
             el: '#loginDiv',
             data: {
                 user: {
@@ -76,6 +78,11 @@
                     verify: '',
                     rememberMe: false
                 },
+
+                //登录按钮显示状态
+                showlogin: true,
+                showloging: false,
+
                 formLabelWidth: '120px',
                 //表单验证
                 rules: {
@@ -94,10 +101,15 @@
             },
             methods: {
                 submitForm: function (formName) {
+                    this.showlogin = false;
+                    this.showloging = true;
+
                     this.$refs[formName].validate(function (valid) {
                         if (valid) {
                             vm.loginUser();
                         } else {
+                            vm.showlogin = true;
+                            vm.showloging = false;
                             console.log('error submit!!');
                             return false;
                         }
@@ -143,9 +155,11 @@
 
                                 location.href = 'index.html'
                             } else {
+                                vm.showlogin = true;
+                                vm.showloging = false;
                                 //更新验证码
                                 updateVerify();
-                                vm.open(data.msg, "error")
+                                vm.open(data.msg, "error");
                             }
                         }
                     })

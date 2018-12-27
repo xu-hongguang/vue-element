@@ -5,16 +5,7 @@
     <title>主页</title>
     <link rel="icon" href="favicon.ico" mce_href="favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="favicon.ico" mce_href="favicon.ico" type="image/x-icon">
-   <!-- <link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
-    <script src="js/jquery.min.js"></script>
-    &lt;!&ndash; import Vue before Element &ndash;&gt;
-    <script src="vue/dist/vue.js"></script>
-    <script src="axios/dist/axios.min.js"></script>
-    &lt;!&ndash;<script src="vue/vue-resource@1.5.1.js"></script>&ndash;&gt;
-    &lt;!&ndash; import JavaScript &ndash;&gt;
-    <script src="element-ui/lib/index.js"></script>-->
     <script src="js/customer/resource.js"></script>
-
     <style>
         * {
             margin: 0;
@@ -75,7 +66,7 @@
     <el-container>
         <!--头部导航栏-->
         <el-header style="float: right;">
-            <el-form inline="block" size="small" style="text-align: right;margin-right: 15px;">
+            <el-form :inline="true" size="small" style="text-align: right;margin-right: 15px;">
                 <template v-if="username !== ''|| null">
                     <span style=";font-size: 15px">欢迎{{username}}&nbsp;&nbsp;</span>
                     <a class="logout" href="#" @click="logout">退出</a>
@@ -132,75 +123,74 @@
             </el-aside>
             <!--主体内容-->
             <el-main>
-                <iframe scrolling="yes" style="width:100%;min-height:200px;border: none;overflow:visible;background:#E9EEF3;height: 800px"
+                <iframe scrolling="yes"
+                        style="width:100%;min-height:200px;border: none;overflow:visible;background:#E9EEF3;height: 800px"
                         src="table"></iframe>
             </el-main>
         </el-container>
     </el-container>
 </div>
 <script>
-    window.onload = function () {
-        var vm = new Vue({
-            el: '#main',
-            data: {
-                username: localStorage.getItem('username')
+    const vm = new Vue({
+        el: '#main',
+        data: {
+            username: localStorage.getItem('username')
+        },
+        methods: {
+            /**
+             * 注册登录
+             */
+            login: function () {
+                location.href = "login.html";
             },
-            methods: {
-                /**
-                 * 注册登录
-                 */
-                login:function() {
-                    location.href = "login.html";
-                },
 
-                logout:function() {
-                    localStorage.removeItem("username");
-                    location.href = 'logout'
-                },
+            logout: function () {
+                localStorage.removeItem("username");
+                location.href = 'logout'
+            },
 
-                /**
-                 * 表单提交验证
-                 */
-                submitForm:function(formName) {
-                    this.$refs[formName].validate((valid) => {
-                        if (valid) {
-                            vm.loginUser();
-                        } else {
-                            console.log('error submit!!');
-                            return false;
-                        }
-                    });
-                },
-                resetForm:function(formName) {
-                    this.$refs[formName].resetFields();
-                },
+            /**
+             * 表单提交验证
+             */
+            submitForm: function (formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        vm.loginUser();
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            },
+            resetForm: function (formName) {
+                this.$refs[formName].resetFields();
+            },
 
-                //提示窗
-                open:function(message, type) {
-                    this.$message({
-                        showClose: true,
-                        message: message,
-                        type: type
-                    });
-                },
+            //提示窗
+            open: function (message, type) {
+                this.$message({
+                    showClose: true,
+                    message: message,
+                    type: type
+                });
+            },
 
 
-                /**
-                 * 导航菜单
-                 *
-                 * @param key
-                 * @param keyPath
-                 */
-                handleOpen:function(key, keyPath) {
-                    console.log(key, keyPath);
-                },
-                handleClose:function(key, keyPath) {
-                    console.log(key, keyPath);
-                }
-
+            /**
+             * 导航菜单
+             *
+             * @param key
+             * @param keyPath
+             */
+            handleOpen: function (key, keyPath) {
+                console.log(key, keyPath);
+            },
+            handleClose: function (key, keyPath) {
+                console.log(key, keyPath);
             }
-        });
-    }
+
+        }
+    });
 </script>
 
 <!--<script src="js/index.js"></script>-->
