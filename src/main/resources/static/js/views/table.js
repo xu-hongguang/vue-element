@@ -289,8 +289,7 @@ const vm = new Vue({
                 })*/
 
 
-            }
-            ,
+            },
 
             toAdd: function () {
                 this.user.username = '';
@@ -339,8 +338,7 @@ const vm = new Vue({
                 }).catch(function () {
                     vm.open('保存失败！', 'error')
                 })
-            }
-            ,
+            },
 
 
             onChangeFile: function (event) {
@@ -601,7 +599,7 @@ const vm = new Vue({
                     });
                 });*/
 
-                confirm('此操作将永久删除该数据, 是否继续?', function(){
+                confirm('确定要删除吗?', function(){
                     axios({
                         //delete请求方式需要在url路径后传参
                         method: 'delete',
