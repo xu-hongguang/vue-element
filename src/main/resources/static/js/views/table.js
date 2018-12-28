@@ -187,8 +187,7 @@ const vm = new Vue({
                 this.editor.setContent('');
                 this.$refs[formName].resetFields();
                 // this.editor.destroy();
-            }
-            ,
+            },
 
 
             /*
@@ -445,7 +444,7 @@ const vm = new Vue({
                                 str2 = vm.formatStr(str2);
                             }
 
-                            alert("共计准备导入" + response.data.importTotalCount + "条，成功" + response.data.reason.length + "条；库里已存在" + response.data.repeatCount + "条，对应的用户名：" + str + "；错误数据" + response.data.errorEntityList.length + "条，对应用户名: " + str2 + "。");
+                            alert("共计准备导入" + response.data.importTotalCount + "条，成功" + response.data.reason.length + "条；\n库里已存在" + response.data.repeatCount + "条，对应的用户名：" + str + "；\n错误数据" + response.data.errorEntityList.length + "条，对应用户名: " + str2 + "。");
                             vm.getUserList(1);
                         } else {
                             vm.userList = vm.tempTableData;
@@ -585,6 +584,46 @@ const vm = new Vue({
                 })
             },
 
+            //提示警告是否删除
+            open2: function (index, row) {
+                /*this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(function () {
+                    //删除数据
+                    vm.handleDelete(index, row);
+                }).catch(function () {
+                    this.$message({
+                        showClose: true,
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });*/
+
+                confirm('此操作将永久删除该数据, 是否继续?', function(){
+                    axios({
+                        //delete请求方式需要在url路径后传参
+                        method: 'delete',
+                        url: 'user/delete?id=' + vm.userList[index].id,
+                        data: {},
+                        dataType: 'text',
+                    }).then((response) => {
+                        //.data不可去
+                        if (response.data === 'suc') {
+                            // vm.open("删除成功！", "success");
+                            alert("删除成功!");
+                            // layer.msg("删除成功!", {icon: 1});
+                            vm.getUserList(vm.currentPage)
+                        } else {
+                            // vm.open('删除失败！', 'error')
+                            // layer.msg("删除失败!", {icon: 1});
+                            alert("删除失败!");
+                        }
+                    })
+                })
+
+            },
             /**
              * 删除
              * @param index
@@ -601,10 +640,12 @@ const vm = new Vue({
                 }).then((response) => {
                     //.data不可去
                     if (response.data === 'suc') {
-                        vm.open("删除成功！", "success");
+                        // vm.open("删除成功！", "success");
+                        layer.msg("删除成功!", {icon: 1});
                         vm.getUserList(vm.currentPage)
                     } else {
-                        vm.open('删除失败！', 'error')
+                        // vm.open('删除失败！', 'error')
+                        layer.msg("删除失败!", {icon: 1});
                     }
                 })
 
@@ -632,7 +673,7 @@ const vm = new Vue({
                 }
 
                 this.$confirm('此操作将永久删除这些数据, 是否继续?', '提示', {
-                // confirm('此操作将永久删除这些数据, 是否继续?', '提示', {
+                    // confirm('此操作将永久删除这些数据, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
@@ -664,26 +705,7 @@ const vm = new Vue({
                         message: '已取消删除'
                     });
                 });
-            }
-            ,
-            //提示警告是否删除
-            open2: function (index, row) {
-                this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(function () {
-                    //删除数据
-                    vm.handleDelete(index, row);
-                }).catch(function () {
-                    this.$message({
-                        showClose: true,
-                        type: 'info',
-                        message: '已取消删除'
-                    });
-                });
-            }
-            ,
+            },
 
             //提示窗
             open: function (message, type) {

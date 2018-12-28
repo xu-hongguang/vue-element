@@ -3,10 +3,7 @@ package com.xhg.studyelement.common.safesoft;
 import com.xhg.studyelement.common.exception.ExcelException;
 import com.xhg.studyelement.common.utils.ConfigConstant;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.DateUtil;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -18,6 +15,7 @@ import java.text.DecimalFormat;
 import java.util.Date;
 
 import static org.apache.commons.lang.StringUtils.EMPTY;
+import static org.apache.poi.ss.usermodel.CellType.BLANK;
 import static org.springframework.util.StringUtils.endsWithIgnoreCase;
 import static org.springframework.util.StringUtils.trimAllWhitespace;
 
@@ -56,10 +54,10 @@ public abstract class AbstractImportExcel {
         if (cell == null) {
             return EMPTY;
         }
-        int type = cell.getCellType();
+        CellType type = cell.getCellTypeEnum();
         String returnValue = null;
         switch (type) {
-            case Cell.CELL_TYPE_NUMERIC:
+            case NUMERIC:
                 if (DateUtil.isCellDateFormatted(cell)) {
                     Date date = cell.getDateCellValue();
                     returnValue = new DateTime(date).toString( "yyyy-MM-dd");
@@ -69,15 +67,15 @@ public abstract class AbstractImportExcel {
                     returnValue = df.format(value);
                 }
                 break;
-            case Cell.CELL_TYPE_STRING:
+            case STRING:
                 returnValue = trimAllWhitespace(cell.getStringCellValue());
                 break;
-            case Cell.CELL_TYPE_FORMULA:
+            case FORMULA:
                 Double val = cell.getNumericCellValue();
                 DecimalFormat dfm = new DecimalFormat("0.00");
                 returnValue = dfm.format(val);
                 break;
-            case Cell.CELL_TYPE_BLANK:
+            case BLANK:
                 returnValue = EMPTY;
                 break;
             default:
@@ -91,7 +89,7 @@ public abstract class AbstractImportExcel {
         if (row != null) {
             for (int c = row.getFirstCellNum(); c < row.getLastCellNum(); c++) {
                 Cell cell = row.getCell(c);
-                if (cell != null && cell.getCellType() != Cell.CELL_TYPE_BLANK) {
+                if (cell != null && cell.getCellTypeEnum() != BLANK) {
                     return Boolean.FALSE;
                 }
             }

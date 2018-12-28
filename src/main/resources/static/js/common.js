@@ -1,5 +1,3 @@
-
-
 //工具集合Tools
 window.T = {};
 
@@ -18,7 +16,7 @@ T.p = url;
 //请求前缀
 var baseURL = "/dxhy-gylpt/";
 //发票匹配误差值
-var cover=20.00;
+var cover = 20.00;
 
 //登录token
 var token = localStorage.getItem("token");
@@ -107,7 +105,7 @@ function getSelectedRows() {
 }
 
 $(function () {
-    parent.window.scrollTo(0,0);
+    parent.window.scrollTo(0, 0);
     /*var scrollT= 0;
      $("body",parent.document).find("#myiframe").css('top',scrollT+'px');
      $(document).on("mousewheel DOMMouseScroll",function(e){ //模拟滚动条
@@ -159,16 +157,14 @@ $(function () {
     // });
 
 
-    var x = $(window).height()-15;
-    console.log("主要div高度"+x);
-    $("#myiframe2").css("height",x);
+    var x = $(window).height() - 15;
+    console.log("主要div高度" + x);
+    $("#myiframe2").css("height", x);
     $("body", parent.document).find("#myiframe2").css('height', x);
-    $(".sidebar-menu").css("height",x-50);
+    $(".sidebar-menu").css("height", x - 50);
 
-    $(".sidebar-menu").css("overflow-x","hidden");
-    $(".sidebar-menu").css("overflow-y","auto");
-
-
+    $(".sidebar-menu").css("overflow-x", "hidden");
+    $(".sidebar-menu").css("overflow-y", "auto");
 
 
     /*自适应样式*/
