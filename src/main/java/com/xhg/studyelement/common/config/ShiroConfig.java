@@ -74,7 +74,7 @@ public class ShiroConfig {
         // 设置 cookie 名称，对应 login.html 页面的 <input type="checkbox" name="rememberMe"/>
         SimpleCookie cookie = new SimpleCookie("rememberMe");
 //        cookie.setSecure(true);  // 只在 https中有效 注释掉 正常
-        cookie.setHttpOnly(true);
+//        cookie.setHttpOnly(true);
         // 设置 cookie 的过期时间，单位为秒，这里为一天
         cookie.setMaxAge(86400);
         return cookie;
@@ -106,9 +106,9 @@ public class ShiroConfig {
         // 设置session超时时间，单位为毫秒
         sessionManager.setGlobalSessionTimeout(1800000L);
         //相隔多久检查一次session的有效性
-        sessionManager.setSessionValidationInterval(1800000L);
+//        sessionManager.setSessionValidationInterval(1800000L);
         sessionManager.setSessionIdUrlRewritingEnabled(false);
-        sessionManager.setSessionValidationSchedulerEnabled(true);
+//        sessionManager.setSessionValidationSchedulerEnabled(true);
         return sessionManager;
     }
 

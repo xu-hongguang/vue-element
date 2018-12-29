@@ -216,7 +216,7 @@
 			<version>1.4.3.3</version>
 		</dependency>-->
 
-		<!-- ueditot依赖的json包 -->
+		<!-- ueditor依赖的json包 -->
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>

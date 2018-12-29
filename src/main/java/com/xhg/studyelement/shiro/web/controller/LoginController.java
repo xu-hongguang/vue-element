@@ -3,6 +3,8 @@ package com.xhg.studyelement.shiro.web.controller;
 import com.xhg.studyelement.common.utils.MD5Utils;
 import com.xhg.studyelement.common.utils.R;
 import com.xhg.studyelement.common.utils.ShiroUtils;
+import com.xhg.studyelement.common.utils.vcode.Captcha;
+import com.xhg.studyelement.common.utils.vcode.GifCaptcha;
 import com.xhg.studyelement.shiro.domain.User;
 import com.xhg.studyelement.shiro.service.UserService;
 import org.apache.commons.lang.StringUtils;
@@ -11,11 +13,12 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 /**
@@ -26,6 +29,8 @@ public class LoginController {
 
     private Logger logger = LoggerFactory.getLogger(LoginController.class);
 
+    private final String V_CODE = "v_code";
+
     @Autowired
     private UserService userService;
 
@@ -34,7 +39,7 @@ public class LoginController {
      *
      * @param verify
      */
-    @RequestMapping("/saveVerify")
+   /* @RequestMapping("/saveVerify")
     public String saveVerify(@RequestParam("verify") String verify) {
 
         //验证码保存成功
@@ -43,6 +48,23 @@ public class LoginController {
         logger.info("验证码保存成功");
 
         return "suc";
+    }*/
+    @GetMapping("/saveVerify")
+    public void saveVerifyImg(HttpServletResponse response, HttpServletRequest request) {
+        try {
+            response.setHeader("Pragma", "No-cache");
+            response.setHeader("Cache-Control", "no-cache");
+            response.setDateHeader("Expires", 0);
+            response.setContentType("image/gif");
+
+            Captcha captcha = new GifCaptcha(146, 42, 4);
+            captcha.out(response.getOutputStream());
+            ShiroUtils.setSessionAttribute(V_CODE, captcha.text().toLowerCase());
+
+            logger.info("验证码保存成功! ");
+        } catch (Exception e) {
+            logger.error("图形验证码生成失败", e);
+        }
     }
 
     @PostMapping(value = "/login")
@@ -52,7 +74,8 @@ public class LoginController {
         if (StringUtils.isBlank(verify)) {
             return R.error(2, "验证码不可为空");
         }
-        String kaptcha = ShiroUtils.getKaptcha("verify");
+//        String kaptcha = ShiroUtils.getKaptcha("verify");
+        String kaptcha = ShiroUtils.getKaptcha(V_CODE);
         if (!verify.equalsIgnoreCase(kaptcha)) {
             return R.error(2, "验证码不正确");
         }

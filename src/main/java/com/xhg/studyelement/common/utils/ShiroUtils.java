@@ -28,6 +28,7 @@ public class ShiroUtils {
     }
 
     public static void setSessionAttribute(Object key, Object value) {
+        removeSessionAttribute(key);
         getSession().setAttribute(key, value);
     }
 

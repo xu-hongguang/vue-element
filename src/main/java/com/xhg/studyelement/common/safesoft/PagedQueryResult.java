@@ -7,9 +7,6 @@ import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
- * User: martin.ou
- * Date: 3/28/12
- * Time: 10:04 AM
  */
 public final class PagedQueryResult<T> implements Serializable {
 
