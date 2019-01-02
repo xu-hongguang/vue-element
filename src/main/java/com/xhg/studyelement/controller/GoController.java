@@ -4,6 +4,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Map;
+
 /**
  * @author 16033
  */
@@ -33,6 +35,15 @@ public class GoController {
     @GetMapping("/login")
     public String view(){
         return "login.html";
+    }
+
+    @GetMapping("/toUpdate")
+    public String update(String username, Map<String,Object> map){
+
+        System.out.println(username);
+        map.put("username", username);
+
+        return "element/updateUser";
     }
 
 }

@@ -1,5 +1,6 @@
 package com.xhg.studyelement.controller;
 
+import com.google.gson.Gson;
 import com.xhg.studyelement.common.utils.R;
 import com.xhg.studyelement.pojo.User1;
 import com.xhg.studyelement.serivce.User1Service;
@@ -31,7 +32,7 @@ public class PageController {
     }
 
     @RequestMapping("/userList/{pageNo}/{pageSize}")
-//    @RequiresPermissions("user:getUserList")
+    @RequiresPermissions("user:getUserList")
     @PermissionName("查询用户列表")
     public R userList(@PathVariable("pageNo") Integer pageNo,
                       @PathVariable("pageSize") Integer pageSize, String username) {
@@ -53,6 +54,17 @@ public class PageController {
 
         return r;
 //        return new Gson().toJson(map);
+    }
+
+    @RequestMapping("/userOne")
+    @RequiresPermissions("user:userOne")
+    @PermissionName("查询用户")
+    public String userOne(String username) {
+        User1 user1 = user1Service.findByUsername(username);
+
+        logger.info("user1: " + user1);
+
+        return new Gson().toJson(user1);
     }
 
     /**

@@ -55,16 +55,16 @@ public class ShiroUtils {
 
     /**
      * 获取验证码
-     * @param key
-     * @return
+     * @param key 验证码key
+     * @return string
      */
     public static String getKaptcha(String key) {
-        Object kaptcha = getSessionAttribute(key);
-        if (kaptcha == null) {
+        String kaptcha = (String) getSessionAttribute(key);
+        if (kaptcha == null || "".equals(kaptcha)) {
             throw new RRException("验证码已失效");
         }
         getSession().removeAttribute(key);
-        return kaptcha.toString();
+        return kaptcha;
     }
 
 }

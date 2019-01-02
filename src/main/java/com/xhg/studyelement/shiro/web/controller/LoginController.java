@@ -13,9 +13,7 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,11 +33,11 @@ public class LoginController {
     private UserService userService;
 
     /**
-     * 将验证码保存到session中
+     * 将验证码保存到session中(前端js生成的验证码)
      *
-     * @param verify
+     * @param // verify
      */
-   /* @RequestMapping("/saveVerify")
+    /*@RequestMapping("/saveVerify")
     public String saveVerify(@RequestParam("verify") String verify) {
 
         //验证码保存成功
@@ -49,6 +47,12 @@ public class LoginController {
 
         return "suc";
     }*/
+
+    /**
+     * 使用java生成的验证码
+     * @param response
+     * @param request
+     */
     @GetMapping("/saveVerify")
     public void saveVerifyImg(HttpServletResponse response, HttpServletRequest request) {
         try {

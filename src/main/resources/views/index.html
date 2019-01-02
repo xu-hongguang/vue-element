@@ -213,9 +213,6 @@
                 element.webkitRequestFullscreen();
             } else if (element.msRequestFullscreen) {
                 element.msRequestFullscreen();
-            } else {
-                $MB.n_info("当前浏览器不支持全屏或已被禁用！");
-                $this.text("全屏");
             }
         } else {
             elem = document;
@@ -231,6 +228,7 @@
             }
         }
     }
+
 </script>
 
 <!--<script src="js/index.js"></script>-->

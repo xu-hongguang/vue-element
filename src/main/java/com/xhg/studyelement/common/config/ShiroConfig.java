@@ -21,6 +21,9 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 
 import java.util.*;
 
+/**
+ * @author Eddy.Xu
+ */
 @Configuration
 public class ShiroConfig {
 

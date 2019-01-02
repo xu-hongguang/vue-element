@@ -5,15 +5,8 @@
     <title>登录</title>
     <link rel="icon" href="favicon.ico" mce_href="favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="favicon.ico" mce_href="favicon.ico" type="image/x-icon">
-    <!--<link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
-    <script src="js/jquery.min.js"></script>
-    &lt;!&ndash; import Vue before Element &ndash;&gt;
-    <script src="vue/dist/vue.min.js"></script>
-    <script src="axios/dist/axios.min.js"></script>
-    &lt;!&ndash; import element-ui JavaScript &ndash;&gt;
-    <script src="element-ui/lib/index.js"></script>-->
     <script src="js/customer/resource.js"></script>
-    <script src="js/util/verify.js"></script>
+    <!--<script src="js/util/verify.js"></script>-->
     <style>
         [v-cloak] {
             display: none;
@@ -57,7 +50,7 @@
                 <img class="pointer" :src="src" alt="如果看不清楚，请单击图片刷新！" @click="refreshCode" style="width:120px;border-radius: 4px;position: relative;left: 108px;top: -33px;">
             </el-form-item>
             <el-form-item align="left" style="width: 350px" prop="rememberMe">
-                <el-checkbox v-model="user.rememberMe" :name="rememberMe" autocomplete="off">记住我</el-checkbox>
+                <el-checkbox v-model="user.rememberMe" name="rememberMe" autocomplete="off">记住我</el-checkbox>
             </el-form-item>
             <el-form-item align="left">
                 <el-button v-show="showlogin" type="primary" @click="submitForm('user')">登 录</el-button>
@@ -103,7 +96,7 @@
                 }
             },
             mounted: function () {
-                init();
+                // init();
                 // updateVerify();
             },
             methods: {
@@ -170,7 +163,7 @@
                                 vm.showlogin = true;
                                 vm.showloging = false;
                                 //更新验证码
-                                // updateVerify();
+                                // updateVerify(); //js的验证码更新
                                 vm.refreshCode();
                                 vm.open(data.msg, "error");
                             }
