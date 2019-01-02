@@ -38,10 +38,11 @@ public class GoController {
     }
 
     @GetMapping("/toUpdate")
-    public String update(String username, Map<String,Object> map){
+    public String update(String username,Integer pageNo, Map<String,Object> map){
 
         System.out.println(username);
         map.put("username", username);
+        map.put("pageNo", pageNo);
 
         return "element/updateUser";
     }

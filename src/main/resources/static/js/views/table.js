@@ -77,6 +77,8 @@ const vm = new Vue({
             }
         };
 
+        this.getUserList(this.currentPage);
+
         // 实例化editor编辑器
         // UE.getEditor('editor');
     }
@@ -214,7 +216,7 @@ const vm = new Vue({
          */
         getUserList: function (pageNo) {
             //显示加载
-            vm.listLoading = true;
+            this.listLoading = true;
             if (!isNaN(pageNo)) {
                 this.currentPage = pageNo;
             }
@@ -262,7 +264,7 @@ const vm = new Vue({
             // 使用axios方式与后台交互，全版
             axios({
                 method: 'get',
-                url: 'userList/' + pageNo + '/' + vm.pageSize + '?username=' + vm.username1,
+                url: 'userList/' + pageNo + '/' + this.pageSize + '?username=' + this.username1,
                 data: {},
                 dataType: 'json'
             }).then(function (response) {
@@ -716,8 +718,6 @@ const vm = new Vue({
     }
     ,
 });
-
-vm.getUserList(vm.currentPage);
 
 function format2(value) {
     if (value < 10) {

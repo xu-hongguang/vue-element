@@ -26,9 +26,9 @@ public interface User1Service {
 
     User1 findByUsername(String username);
 
-    boolean saveUser(User1 user);
+    User1 saveUser(User1 user);
 
-    boolean updateUser(User1 user);
+    User1 updateUser(User1 user);
 
     void deleteUser(Integer id);
 

@@ -63,7 +63,7 @@ public class PageController {
 
         logger.info("user1: " + user1);
 
-        return R.ok().put("user1",user1);
+        return R.ok().put("user1", user1);
     }
 
     /**
@@ -78,7 +78,7 @@ public class PageController {
     public String add(@RequestBody User1 user) {
         logger.info("添加：" + user);
 
-        if (user != null && user1Service.saveUser(user)) {
+        if (user != null && user1Service.saveUser(user) != null) {
             return "suc";
         }
 
@@ -97,7 +97,7 @@ public class PageController {
     public String update(@RequestBody User1 user) {
         logger.info("修改为：" + user);
 
-        if (user != null && user1Service.updateUser(user)) {
+        if (user != null && user1Service.updateUser(user) != null) {
             return "suc";
         }
         return "err";

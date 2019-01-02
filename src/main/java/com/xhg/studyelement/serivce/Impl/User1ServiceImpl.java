@@ -139,26 +139,26 @@ public class User1ServiceImpl implements User1Service {
     @Override
 //    删除所有缓存
     @CacheEvict(allEntries = true)
-    public boolean saveUser(User1 user) {
+    public User1 saveUser(User1 user) {
         User1 user1 = user1Repository.findByUsername(user.getUsername());
         logger.info("对比：" + user1);
         boolean isSave = false;
         if (user1 == null) {
 //            user.setCreateDate(new Date());
-            user1Repository.save(user);
-            isSave = true;
+            return user1Repository.save(user);
+//            isSave = true;
         }
-        return isSave;
+        return null;
     }
 
     @Override
-    @CachePut(key = "#p0.id")
-    public boolean updateUser(User1 user) {
+    @CachePut(key = "#p0.username")
+    public User1 updateUser(User1 user) {
         if (user != null) {
-            user1Repository.save(user);
-            return true;
+            return user1Repository.save(user);
+//            return true;
         }
-        return false;
+        return null;
     }
 
     @Override

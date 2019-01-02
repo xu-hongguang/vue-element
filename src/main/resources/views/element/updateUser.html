@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>表格</title>
+    <title>修改</title>
     <script src="js/customer/resource.js"></script>
     <!--引入ueditor-->
     <script src="ueditor/ueditor.config.js"></script>
@@ -74,46 +74,47 @@
             font-size: 14px;
         }
 
+        .el-date-picker{
+            z-index: 9999 !important;
+        }
+
     </style>
 </head>
 <body>
-<iframe id="ifile" style="display: none;"></iframe>
 <div id="app">
-    <template>
-        <el-form :model="user" :rules="rules" ref="user">
-            <!--用于spring data jpa修改数据，必须要主键-->
-            <input type="hidden" v-model="user.id">
-            <el-form-item label="用户名" prop="username" :label-width="formLabelWidth">
-                <el-col>
-                    <el-input v-model="user.username" autocomplete="off"></el-input>
-                </el-col>
-            </el-form-item>
-            <el-form-item label="密 码" prop="password" :label-width="formLabelWidth">
-                <el-col>
-                    <el-input v-model="user.password" autocomplete="off"></el-input>
-                </el-col>
-            </el-form-item>
-            <el-form-item label="创建日期" prop="createDate" :label-width="formLabelWidth">
-                <el-col>
-                    <el-date-picker type="date" placeholder="选择日期" v-model="user.createDate"
-                                    :clearable="false" :editable="false"
-                                    :picker-options="createDateOptions"
-                                    format="yyyy-MM-dd" value-format="yyyy-MM-dd"
-                                    @change="createDateChange" style="width: 100%">
-                    </el-date-picker>
-                </el-col>
-            </el-form-item>
-            <el-form-item label="店铺介绍" prop="remark" :label-width="formLabelWidth">
-                <el-col>
-                    <div type="text/plain" id="editor"></div>
-                </el-col>
-            </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
+    <el-form :model="user" :rules="rules" ref="user">
+        <!--用于spring data jpa修改数据，必须要主键-->
+        <input type="hidden" v-model="user.id">
+        <el-form-item label="用户名" prop="username" :label-width="formLabelWidth">
+            <el-col>
+                <el-input v-model="user.username" autocomplete="off"></el-input>
+            </el-col>
+        </el-form-item>
+        <el-form-item label="密 码" prop="password" :label-width="formLabelWidth">
+            <el-col>
+                <el-input v-model="user.password" autocomplete="off"></el-input>
+            </el-col>
+        </el-form-item>
+        <el-form-item label="创建日期" prop="createDate" :label-width="formLabelWidth">
+            <el-col>
+                <el-date-picker type="date" placeholder="选择日期" v-model="user.createDate"
+                                :clearable="false" :editable="false"
+                                :picker-options="createDateOptions"
+                                format="yyyy-MM-dd" value-format="yyyy-MM-dd"
+                                @change="createDateChange" style="width: 100%">
+                </el-date-picker>
+            </el-col>
+        </el-form-item>
+        <el-form-item label="店铺介绍" prop="remark" :label-width="formLabelWidth">
+            <el-col>
+                <div type="text/plain" id="editor1"></div>
+            </el-col>
+        </el-form-item>
+        <el-form-item align="right">
             <el-button @click="returnUp">返 回</el-button>
             <el-button type="primary" @click="submitForm('user',updateUser)">保 存</el-button>
-        </div>
-    </template>
+        </el-form-item>
+    </el-form>
 </div>
 </body>
 
@@ -121,10 +122,12 @@
     const vm = new Vue({
         el: "#app",
         data: {
+            pageNo: [[${pageNo}]],
+
             //表单数据
             user: {
                 id: 0,
-                username: '',
+                username: [[${username}]],
                 password: '',
                 createDate: new Date().getFullYear() + "-" + format2(new Date().getMonth() + 1) + "-" + format2(new Date().getDate()),
                 remark: ''
@@ -147,7 +150,7 @@
 
             createDateOptions: {},
 
-            editor: null
+            editor1: null
         },
         mounted: function () {
             //设置日期显示规则
@@ -158,17 +161,17 @@
                 }
             };
 
+            this.editor1 = UE.getEditor("editor1");
             this.getUser1();
         },
         destroyed: function () {
-            this.editor.destroy();
+            this.editor1.destroy();
         },
         methods: {
             //日期实时改变
             createDateChange: function (val) {
                 vm.user.createDate = val;
             },
-
 
 
             //提交表单,成功则执行isFunction()方法
@@ -185,25 +188,26 @@
                 });
             },
 
-            returnUp: function(){
+            returnUp: function () {
                 history.back();
             },
 
             getUser1: function () {
-                this.editor = UE.getEditor("editor");
-
-                axios.get("userOne?username=" + [[${username}]]).then(function(res){
-                    let data = res.body.user1;
+                axios.get("userOne?username=" + this.user.username).then(function (res) {
+                    let data = res.data.user1;
                     vm.user.id = data.id;
                     vm.user.username = data.username;
                     vm.user.password = data.password;
                     vm.user.createDate = data.createDate;
-                    // vm.user.remark = data.remark;
-                    vm.editor.setContent(data.remark)
+                    const remark = data.remark;
+                    console.log(remark);
+                    vm.editor1.ready(function () {
+                        vm.editor1.setContent(remark)
+                    })
                 })
             },
             updateUser: function () {
-                let remark = this.editor.getContent();
+                const remark = this.editor1.getContent();
 
                 const data = {
                     id: vm.user.id,
@@ -224,8 +228,9 @@
                 }).then(function (response) {
                     //.data不可去
                     if (response.data === 'suc') {
-                        alert("修改成功!");
-                        location.href = 'userList/1/5';
+                        alert("修改成功!",function () {
+                            location.href = 'table';
+                        });
                     } else {
                         vm.open('修改失败！', 'error')
                     }
@@ -242,6 +247,7 @@
             },
         }
     });
+
     function format2(value) {
         if (value < 10) {
             return "0" + value;
