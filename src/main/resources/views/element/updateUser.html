@@ -193,7 +193,7 @@
                 this.editor = UE.getEditor("editor");
 
                 axios.get("userOne?username=" + [[${username}]]).then(function(res){
-                    let data = res.body;
+                    let data = res.body.user1;
                     vm.user.id = data.id;
                     vm.user.username = data.username;
                     vm.user.password = data.password;

@@ -1,6 +1,5 @@
 package com.xhg.studyelement.controller;
 
-import com.google.gson.Gson;
 import com.xhg.studyelement.common.utils.R;
 import com.xhg.studyelement.pojo.User1;
 import com.xhg.studyelement.serivce.User1Service;
@@ -59,12 +58,12 @@ public class PageController {
     @RequestMapping("/userOne")
     @RequiresPermissions("user:userOne")
     @PermissionName("查询用户")
-    public String userOne(String username) {
+    public R userOne(String username) {
         User1 user1 = user1Service.findByUsername(username);
 
         logger.info("user1: " + user1);
 
-        return new Gson().toJson(user1);
+        return R.ok().put("user1",user1);
     }
 
     /**
