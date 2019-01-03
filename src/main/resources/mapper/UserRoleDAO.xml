@@ -9,7 +9,7 @@
     insert into user_role (user_id, role_id)
     values (#{userId,jdbcType=BIGINT}, #{roleId,jdbcType=BIGINT})
   </insert>
-  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="" parameterType="com.xhg.studyelement.shiro.domain.UserRole">
+  <insert id="insertSelective" parameterType="com.xhg.studyelement.shiro.domain.UserRole">
     insert into user_role
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="userId != null">

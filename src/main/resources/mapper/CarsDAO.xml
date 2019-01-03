@@ -42,7 +42,7 @@
     values (#{id,jdbcType=INTEGER}, #{carnumber,jdbcType=VARCHAR}, #{driver,jdbcType=VARCHAR}
       )
   </insert>
-    <insert id="insertSelective" parameterType="com.xhg.studyelement.shiro.domain.Cars">
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="com.xhg.studyelement.shiro.domain.Cars">
         insert into cars
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">

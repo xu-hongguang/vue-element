@@ -1,6 +1,7 @@
 package com.xhg.studyelement.shiro.dao;
 
 import com.xhg.studyelement.StudyelementApplication;
+import com.xhg.studyelement.shiro.domain.Cars;
 import com.xhg.studyelement.shiro.domain.UserRole;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,14 +14,17 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class CarsDAOTest {
 
     @Autowired
-    UserRoleDAO userRoleDAO;
+    CarsDAO carsDAO;
+
     @Test
     public void insertSelective() {
-        UserRole cars = new UserRole();
-        cars.setUserId(2L);
-        cars.setRoleId(2L);
-        int cars1 = userRoleDAO.insertSelective(cars);
+        Cars cars = new Cars();
+//        cars.setId(8);
+        cars.setDriver("萨达6");
+        cars.setCarnumber("苏H3456");
+        carsDAO.insertSelective(cars);
 
-        System.out.println(cars1);
+        //此时主键值已经赋给对象cars
+        System.out.println(cars);
     }
 }
