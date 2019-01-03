@@ -74,7 +74,7 @@
             font-size: 14px;
         }
 
-        .el-date-picker{
+        .el-date-picker {
             z-index: 9999 !important;
         }
 
@@ -111,7 +111,7 @@
             </el-col>
         </el-form-item>
         <el-form-item align="right">
-            <el-button @click="returnUp">返 回</el-button>
+            <el-button @click="returnUp">取 消</el-button>
             <el-button type="primary" @click="submitForm('user',updateUser)">保 存</el-button>
         </el-form-item>
     </el-form>
@@ -126,7 +126,7 @@
 
             //表单数据
             user: {
-                id: 0,
+                id: [[${id}]],
                 username: [[${username}]],
                 password: '',
                 createDate: new Date().getFullYear() + "-" + format2(new Date().getMonth() + 1) + "-" + format2(new Date().getDate()),
@@ -189,11 +189,12 @@
             },
 
             returnUp: function () {
-                history.back();
+                // history.back();
+                location.href = "table";
             },
 
             getUser1: function () {
-                axios.get("userOne?username=" + this.user.username).then(function (res) {
+                axios.get("userOne?username=" + this.user.username + "&id=" + this.user.id).then(function (res) {
                     let data = res.data.user1;
                     vm.user.id = data.id;
                     vm.user.username = data.username;
@@ -228,11 +229,11 @@
                 }).then(function (response) {
                     //.data不可去
                     if (response.data === 'suc') {
-                        alert("修改成功!",function () {
-                            location.href = 'table';
+                        alert("修改成功!", function () {
+                            location.href = 'table?pageNo=' + vm.pageNo;
                         });
                     } else {
-                        vm.open('修改失败！', 'error')
+                        vm.open('修改失败, 用户名已存在！', 'error')
                     }
                 })
             },

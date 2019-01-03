@@ -16,6 +16,8 @@ public interface User1Repository extends JpaRepository<User1, Integer>, JpaSpeci
      */
     User1 findByUsername(String username);
 
+    void deleteByUsername(String username);
+
     @Query(value = "select * from user1 where id = ?1",nativeQuery = true)
     User1 selectById(Integer id);
 

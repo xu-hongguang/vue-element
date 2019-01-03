@@ -58,8 +58,8 @@ public class PageController {
     @RequestMapping("/userOne")
     @RequiresPermissions("user:userOne")
     @PermissionName("查询用户")
-    public R userOne(String username) {
-        User1 user1 = user1Service.findByUsername(username);
+    public R userOne(String username,Integer id) {
+        User1 user1 = user1Service.findByUsername(id,username);
 
         logger.info("user1: " + user1);
 

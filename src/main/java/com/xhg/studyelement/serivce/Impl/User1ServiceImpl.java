@@ -117,7 +117,6 @@ public class User1ServiceImpl implements User1Service {
                 map.put("errorEntityList", entityMap.get("errorEntityList"));
                 map.put("repeatEntityList", entityMap.get("repeatEntityList"));
             } else {
-                // LOGGER.info("读取到excel无数据");
                 map.put("success", Boolean.FALSE);
                 map.put("reason", "excel中无数据！");
             }
@@ -132,31 +131,38 @@ public class User1ServiceImpl implements User1Service {
 
     @Override
     @Cacheable(key = "#p0")
-    public User1 findByUsername(String username) {
+    public User1 findByUsername(Integer id,String username) {
         return user1Repository.findByUsername(username);
     }
 
+    /**
+     * @CacheEvict(allEntries = true) 表示删除所有缓存
+     *
+     * @param user
+     * @return user1
+     */
     @Override
-//    删除所有缓存
     @CacheEvict(allEntries = true)
     public User1 saveUser(User1 user) {
         User1 user1 = user1Repository.findByUsername(user.getUsername());
         logger.info("对比：" + user1);
-        boolean isSave = false;
         if (user1 == null) {
-//            user.setCreateDate(new Date());
             return user1Repository.save(user);
-//            isSave = true;
         }
         return null;
     }
 
     @Override
-    @CachePut(key = "#p0.username")
+    @CachePut(key = "#p0.id",condition = "#result != null")
     public User1 updateUser(User1 user) {
-        if (user != null) {
+
+        User1 user1 = user1Repository.findByUsername(user.getUsername());
+        logger.info("对比：" + user1);
+        // 如果user1不为空,并且两个是同一个数据(根据id判断是否是同一个数据)那么用户名是可重复的
+        boolean u = user1 != null && user.getId().equals(user1.getId());
+
+        if (u || user1 == null) {
             return user1Repository.save(user);
-//            return true;
         }
         return null;
     }

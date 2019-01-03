@@ -1,4 +1,3 @@
-Vue.component('UE', {});
 
 const vm = new Vue({
     el: '#app',
@@ -76,6 +75,7 @@ const vm = new Vue({
                 return time.getTime() <= currentTime.getTime();
             }
         };
+
 
         this.getUserList(this.currentPage);
 
@@ -332,7 +332,7 @@ const vm = new Vue({
                     vm.editor.setContent("");
                     vm.getUserList(vm.currentPage)
                 } else {
-                    vm.open('保存失败！', 'error')
+                    vm.open('保存失败, 用户名已存在！', 'error')
                 }
             }).catch(function () {
                 vm.open('保存失败！', 'error')
@@ -545,7 +545,7 @@ const vm = new Vue({
             this.user.remark = vm.userList[index].remark;*/
             // this.editor2.setContent(vm.userList[index].remark)
 
-            location.href = 'toUpdate?username=' + vm.userList[index].username;
+            location.href = 'toUpdate?username=' + vm.userList[index].username + '&pageNo=' + vm.currentPage + '&id=' + vm.userList[index].id;
         },
 
         /**

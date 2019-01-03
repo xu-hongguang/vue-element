@@ -24,7 +24,7 @@ public interface User1Service {
      */
     Map<String,Object> parseExcel(MultipartFile multipartFile);
 
-    User1 findByUsername(String username);
+    User1 findByUsername(Integer id,String username);
 
     User1 saveUser(User1 user);
 

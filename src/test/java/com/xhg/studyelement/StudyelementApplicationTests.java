@@ -52,7 +52,6 @@ public class StudyelementApplicationTests {
     @Test
     public void  test2(){
 		user1Service.deleteUser(5);
-
 	}
 
 	@Autowired
