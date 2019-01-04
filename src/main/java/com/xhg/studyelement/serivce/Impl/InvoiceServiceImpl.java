@@ -67,8 +67,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 //            指定关联属性
             root.join("user1", JoinType.INNER);
             List<Predicate> predicateList = new ArrayList<>();
-            predicateList.add(criteriaBuilder.equal(root.get("user1").get("id"), 4));
-            predicateList.add(criteriaBuilder.like(root.get("user1").get("username"),  username));
+            predicateList.add(criteriaBuilder.equal(root.get("user1").get("id"), 48));
+            predicateList.add(criteriaBuilder.like(root.get("user1").get("username"),  "%" + username + "%"));
             predicateList.add(criteriaBuilder.greaterThanOrEqualTo(root.get("invoicePrice"), 500));
 
             Predicate[] predicates = new Predicate[predicateList.size()];

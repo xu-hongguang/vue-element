@@ -3,6 +3,7 @@ package com.xhg.studyelement.shiro.web.controller;
 import com.xhg.studyelement.common.utils.MD5Utils;
 import com.xhg.studyelement.common.utils.R;
 import com.xhg.studyelement.common.utils.ShiroUtils;
+import com.xhg.studyelement.common.utils.VerifyCodeUtils;
 import com.xhg.studyelement.common.utils.vcode.Captcha;
 import com.xhg.studyelement.common.utils.vcode.GifCaptcha;
 import com.xhg.studyelement.shiro.domain.User;
@@ -13,8 +14,11 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
@@ -49,7 +53,7 @@ public class LoginController {
     }*/
 
     /**
-     * 使用java生成的验证码
+     * 使用java生成的动态验证码
      * @param response
      * @param request
      */
@@ -62,12 +66,42 @@ public class LoginController {
             response.setContentType("image/gif");
 
             Captcha captcha = new GifCaptcha(146, 42, 4);
-            captcha.out(response.getOutputStream());
+            //输出图片
+            ServletOutputStream out = response.getOutputStream();
+            captcha.out(out);
+            out.flush();
+            //存入Shiro会话session
             ShiroUtils.setSessionAttribute(V_CODE, captcha.text().toLowerCase());
 
             logger.info("验证码保存成功! ");
         } catch (Exception e) {
             logger.error("图形验证码生成失败", e);
+        }
+    }
+
+    /**
+     * 获取验证码
+     * @param response
+     */
+//    @RequestMapping(value="saveVerify",method=RequestMethod.GET)
+    public void getVCode(HttpServletResponse response,HttpServletRequest request){
+        try {
+            response.setHeader("Pragma", "No-cache");
+            response.setHeader("Cache-Control", "no-cache");
+            response.setDateHeader("Expires", 0);
+            response.setContentType("image/jpg");
+
+            //生成随机字串
+            String verifyCode = VerifyCodeUtils.generateVerifyCode(4);
+            //存入Shiro会话session
+            ShiroUtils.setSessionAttribute(V_CODE, verifyCode.toLowerCase());
+            //生成图片
+            int w = 146, h = 42;
+            VerifyCodeUtils.outputImage(w, h, response.getOutputStream(), verifyCode);
+
+            logger.info("验证码保存成功! ");
+        } catch (Exception e) {
+            logger.error("获取验证码异常：%s",e.getMessage());
         }
     }
 

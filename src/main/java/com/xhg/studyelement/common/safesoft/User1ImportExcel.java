@@ -76,7 +76,7 @@ public class User1ImportExcel extends AbstractImportExcel {
 
         //创建日期
         final String createDate = getCellData(row, 3);
-        user1.setCreateDate(formatDate(createDate, "yyyy-MM-dd"));
+        user1.setCreateDate(formatDate(createDate));
 
         //描述
         final String remark = getCellData(row, 4);
@@ -85,8 +85,8 @@ public class User1ImportExcel extends AbstractImportExcel {
         return user1;
     }
 
-    private Date formatDate(String date, String pattern) {
-        SimpleDateFormat format = new SimpleDateFormat(pattern);
+    private Date formatDate(String date) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date d = null;
         try {
             d = format.parse(date);

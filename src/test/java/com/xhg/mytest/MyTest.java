@@ -1,12 +1,51 @@
 package com.xhg.mytest;
 
 import com.google.common.collect.Lists;
+import com.google.common.primitives.Shorts;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 import java.io.*;
 import java.util.List;
 
 public class MyTest {
+    @Test
+    public void test1() {
+        short[] shortArray = {1,2,3,4,5,6,7,8,9};
+
+        //convert array of primitives to array of objects
+        List<Short> objectArray = Shorts.asList(shortArray);
+        System.out.println(objectArray.toString());
+        System.out.println(Shorts.join("->",shortArray));
+
+        //convert array of objects to array of primitives
+        shortArray = Shorts.toArray(objectArray);
+        System.out.print("[ ");
+        for (short aShortArray : shortArray) {
+            System.out.print(aShortArray + " ");
+        }
+        System.out.println("]");
+        short data = 5;
+        //check if element is present in the list of primitives or not
+        System.out.println("5 is in list? "+ Shorts.contains(shortArray, data));
+
+        //Returns the minimum
+        System.out.println("Min: " + Shorts.min(shortArray));
+
+        //Returns the maximum
+        System.out.println("Max: " + Shorts.max(shortArray));
+        data = 2400;
+        //get the byte array from an integer
+        byte[] byteArray = Shorts.toByteArray(data);
+        for (byte aByteArray : byteArray) {
+            System.out.print(aByteArray + " ");
+        }
+        System.out.println();
+        String join = StringUtils.join(new String[]{"权限分配", "角色列表删除", "权限分配", "权限添加", "用户角色分配清空", "角色列表添加"}, ",");
+        System.out.println(join);
+    }
+
+
     @Test
     public void test() {
         User[] users = new User[]{new User(1, "admin", "admin@qq.com"),

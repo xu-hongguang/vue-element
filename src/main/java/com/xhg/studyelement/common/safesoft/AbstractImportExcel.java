@@ -29,7 +29,7 @@ public abstract class AbstractImportExcel {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractImportExcel.class);
 
-    //根据文件名获取模板类
+    /** 根据文件名获取模板类 */
     protected Workbook getWorkBook(MultipartFile file) throws ExcelException {
         final Workbook workbook;
         try {
@@ -48,7 +48,7 @@ public abstract class AbstractImportExcel {
     }
 
 
-    //通过excel一格数据，获取对象单个属性
+    /** 通过excel一格数据，获取对象单个属性 */
     protected String getCellData(Row row, int cellNum) {
         Cell cell = row.getCell(cellNum);
         if (cell == null) {

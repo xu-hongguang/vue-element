@@ -87,7 +87,7 @@ public class User1AndInvoiceMapperTest {
     @Test
     public void testPage(){
 
-        Page<Invoice> invoicePage = invoiceService.findAllByInvoiceName(1,2,"xhg");
+        Page<Invoice> invoicePage = invoiceService.findAllByInvoiceName(1,2,"新店");
 
 
         System.out.println("查询总条数：" + invoicePage.getTotalElements());
