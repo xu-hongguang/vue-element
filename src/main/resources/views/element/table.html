@@ -166,38 +166,14 @@
                   @selection-change="handleSelectionChange"
                   v-loading="listLoading"
                   element-loading-text="正在拼命加载中">
-            <el-table-column
-                    type="selection"
-                    width="55"
-                    prop="id"
-                    align="center">
-            </el-table-column>
+            <el-table-column type="selection" width="55" prop="id" align="center"></el-table-column>
             <el-table-column :show-overflow-tooltip="true" type="index" width="70" :index="mainIndex" label="序号"
                              align="center"></el-table-column>
-            <el-table-column
-                    prop="id"
-                    label="编号"
-                    align="center">
-            </el-table-column>
-            <el-table-column
-                    prop="username"
-                    label="用户名"
-                    align="center">
-            </el-table-column>
-            <el-table-column
-                    prop="password"
-                    label="密码"
-                    align="center">
-            </el-table-column>
-            <el-table-column
-                    prop="createDate"
-                    label="创建日期"
-                    align="center" :formatter="dateFormat">
-            </el-table-column>
-            <el-table-column
-                    prop="remark"
-                    label="店铺介绍"
-                    align="center" :formatter="tableDataFormat">
+            <el-table-column prop="id" label="编号" align="center"></el-table-column>
+            <el-table-column prop="username" label="用户名" align="center"></el-table-column>
+            <el-table-column prop="password" label="密码" align="center"></el-table-column>
+            <el-table-column prop="createDate" label="创建日期" align="center" :formatter="dateFormat"></el-table-column>
+            <el-table-column prop="remark" label="店铺介绍" align="center" :formatter="tableDataFormat">
                 <template slot-scope="scope">
                     <div v-if='scope.row.remark == null || scope.row.remark.length === 0'>—— ——</div>
                     <!--显示html代码串-->
@@ -208,13 +184,10 @@
                              shiro:hasAnyPermissions="user:updateUser,user:removeUser">
                 <template slot-scope="scope">
                     <!--跳转到编辑弹出框-->
-                    <el-button shiro:hasPermission="user:updateUser"
-                               size="mini"
+                    <el-button shiro:hasPermission="user:updateUser" size="mini"
                                @click="handleEdit(scope.$index, scope.row)" icon="el-icon-edit-outline">编辑
                     </el-button>
-                    <el-button shiro:hasPermission="user:removeUser"
-                               size="mini"
-                               type="danger"
+                    <el-button shiro:hasPermission="user:removeUser" size="mini" type="danger"
                                @click="open2(scope.$index, scope.row)" icon="el-icon-delete">删除
                     </el-button>
                     <!--编辑弹出框内容-->
@@ -259,15 +232,9 @@
     </template>
     <!--分页  默认layout="total, sizes, prev, pager, next, jumper" -->
     <div class="block" style="padding:0.1rem;">
-        <el-pagination style="float: right"
-                       background
-                       @size-change="handleSizeChange"
-                       @current-change="handleCurrentChange"
-                       :current-page="currentPage"
-                       :page-sizes="pageSizes"
-                       :page-size="pageSize"
-                       layout="slot, sizes, prev, pager, next"
-                       :total="total">
+        <el-pagination style="float: right" background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                       :current-page="currentPage" :page-sizes="pageSizes" :page-size="pageSize"
+                       layout="slot, sizes, prev, pager, next" :total="total">
             <span>共{{total}}条记录，第{{currentPage}}页，共{{totalPage}}页</span>
         </el-pagination>
     </div>
