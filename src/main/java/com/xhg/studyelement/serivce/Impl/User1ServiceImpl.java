@@ -114,6 +114,8 @@ public class User1ServiceImpl implements User1Service {
                 // 表格中准备导入的总数据数量
                 map.put("importTotalCount", entityMap.get("successEntityList").size() + entityMap.get("errorEntityList").size() + entityMap.get("repeatEntityList").size());
                 map.put("reason", entityMap.get("successEntityList"));
+                //保存所有符合条件的数据
+                user1Repository.saveAll(entityMap.get("successEntityList"));
                 map.put("errorEntityList", entityMap.get("errorEntityList"));
                 map.put("repeatEntityList", entityMap.get("repeatEntityList"));
             } else {
@@ -211,7 +213,8 @@ public class User1ServiceImpl implements User1Service {
                         repeatEntityList.add(user1Data);
                     } else {
                         successEntityList.add(user1Data);
-                        user1Repository.save(user1Data);
+                        //单条保存
+//                        user1Repository.save(user1Data);
                     }
 //                } else {
 //                    repeatCount++;
@@ -225,9 +228,11 @@ public class User1ServiceImpl implements User1Service {
 
         if (errorEntityList.size() == 0 && repeatEntityList.size() == 0) {
             //如果都校验通过，保存入库
-            for (User1 user1 : successEntityList) {
+            /*for (User1 user1 : successEntityList) {
+                //单条保存
                 user1Repository.save(user1);
-            }
+            }*/
+            user1Repository.saveAll(successEntityList);
         }
 
         map.put("successEntityList", successEntityList);
