@@ -80,7 +80,7 @@ public class LoginController {
     }
 
     /**
-     * 获取验证码
+     * 获取静态验证码
      * @param response
      */
 //    @RequestMapping(value="saveVerify",method=RequestMethod.GET)
