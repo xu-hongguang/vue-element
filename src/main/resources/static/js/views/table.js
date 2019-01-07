@@ -1,4 +1,3 @@
-
 const vm = new Vue({
     el: '#app',
     data: {
@@ -81,8 +80,7 @@ const vm = new Vue({
 
         // 实例化editor编辑器
         // UE.getEditor('editor');
-    }
-    ,
+    },
     watch: {
         'user.username':
             {
@@ -100,8 +98,7 @@ const vm = new Vue({
     destroyed: function () {
         this.editor.destroy();
         // this.editor2.destroy();
-    }
-    ,
+    },
     methods: {
         //日期实时改变
         createDateChange: function (val) {
@@ -164,8 +161,7 @@ const vm = new Vue({
             // this.editor2.setContent('');
             this.$refs[formName].resetFields();
             // this.editor2.destroy();
-        }
-        ,
+        },
         //提交表单,成功则执行isFunction()方法
         submitForm: function (formName, isFunction) {
             this.$refs[formName].validate(function (valid) {
@@ -178,8 +174,7 @@ const vm = new Vue({
                     return false;
                 }
             });
-        }
-        ,
+        },
         //保存重置表单
         resetForm: function (formName) {
             vm.dialogFormVisible = false;
@@ -198,16 +193,14 @@ const vm = new Vue({
                 vm.pageSize = val;
                 vm.getUserList(vm.currentPage);
             }
-        }
-        ,
+        },
         handleCurrentChange: function (currentPage) {
             if (vm.total > 0) {
                 console.log(`当前页: ${currentPage}`);
                 vm.currentPage = currentPage;
                 vm.getUserList(currentPage);
             }
-        }
-        ,
+        },
 
         /**
          * 查询分页用户列表
@@ -297,8 +290,7 @@ const vm = new Vue({
             this.editor = UE.getEditor('editor');
             //打开保存弹窗
             vm.dialogFormVisible = true;
-        }
-        ,
+        },
         /**
          *  保存用户
          */
@@ -362,15 +354,13 @@ const vm = new Vue({
                     this.selectFileFlag = event.target.files[0].name;
                 }
             }
-        }
-        ,
+        },
         showSelectFileWin: function () {
             this.selectFileFlag = '';
             this.file = '';
             $("#upload_form")[0].reset();
             $("#file").click();
-        }
-        ,
+        },
         exportData: function () {
             document.getElementById("ifile").src = "export/UserExcelTemplate";
         },
@@ -504,24 +494,21 @@ const vm = new Vue({
                 s[1] += new Array(prec - s[1].length + 1).join('0');
             }
             return s.join(dec);
-        }
-        ,
+        },
         //给表格设置默认值
         tableDataFormat: function (row, column, cellValue) {
             if (cellValue == null) {
                 return '—— ——';
             }
             return cellValue;
-        }
-        ,
+        },
 
         /**
          * 导出Excel文件
          */
         exportUserExcel: function () {
             location.href = "export/userExcel"
-        }
-        ,
+        },
 
 
         /**
@@ -647,13 +634,11 @@ const vm = new Vue({
                 }
             })
 
-        }
-        ,
+        },
         //处理多选框改变
         handleSelectionChange: function (val) {
             vm.multipleSelection = val;
-        }
-        ,
+        },
         //获取删除数据的所有id
         getDeleteIds: function () {
             let ids = [];
@@ -661,8 +646,7 @@ const vm = new Vue({
                 ids.push(this.multipleSelection[i].id);
             }
             return ids;
-        }
-        ,
+        },
         //批量删除
         batchRemove: function () {
             if (this.multipleSelection.length === 0) {
