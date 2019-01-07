@@ -42,6 +42,7 @@
     values (#{id,jdbcType=INTEGER}, #{carnumber,jdbcType=VARCHAR}, #{driver,jdbcType=VARCHAR}
       )
   </insert>
+    <!-- useGeneratedKeys="true" keyProperty="id" keyColumn="id"这三个属性可以将主键id赋值到保存的对象上-->
     <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" keyColumn="id"
             parameterType="com.xhg.studyelement.shiro.domain.Cars">
         insert into cars
