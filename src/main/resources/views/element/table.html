@@ -62,13 +62,14 @@
             width: 200px;
             margin-bottom: 10px;
         }
-        span{
+
+        span {
             font-weight: 400;
         }
 
         /*调整ueditor编辑器编辑框的行高,默认40px*/
         .el-form-item__content {
-            line-height: 20px ;
+            line-height: 20px;
             position: relative;
             font-size: 14px;
         }
@@ -171,6 +172,8 @@
                     prop="id"
                     align="center">
             </el-table-column>
+            <el-table-column :show-overflow-tooltip="true" type="index" width="70" :index="mainIndex" label="序号"
+                             align="center"></el-table-column>
             <el-table-column
                     prop="id"
                     label="编号"

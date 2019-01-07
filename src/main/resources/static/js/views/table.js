@@ -705,6 +705,13 @@ const vm = new Vue({
             });
         },
 
+        /**
+         * 行号
+         */
+        mainIndex: function (index) {
+            return index + (this.currentPage - 1) * this.pageSize + 1;
+        },
+
         //提示窗
         open: function (message, type) {
             this.$message({
@@ -712,11 +719,9 @@ const vm = new Vue({
                 message: message,
                 type: type
             });
-        }
-        ,
+        },
 
-    }
-    ,
+    },
 });
 
 function format2(value) {

@@ -14,6 +14,8 @@ public interface CarsDAO {
 
     int insertSelective(Cars record);
 
+    int batchInsert(List<Cars> cars);
+
     Cars selectByPrimaryKey(Integer id);
 
     /**

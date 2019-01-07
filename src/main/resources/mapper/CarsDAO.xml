@@ -42,7 +42,8 @@
     values (#{id,jdbcType=INTEGER}, #{carnumber,jdbcType=VARCHAR}, #{driver,jdbcType=VARCHAR}
       )
   </insert>
-    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="com.xhg.studyelement.shiro.domain.Cars">
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" keyColumn="id"
+            parameterType="com.xhg.studyelement.shiro.domain.Cars">
         insert into cars
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -67,6 +68,25 @@
             </if>
         </trim>
     </insert>
+
+    <!--批量保存-->
+    <insert id="batchInsert" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="com.xhg.studyelement.shiro.domain.Cars">
+        insert into cars
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id,
+            carNumber,
+            driver,
+        </trim>
+        VALUES
+        <foreach collection="list" item="car" index="index" separator=",">
+            (
+            #{car.id,jdbcType=INTEGER},
+            #{car.carnumber,jdbcType=VARCHAR},
+            #{car.driver,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+
     <update id="updateByPrimaryKeySelective" parameterType="com.xhg.studyelement.shiro.domain.Cars">
         update cars
         <set>
