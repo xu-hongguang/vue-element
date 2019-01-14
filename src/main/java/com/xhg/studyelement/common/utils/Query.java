@@ -26,6 +26,7 @@ public class Query extends LinkedHashMap<String, Object> {
         //分页参数
         this.page = Integer.parseInt(params.get("page").toString());
         this.limit = Integer.parseInt(params.get("limit").toString());
+        //偏移量
         this.put("offset", (page - 1) * limit);
         this.put("page", page);
         this.put("limit", limit);

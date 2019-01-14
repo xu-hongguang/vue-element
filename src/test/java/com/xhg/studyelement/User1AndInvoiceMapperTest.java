@@ -1,11 +1,14 @@
 package com.xhg.studyelement;
 
+import com.xhg.studyelement.common.utils.PageUtils;
 import com.xhg.studyelement.dao.InvoiceRepository;
 import com.xhg.studyelement.dao.User1Repository;
 import com.xhg.studyelement.pojo.Invoice;
 import com.xhg.studyelement.pojo.User1;
 import com.xhg.studyelement.serivce.InvoiceService;
 import com.xhg.studyelement.serivce.User1Service;
+import com.xhg.studyelement.shiro.domain.User;
+import com.xhg.studyelement.shiro.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = StudyelementApplication.class)
@@ -25,6 +30,9 @@ public class User1AndInvoiceMapperTest {
 
     @Autowired
     private User1Service user1Service;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private InvoiceRepository invoiceRepository;
@@ -95,5 +103,17 @@ public class User1AndInvoiceMapperTest {
         System.out.println("当页记录数：" + invoicePage.getNumberOfElements());
         System.out.println("查到的数据：" + invoicePage.getContent());
 
+    }
+
+    @Test
+    public void testUsers(){
+        Map<String,Object> map = new HashMap<>(16);
+        map.put("page",1);
+        map.put("limit",2);
+        PageUtils<User> userAllPaging = userService.findUserAllPaging(map);
+        System.out.println("当前页数据:" + userAllPaging.getList());
+        System.out.println("总记录:" + userAllPaging.getTotalCount());
+        System.out.println("总页数:" + userAllPaging.getTotalPage());
+        System.out.println("页码:" + userAllPaging.getCurrPage());
     }
 }

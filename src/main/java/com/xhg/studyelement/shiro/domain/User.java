@@ -18,4 +18,7 @@ public class User implements Serializable {
     private String password;
     private String status;
     private Date createDate;
+    private String sex;
+    private String email;
+    private String phone;
 }
