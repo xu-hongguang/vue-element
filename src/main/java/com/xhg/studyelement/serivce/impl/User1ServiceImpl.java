@@ -1,4 +1,4 @@
-package com.xhg.studyelement.serivce.Impl;
+package com.xhg.studyelement.serivce.impl;
 
 import com.xhg.studyelement.common.safesoft.User1ImportExcel;
 import com.xhg.studyelement.dao.User1Repository;
@@ -133,15 +133,14 @@ public class User1ServiceImpl implements User1Service {
 
     @Override
     @Cacheable(key = "#p0")
-    public User1 findByUsername(Integer id,String username) {
+    public User1 findByUsername(Integer id, String username) {
         return user1Repository.findByUsername(username);
     }
 
     /**
-     * @CacheEvict(allEntries = true) 表示删除所有缓存
-     *
      * @param user
      * @return user1
+     * @CacheEvict(allEntries = true) 表示删除所有缓存
      */
     @Override
     @CacheEvict(allEntries = true)
@@ -155,7 +154,7 @@ public class User1ServiceImpl implements User1Service {
     }
 
     @Override
-    @CachePut(key = "#p0.id",condition = "#result != null")
+    @CachePut(key = "#p0.id", condition = "#result != null")
     public User1 updateUser(User1 user) {
 
         User1 user1 = user1Repository.findByUsername(user.getUsername());
@@ -195,31 +194,21 @@ public class User1ServiceImpl implements User1Service {
         final List<User1> repeatEntityList = newArrayList();
 
         user1List.forEach(user1Data -> {
-//            Integer user1Id = user1Data.getId();
             String username = user1Data.getUsername();
             String password = user1Data.getPassword();
             Date createDate = user1Data.getCreateDate();
             String remark = user1Data.getRemark();
 
             User1 user;
-            if (/*user1Id != null && */!username.isEmpty() && !password.isEmpty() && createDate != null && !remark.isEmpty() ) {
-                // 判断是否已经存在此用户id
-//                user = user1Repository.selectById(user1Id);
-//                if (user == null) {
-                    // 判断是否已经有此用户名
-                    user = user1Repository.findByUsername(username);
-                    if (user != null) {
-                        repeatCount++;
-                        repeatEntityList.add(user1Data);
-                    } else {
-                        successEntityList.add(user1Data);
-                        //单条保存
-//                        user1Repository.save(user1Data);
-                    }
-//                } else {
-//                    repeatCount++;
-//                    repeatEntityList.add(user1Data);
-//                }
+            if (!username.isEmpty() && !password.isEmpty() && createDate != null && !remark.isEmpty()) {
+                // 判断是否已经有此用户名
+                user = user1Repository.findByUsername(username);
+                if (user != null) {
+                    repeatCount++;
+                    repeatEntityList.add(user1Data);
+                } else {
+                    successEntityList.add(user1Data);
+                }
             } else {
                 errorCount++;
                 errorEntityList.add(user1Data);
@@ -228,10 +217,6 @@ public class User1ServiceImpl implements User1Service {
 
         if (errorEntityList.size() == 0 && repeatEntityList.size() == 0) {
             //如果都校验通过，保存入库
-            /*for (User1 user1 : successEntityList) {
-                //单条保存
-                user1Repository.save(user1);
-            }*/
             user1Repository.saveAll(successEntityList);
         }
 

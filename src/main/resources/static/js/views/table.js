@@ -410,14 +410,14 @@ const vm = new Vue({
                         if (response.data.repeatEntityList.length > 0) {
 
                             for (let i = 0; i < response.data.repeatEntityList.length; i++) {
-                                str = str + /*response.data.repeatEntityList[i].id + '和' + */response.data.repeatEntityList[i].username + "、";
+                                str = str + response.data.repeatEntityList[i].username + "、";
                             }
 
                         }
                         if (response.data.errorEntityList.length > 0) {
 
                             for (let i = 0; i < response.data.errorEntityList.length; i++) {
-                                str2 = str2 + /* response.data.errorEntityList[i].id + '和' +*/ response.data.errorEntityList[i].username + "、";
+                                str2 = str2 + response.data.errorEntityList[i].username + "、";
                             }
                         }
                         if (str === '') {
@@ -431,7 +431,9 @@ const vm = new Vue({
                             str2 = vm.formatStr(str2);
                         }
 
-                        alert("共计准备导入" + response.data.importTotalCount + "条，成功" + response.data.reason.length + "条；\n库里已存在" + response.data.repeatCount + "条，对应的用户名：" + str + "；\n错误数据" + response.data.errorEntityList.length + "条，对应用户名: " + str2 + "。");
+                        alert("共计准备导入" + response.data.importTotalCount + "条，成功" + response.data.reason.length + "条；\n库里已存在" +
+                            response.data.repeatCount + "条，对应的用户名：" + str + "；\n错误数据" +
+                            response.data.errorEntityList.length + "条，对应用户名: " + str2 + "。");
                         vm.getUserList(1);
                     } else {
                         vm.userList = vm.tempTableData;

@@ -1,4 +1,4 @@
-package com.xhg.studyelement.serivce.Impl;
+package com.xhg.studyelement.serivce.impl;
 
 import com.xhg.studyelement.dao.InvoiceRepository;
 import com.xhg.studyelement.pojo.Invoice;
