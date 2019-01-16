@@ -13,6 +13,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author 16033
+ */
 @Repository
 public class PermissionDAOImpl implements IPermissionDAO {
 
@@ -37,12 +40,7 @@ public class PermissionDAOImpl implements IPermissionDAO {
                 "           select role_id from user_role where user_id = ?)" +
                 "      );";
         try {
-            return template.query(sql, new RowMapper<String>() {
-                @Override
-                public String mapRow(ResultSet rs, int rowNum) throws SQLException {
-                    return rs.getString("resource");
-                }
-            }, userId);
+            return template.query(sql, (rs, rowNum) -> rs.getString("resource"), userId);
         }catch (Exception e){
             e.printStackTrace();
         }
