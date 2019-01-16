@@ -143,10 +143,7 @@ public class ShiroConfig {
         shiroFilter.setUnauthorizedUrl("noPermission.html");
 
         Map<String, String> filterMap = new HashMap<>(16);
-        filterMap.put("/logout", "logout");
         filterMap.put("/login", "anon");
-//        filterMap.put("/index.html", "anon");
-        filterMap.put("/noPermission.html", "anon");
         filterMap.put("/img/**", "anon");
         filterMap.put("/vue/**", "anon");
         filterMap.put("/axios/**", "anon");
@@ -155,6 +152,7 @@ public class ShiroConfig {
         filterMap.put("/userList/**", "anon");
         filterMap.put("/**/*.css", "anon");
         filterMap.put("/**/*.js", "anon");
+        filterMap.put("/logout", "logout");
         filterMap.put("/**", "authc");
         shiroFilter.setFilterChainDefinitionMap(filterMap);
 

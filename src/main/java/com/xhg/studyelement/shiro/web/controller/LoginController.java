@@ -14,12 +14,9 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
@@ -33,8 +30,12 @@ public class LoginController {
 
     private final String V_CODE = "v_code";
 
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public LoginController(UserService userService) {
+        this.userService = userService;
+    }
 
     /**
      * 将验证码保存到session中(前端js生成的验证码)
@@ -55,10 +56,9 @@ public class LoginController {
     /**
      * 使用java生成的动态验证码
      * @param response
-     * @param request
      */
     @GetMapping("/saveVerify")
-    public void saveVerifyImg(HttpServletResponse response, HttpServletRequest request) {
+    public void saveVerifyImg(HttpServletResponse response) {
         try {
             response.setHeader("Pragma", "No-cache");
             response.setHeader("Cache-Control", "no-cache");
@@ -83,8 +83,8 @@ public class LoginController {
      * 获取静态验证码
      * @param response
      */
-//    @RequestMapping(value="saveVerify",method=RequestMethod.GET)
-    public void getVCode(HttpServletResponse response,HttpServletRequest request){
+//     @RequestMapping(value="saveVerify",method= RequestMethod.GET)
+    public void getVCode(HttpServletResponse response){
         try {
             response.setHeader("Pragma", "No-cache");
             response.setHeader("Cache-Control", "no-cache");
@@ -112,7 +112,6 @@ public class LoginController {
         if (StringUtils.isBlank(verify)) {
             return R.error(2, "验证码不可为空");
         }
-//        String kaptcha = ShiroUtils.getKaptcha("verify");
         String kaptcha = ShiroUtils.getKaptcha(V_CODE);
         if (!verify.equalsIgnoreCase(kaptcha)) {
             return R.error(2, "验证码不正确");

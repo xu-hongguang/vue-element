@@ -36,7 +36,7 @@ public class GoController {
 
     @GetMapping("/login")
     public String view() {
-        return "login.html";
+        return "login";
     }
 
     @GetMapping("/toUpdate")
