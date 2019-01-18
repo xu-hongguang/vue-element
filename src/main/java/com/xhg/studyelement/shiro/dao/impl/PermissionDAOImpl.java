@@ -28,14 +28,14 @@ public class PermissionDAOImpl implements IPermissionDAO {
 
     @Override
     public void save(Permission permission) {
-        template.update("insert into permission(name,resource) values(?,?)",
+        template.update("insert into permission(`name`,resource,parientId,url,`type`) values(?,?)",
                     permission.getName(), permission.getResource());
     }
 
     //
     @Override
     public List<String> getPermissionResourceByUserId(Long userId) {
-        String sql = "select resource from permission where id in(" +
+        String sql = "select id,`name`,resource,parientId,url,`type` from permission where id in(" +
                 "       select permission_id from role_permission where role_id in(" +
                 "           select role_id from user_role where user_id = ?)" +
                 "      );";
@@ -46,18 +46,31 @@ public class PermissionDAOImpl implements IPermissionDAO {
         }
         return new ArrayList<>();
 
-
-
     }
 
     @Override
     public List<String> getAllResources() {
         String  sql = "select resource from permission ";
-        return template.query(sql, new RowMapper<String>() {
-            @Override
-            public String mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return rs.getString("resource");
-            }
-        });
+        return template.query(sql, (rs,rowNum)-> rs.getString("resource"));
+    }
+
+    @Override
+    public List<Permission> getAllPermissions() {
+        String  sql = "select id,`name`,resource,parientId,url,`type` from permission ";
+        return template.query(sql, new NewRowMapper());
+    }
+
+    private class NewRowMapper implements RowMapper<Permission>{
+        @Override
+        public Permission mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Permission permission = new Permission();
+            permission.setId(rs.getLong("id"));
+            permission.setName(rs.getString("name"));
+            permission.setResource(rs.getString("resource"));
+            permission.setParientId(rs.getString("parientId"));
+            permission.setUrl(rs.getString("url"));
+            permission.setType(rs.getString("type"));
+            return permission;
+        }
     }
 }

@@ -17,6 +17,33 @@ import java.io.Serializable;
 @EqualsAndHashCode
 public class Permission implements Serializable {
     private Long id;
-    private String name;  //权限名称
-    private String resource; //资源表达式xx:xx  比如：employee:list
+    /**
+     * 权限名称
+     */
+    private String name;
+
+    /**
+     * 资源表达式xx:xx  比如：employee:list
+     */
+    private String resource;
+
+    /**
+     * 菜单图标
+     */
+    private String icon;
+
+    /**
+     * 父级id
+     */
+    private String parientId;
+
+    /**
+     * 菜单URL
+     */
+    private String url;
+
+    /**
+     * 权限类型  0 按钮  1 菜单
+     */
+    private String type;
 }

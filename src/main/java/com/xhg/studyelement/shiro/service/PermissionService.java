@@ -1,10 +1,10 @@
-package com.xhg.studyelement.shiro.dao;
+package com.xhg.studyelement.shiro.service;
 
 import com.xhg.studyelement.shiro.domain.Permission;
 
 import java.util.List;
 
-public interface IPermissionDAO {
+public interface PermissionService {
 
     /**
      * 保存权限对象

@@ -7,6 +7,8 @@ import com.xhg.studyelement.pojo.Invoice;
 import com.xhg.studyelement.pojo.User1;
 import com.xhg.studyelement.serivce.InvoiceService;
 import com.xhg.studyelement.serivce.User1Service;
+import com.xhg.studyelement.shiro.dao.IPermissionDAO;
+import com.xhg.studyelement.shiro.domain.Permission;
 import com.xhg.studyelement.shiro.domain.User;
 import com.xhg.studyelement.shiro.service.UserService;
 import org.junit.Test;
@@ -19,6 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RunWith(SpringRunner.class)
@@ -27,6 +30,9 @@ public class User1AndInvoiceMapperTest {
 
     @Resource
     private User1Repository user1Repository;
+
+    @Autowired
+    private IPermissionDAO permissionDAO;
 
     @Autowired
     private User1Service user1Service;
@@ -105,6 +111,9 @@ public class User1AndInvoiceMapperTest {
 
     }
 
+    /**
+     * 测试分页获取所有用户
+     */
     @Test
     public void testUsers(){
         Map<String,Object> map = new HashMap<>(16);
@@ -115,5 +124,11 @@ public class User1AndInvoiceMapperTest {
         System.out.println("总记录:" + userAllPaging.getTotalCount());
         System.out.println("总页数:" + userAllPaging.getTotalPage());
         System.out.println("页码:" + userAllPaging.getCurrPage());
+    }
+
+    @Test
+    public void testPermiss(){
+        List<Permission> allResources = permissionDAO.getAllPermissions();
+        allResources.forEach(System.out::println);
     }
 }
