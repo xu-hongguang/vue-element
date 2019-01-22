@@ -50,7 +50,7 @@
                 <img class="pointer" :src="src" alt="如果看不清楚，请单击图片刷新！" @click="refreshCode" style="width:120px;border-radius: 4px;position: relative;left: 108px;top: -33px;">
             </el-form-item>
             <el-form-item align="left" style="width: 350px" prop="rememberMe">
-                <el-checkbox v-model="user.rememberMe" name="rememberMe" autocomplete="off">记住我</el-checkbox>
+                <el-checkbox v-model="user.rememberMe" name="rememberMe" autocomplete="off" @keyup.enter.native="submitForm('user')">记住我</el-checkbox>
             </el-form-item>
             <el-form-item align="left">
                 <el-button v-show="showlogin" type="primary" @click="submitForm('user')">登 录</el-button>

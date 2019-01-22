@@ -114,10 +114,10 @@
                                    hidden>
                         </div>
                     </div>
+                    <el-button class="btnexport" @click="showSelectFileWin()">浏览</el-button>
+                    <el-button class="btnexport" :loading="loading" @click="uploadFile($event)">批量上传</el-button>
+                    <el-button class="btnexport" @click="exportData()">模板下载</el-button>
                 </div>
-                <el-button class="btnexport" @click="showSelectFileWin()">浏览</el-button>
-                <el-button class="btnexport" :loading="loading" @click="uploadFile($event)">批量上传</el-button>
-                <el-button class="btnexport" @click="exportData()">模板下载</el-button>
             </el-col>
         </el-row>
     </el-form>
@@ -232,7 +232,8 @@
     </template>
     <!--分页  默认layout="total, sizes, prev, pager, next, jumper" -->
     <div class="block" style="padding:0.1rem;">
-        <el-pagination style="float: right" background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+        <el-pagination style="float: right" background @size-change="handleSizeChange"
+                       @current-change="handleCurrentChange"
                        :current-page="currentPage" :page-sizes="pageSizes" :page-size="pageSize"
                        layout="slot, sizes, prev, pager, next" :total="total">
             <span>共{{total}}条记录，第{{currentPage}}页，共{{totalPage}}页</span>

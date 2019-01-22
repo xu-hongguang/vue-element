@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 权限类
@@ -46,4 +47,9 @@ public class Permission implements Serializable {
      * 权限类型  0 按钮  1 菜单
      */
     private String type;
+
+    /**
+     * 子菜单
+     */
+    private List<Permission> childList;
 }

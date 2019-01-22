@@ -5,17 +5,17 @@ var menuItem = Vue.extend({
     props: {item: {}, index: 0},
     template: [
         '<li>',
-        '<a  v-if="item.menulevel == 0" :href="item.menuaction">',
-        '<i v-if="item.image != null" :class="item.image"></i>',
-        '<span>{{item.menulabel}}</span>',
+        '<a  v-if="item.parientId == -1" :href="item.url">',
+        '<i v-if="item.icon != null" :class="item.icon"></i>',
+        '<span>{{item.name}}</span>',
         '</a>',
 
-        '<a  v-if="item.menulevel == 1" href="javascript:;">',
-        '<i v-if="item.image != null" :class="item.image"></i>',
-        '<span>{{item.menulabel}}<i class="fa fa-angle-right pull-right"></i></span>',
+        '<a  v-if="item.parientId == 0" href="javascript:;">',
+        '<i v-if="item.icon != null" :class="item.icon"></i>',
+        '<span>{{item.name}}<i class="fa fa-angle-right pull-right"></i></span>',
         '</a>',
 
-        '<ul v-if="item.menulevel == 1" class="treeview-menu">',
+        '<ul v-if="item.parientId == 0" class="treeview-menu">',
         '<menu-item :item="item" :index="index" v-for="(item, index) in item.subList"></menu-item>',
         '</ul>',
         '<a v-if="item.menulevel == 2" :href="\'#\'+item.menuaction">' +
