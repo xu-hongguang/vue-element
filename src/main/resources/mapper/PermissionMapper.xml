@@ -1,37 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xhg.studyelement.shiro.dao.PermissionMapper">
-  <resultMap id="BaseResultMap" type="com.xhg.studyelement.shiro.domain.Permission">
-    <id column="permission_id" jdbcType="BIGINT" property="id" />
-    <result column="permission_name" jdbcType="VARCHAR" property="name" />
-    <result column="permission_resource" jdbcType="VARCHAR" property="resource" />
-    <result column="permission_icon" jdbcType="VARCHAR" property="icon" />
-    <result column="permission_parientId" jdbcType="BIGINT" property="parientId" />
-    <result column="permission_url" jdbcType="VARCHAR" property="url" />
-    <result column="permission_type" jdbcType="CHAR" property="type" />
-  </resultMap>
-  <sql id="Base_Column_List">
+    <resultMap id="BaseResultMap" type="com.xhg.studyelement.shiro.domain.Permission">
+        <id column="permission_id" jdbcType="BIGINT" property="id"/>
+        <result column="permission_name" jdbcType="VARCHAR" property="name"/>
+        <result column="permission_resource" jdbcType="VARCHAR" property="resource"/>
+        <result column="permission_icon" jdbcType="VARCHAR" property="icon"/>
+        <result column="permission_parientId" jdbcType="BIGINT" property="parientId"/>
+        <result column="permission_url" jdbcType="VARCHAR" property="url"/>
+        <result column="permission_type" jdbcType="CHAR" property="type"/>
+        <result column="permission_isChild" jdbcType="CHAR" property="isChild"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     permission.id as permission_id, permission.name as permission_name, permission.resource as permission_resource, 
     permission.icon as permission_icon, permission.parientId as permission_parientId, 
-    permission.url as permission_url, permission.type as permission_type
+    permission.url as permission_url, permission.type as permission_type, permission.isChild as permission_isChild
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from permission permission
-    where permission.id = #{id,jdbcType=BIGINT}
-  </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from permission permission
+        where permission.id = #{id,jdbcType=BIGINT}
+    </select>
 
-  <!--查询所有的菜单-->
-  <select id="selectAllMenuAndChildMenu" resultType="com.xhg.studyelement.shiro.domain.Permission">
+    <!--根据user_id查询所有的菜单-->
+    <select id="selectAllMenuByUserId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM permission WHERE permission.id IN
+        (SELECT rp.permission_id FROM role_permission rp WHERE rp.role_id IN
+        (SELECT ur.role_id FROM user_role ur WHERE ur.user_id = #{userId}))
+        AND permission.type = #{type}
+    </select>
+    <select id="selectAllMenuByUserIdOfParientId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM permission WHERE permission.id IN
+        (SELECT rp.permission_id FROM role_permission rp WHERE rp.role_id IN
+        (SELECT ur.role_id FROM user_role ur WHERE ur.user_id = #{userId}))
+        AND permission.type = #{type} AND permission.parientId = #{parentId}
+    </select>
 
-  </select>
-
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from permission
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.xhg.studyelement.shiro.domain.Permission">
+    <insert id="insert" parameterType="com.xhg.studyelement.shiro.domain.Permission">
     insert into permission (id, name, resource, 
       icon, parientId, url, 
       type)
@@ -39,80 +53,80 @@
       #{icon,jdbcType=VARCHAR}, #{parientid,jdbcType=BIGINT}, #{url,jdbcType=VARCHAR}, 
       #{type,jdbcType=CHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.xhg.studyelement.shiro.domain.Permission">
-    insert into permission
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="name != null">
-        name,
-      </if>
-      <if test="resource != null">
-        resource,
-      </if>
-      <if test="icon != null">
-        icon,
-      </if>
-      <if test="parientid != null">
-        parientId,
-      </if>
-      <if test="url != null">
-        url,
-      </if>
-      <if test="type != null">
-        type,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=BIGINT},
-      </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="resource != null">
-        #{resource,jdbcType=VARCHAR},
-      </if>
-      <if test="icon != null">
-        #{icon,jdbcType=VARCHAR},
-      </if>
-      <if test="parientid != null">
-        #{parientid,jdbcType=BIGINT},
-      </if>
-      <if test="url != null">
-        #{url,jdbcType=VARCHAR},
-      </if>
-      <if test="type != null">
-        #{type,jdbcType=CHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xhg.studyelement.shiro.domain.Permission">
-    update permission
-    <set>
-      <if test="name != null">
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="resource != null">
-        resource = #{resource,jdbcType=VARCHAR},
-      </if>
-      <if test="icon != null">
-        icon = #{icon,jdbcType=VARCHAR},
-      </if>
-      <if test="parientid != null">
-        parientId = #{parientid,jdbcType=BIGINT},
-      </if>
-      <if test="url != null">
-        url = #{url,jdbcType=VARCHAR},
-      </if>
-      <if test="type != null">
-        type = #{type,jdbcType=CHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.xhg.studyelement.shiro.domain.Permission">
+    <insert id="insertSelective" parameterType="com.xhg.studyelement.shiro.domain.Permission">
+        insert into permission
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="resource != null">
+                resource,
+            </if>
+            <if test="icon != null">
+                icon,
+            </if>
+            <if test="parientid != null">
+                parientId,
+            </if>
+            <if test="url != null">
+                url,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="resource != null">
+                #{resource,jdbcType=VARCHAR},
+            </if>
+            <if test="icon != null">
+                #{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="parientid != null">
+                #{parientid,jdbcType=BIGINT},
+            </if>
+            <if test="url != null">
+                #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=CHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.xhg.studyelement.shiro.domain.Permission">
+        update permission
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="resource != null">
+                resource = #{resource,jdbcType=VARCHAR},
+            </if>
+            <if test="icon != null">
+                icon = #{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="parientid != null">
+                parientId = #{parientid,jdbcType=BIGINT},
+            </if>
+            <if test="url != null">
+                url = #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=CHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.xhg.studyelement.shiro.domain.Permission">
     update permission
     set name = #{name,jdbcType=VARCHAR},
       resource = #{resource,jdbcType=VARCHAR},

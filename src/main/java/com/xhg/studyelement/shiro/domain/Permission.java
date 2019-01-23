@@ -36,7 +36,12 @@ public class Permission implements Serializable {
     /**
      * 父级id
      */
-    private String parientId;
+    private Long parientId;
+
+    /**
+     * 是否有子菜单 0 没有  1 有
+     */
+    private String isChild;
 
     /**
      * 菜单URL
@@ -49,7 +54,7 @@ public class Permission implements Serializable {
     private String type;
 
     /**
-     * 子菜单
+     * 子菜单集合
      */
     private List<Permission> childList;
 }

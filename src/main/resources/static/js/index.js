@@ -10,17 +10,17 @@ var menuItem = Vue.extend({
         '<span>{{item.name}}</span>',
         '</a>',
 
-        '<a  v-if="item.parientId == 0" href="javascript:;">',
+        '<a  v-if="item.parientId == 27" href="javascript:;">',
         '<i v-if="item.icon != null" :class="item.icon"></i>',
         '<span>{{item.name}}<i class="fa fa-angle-right pull-right"></i></span>',
         '</a>',
 
-        '<ul v-if="item.parientId == 0" class="treeview-menu">',
-        '<menu-item :item="item" :index="index" v-for="(item, index) in item.subList"></menu-item>',
+        '<ul v-if="item.parientId == 27" class="treeview-menu">',
+        '<menu-item :item="item" :index="index" v-for="(item, index) in item.childList"></menu-item>',
         '</ul>',
-        '<a v-if="item.menulevel == 2" :href="\'#\'+item.menuaction">' +
-        '<i v-if="item.image != null" :class="item.image"></i>' +
-        '<i v-else ></i> {{item.menulabel}}' +
+        '<a v-if="item.parientId == 2" :href="\'#\'+item.url">' +
+        '<i v-if="item.icon != null" :class="item.icon"></i>' +
+        '<i v-else ></i> {{item.name}}' +
         '</a>',
 
         '</li>'
@@ -39,32 +39,27 @@ var menuItem = Vue.extend({
 //注册菜单组件
 Vue.component('menuItem', menuItem);
 
-var vm = new Vue({
-    el: '#rrapp',
+const vm = new Vue({
+    el: '#main',
     data: {
+        username: localStorage.getItem('username'),
+
         user: {},
         menuList: {},
         main: "main.html",
-        password: '',
-        newPassword: '',
         navTitle: "首页",
-        navTag: '沃尔玛结算平台'
+        navTag: '我的系统'
     },
     methods: {
+        logout: function () {
+            localStorage.removeItem("username");
+            location.href = 'logout'
+        },
+
         getMenuList: function () {
-            $.getJSON(baseURL + "sys/menu/nav", function (r) {
+            $.getJSON("menu/nav", function (r) {
                 vm.menuList = r.menuList;
                 window.permissions = r.permissions;
-            });
-        },
-        getUser: function () {
-            $.getJSON(baseURL + "sys/user/info", function (r) {
-                vm.user = r.user;
-                if(r.orgtype=='8'){
-                    vm.main = 'main_vendor.html';
-                }else{
-                    vm.main = 'main.html';
-                }
             });
         },
         updatePassword: function () {
@@ -96,35 +91,14 @@ var vm = new Vue({
                     });
                 }
             });
-        },
-        logout: function () {
-            //删除本地token
-            localStorage.removeItem("token");
-            localStorage.removeItem("announceShowTimes");
-            //跳转到登录页面
-            location.href = baseURL + 'login.html';
-        },
-        donate: function () {
-            layer.open({
-                type: 2,
-                title: false,
-                area: ['8.06rem', '4.67rem'],
-                closeBtn: 1,
-                shadeClose: false,
-                content: ['http://cdn.dxhy.io/donate.jpg', 'no']
-            });
-        },
-        switchClothes: function () {
-            $("#hf").slideToggle("slow");
         }
     },
     created: function () {
         this.getMenuList();
-        this.getUser();
     },
     updated: function () {
         //路由
-        var router = new Router();
+        let router = new Router();
         routerList(router, vm.menuList);
         router.start();
     }
@@ -132,13 +106,13 @@ var vm = new Vue({
 
 
 function routerList(router, menuList) {
-    for (var key in menuList) {
-        var menu = menuList[key];
-        if (menu.isbottom === 1) {
-            routerList(router, menu.subList);
-        } else if (menu.isbottom === 0) {
-            router.add('#' + menu.menuaction, function () {
-                var url = window.location.hash;
+    for (let key in menuList) {
+        let menu = menuList[key];
+        if (menu.isChild === 1) {
+            routerList(router, menu.childList);
+        } else if (menu.isChild === 0) {
+            router.add('#' + menu.url, function () {
+                let url = window.location.hash;
                 //替换iframe的url
                 vm.main = url.replace('#', '');
 
@@ -150,6 +124,41 @@ function routerList(router, menuList) {
                 vm.navTitle = $("a[href='" + url + "']").text();
                 vm.navTag= $('.sidebar-menu>li.active>a>span').text();
             });
+        }
+    }
+}
+
+
+/**
+ * 全屏切换
+ * @param obj
+ */
+function fullScreen(obj) {
+    let $this = $(obj);
+    let element;
+    if ($this.text() === '全屏') {
+        $this.text("退出全屏");
+        element = document.documentElement;
+        if (element.requestFullscreen) {
+            element.requestFullscreen();
+        } else if (element.mozRequestFullScreen) {
+            element.mozRequestFullScreen();
+        } else if (element.webkitRequestFullscreen) {
+            element.webkitRequestFullscreen();
+        } else if (element.msRequestFullscreen) {
+            element.msRequestFullscreen();
+        }
+    } else {
+        elem = document;
+        $this.text("全屏");
+        if (elem.webkitCancelFullScreen) {
+            elem.webkitCancelFullScreen();
+        } else if (elem.mozCancelFullScreen) {
+            elem.mozCancelFullScreen();
+        } else if (elem.cancelFullScreen) {
+            elem.cancelFullScreen();
+        } else if (elem.exitFullscreen) {
+            elem.exitFullscreen();
         }
     }
 }

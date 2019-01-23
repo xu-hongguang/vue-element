@@ -10,6 +10,7 @@ import com.xhg.studyelement.serivce.User1Service;
 import com.xhg.studyelement.shiro.dao.IPermissionDAO;
 import com.xhg.studyelement.shiro.domain.Permission;
 import com.xhg.studyelement.shiro.domain.User;
+import com.xhg.studyelement.shiro.service.PermissionService;
 import com.xhg.studyelement.shiro.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,6 +46,9 @@ public class User1AndInvoiceMapperTest {
 
     @Autowired
     private InvoiceService invoiceService;
+
+    @Autowired
+    private PermissionService permissionService;
 
 
     /**
@@ -130,5 +134,8 @@ public class User1AndInvoiceMapperTest {
     public void testPermiss(){
         List<Permission> allResources = permissionDAO.getAllPermissions();
         allResources.forEach(System.out::println);
+        System.out.println("**************************************************");
+        List<Permission> permissions = permissionService.getAllPermissionsByUserId(1L, "1");
+        permissions.forEach(System.out::println);
     }
 }

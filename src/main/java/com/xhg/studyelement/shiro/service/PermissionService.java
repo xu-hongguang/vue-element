@@ -23,4 +23,6 @@ public interface PermissionService {
     List<String> getAllResources();
 
     List<Permission> getAllPermissions();
+
+    List<Permission> getAllPermissionsByUserId(Long userId, String type);
 }

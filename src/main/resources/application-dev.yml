@@ -19,6 +19,7 @@ spring:
     cache: false
     enabled: true
     prefix: classpath:/views/
+    suffix: .html
 
 #  Ehcache缓存
   cache:

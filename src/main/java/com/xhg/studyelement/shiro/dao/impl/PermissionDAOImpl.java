@@ -67,7 +67,7 @@ public class PermissionDAOImpl implements IPermissionDAO {
             permission.setId(rs.getLong("id"));
             permission.setName(rs.getString("name"));
             permission.setResource(rs.getString("resource"));
-            permission.setParientId(rs.getString("parientId"));
+            permission.setParientId(rs.getLong("parientId"));
             permission.setUrl(rs.getString("url"));
             permission.setType(rs.getString("type"));
             return permission;
