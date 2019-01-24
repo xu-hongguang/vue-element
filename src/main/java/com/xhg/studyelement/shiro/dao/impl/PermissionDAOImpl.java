@@ -35,7 +35,7 @@ public class PermissionDAOImpl implements IPermissionDAO {
     //
     @Override
     public List<String> getPermissionResourceByUserId(Long userId) {
-        String sql = "select id,`name`,resource,parientId,url,`type` from permission where id in(" +
+        String sql = "select resource from permission where id in(" +
                 "       select permission_id from role_permission where role_id in(" +
                 "           select role_id from user_role where user_id = ?)" +
                 "      );";

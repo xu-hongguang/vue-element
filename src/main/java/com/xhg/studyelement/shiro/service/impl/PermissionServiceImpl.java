@@ -8,6 +8,7 @@ import com.xhg.studyelement.shiro.service.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,9 +33,17 @@ public class PermissionServiceImpl implements PermissionService {
         permissionDAO.save(permission);
     }
 
+    /**
+     * 根据用户id获取所有权限
+     * @param userId
+     * @return
+     */
     @Override
     public List<String> getPermissionResourceByUserId(Long userId) {
-        return permissionDAO.getPermissionResourceByUserId(userId);
+        List<String> resource = permissionDAO.getPermissionResourceByUserId(userId);
+        resource.removeAll(Collections.singleton(null));
+        resource.removeAll(Collections.singleton(""));
+        return resource;
     }
 
     @Override
@@ -47,6 +56,12 @@ public class PermissionServiceImpl implements PermissionService {
         return permissionDAO.getAllPermissions();
     }
 
+    /**
+     * 根据用户id获取菜单栏
+     * @param userId
+     * @param type
+     * @return
+     */
     @Override
     public List<Permission> getAllPermissionsByUserId(Long userId, String type) {
         List<Permission> permissions = permissionMapper.selectAllMenuByUserId(userId, type);

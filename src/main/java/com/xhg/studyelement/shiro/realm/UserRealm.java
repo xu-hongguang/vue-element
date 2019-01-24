@@ -1,9 +1,9 @@
 package com.xhg.studyelement.shiro.realm;
 
-import com.xhg.studyelement.shiro.dao.IPermissionDAO;
 import com.xhg.studyelement.shiro.dao.IRoleDAO;
 import com.xhg.studyelement.shiro.dao.IUserDAO;
 import com.xhg.studyelement.shiro.domain.User;
+import com.xhg.studyelement.shiro.service.PermissionService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -15,7 +15,6 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +31,7 @@ public class UserRealm extends AuthorizingRealm {
     @Autowired
     private IRoleDAO roleDAO;
     @Autowired
-    private IPermissionDAO permissionDAO;
+    private PermissionService permissionService;
 
     // 认证操作
     @Override
@@ -67,20 +66,21 @@ public class UserRealm extends AuthorizingRealm {
 
         if ("admin".equals(user.getUsername())) {
             //拥有所有权限
-            permissions.add("*:*");
+//            permissions.add("*:*");
+            permissions = permissionService.getPermissionResourceByUserId(user.getId());
             //查询所有角色
-            roles = roleDAO.getAllRoleSn();
+//            roles = roleDAO.getAllRoleSn();
         } else {
             System.out.println(user.getId());
             //根据用户id查询该用户所具有的角色
-            roles = roleDAO.getRoleSnByUserId(user.getId());
+//            roles = roleDAO.getRoleSnByUserId(user.getId());
             //根据用户id查询该用户所具有的权限
-            permissions = permissionDAO.getPermissionResourceByUserId(user.getId());
+            permissions = permissionService.getPermissionResourceByUserId(user.getId());
         }
 
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         info.addStringPermissions(permissions);
-        info.addRoles(roles);
+//        info.addRoles(roles);
         return info;
     }
 

@@ -1,5 +1,6 @@
 package com.xhg.studyelement.serivce.impl;
 
+import com.xhg.studyelement.common.exception.ExcelException;
 import com.xhg.studyelement.common.safesoft.User1ImportExcel;
 import com.xhg.studyelement.dao.User1Repository;
 import com.xhg.studyelement.pojo.User1;
@@ -11,6 +12,7 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -122,6 +124,12 @@ public class User1ServiceImpl implements User1Service {
                 map.put("success", Boolean.FALSE);
                 map.put("reason", "excel中无数据！");
             }
+        } catch (IncorrectResultSizeDataAccessException e){
+            map.put("success", Boolean.FALSE);
+            map.put("reason", "excel文件中有重复数据！");
+        }catch (ExcelException e) {
+            map.put("success", Boolean.FALSE);
+            map.put("reason", "excel文件解析错误！");
         } catch (Exception e) {
             map.put("success", Boolean.FALSE);
             map.put("reason", "读取excel文件错误！");
