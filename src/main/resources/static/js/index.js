@@ -46,7 +46,9 @@ const vm = new Vue({
 
         user: {},
         menuList: {},
-        main: "main.html",
+        main: "table",
+        password: '',
+        newPassword: '',
         navTitle: "首页",
         navTag: '我的系统'
     },
@@ -79,7 +81,7 @@ const vm = new Vue({
                         data: data,
                         dataType: "json",
                         success: function (r) {
-                            if (r.code == 0) {
+                            if (r.code === 0) {
                                 layer.close(index);
                                 layer.alert('修改成功', function () {
                                     location.reload();
@@ -91,6 +93,19 @@ const vm = new Vue({
                     });
                 }
             });
+        },
+
+        /**
+         * 导航菜单
+         *
+         * @param key
+         * @param keyPath
+         */
+        handleOpen: function (key, keyPath) {
+            console.log(key, keyPath);
+        },
+        handleClose: function (key, keyPath) {
+            console.log(key, keyPath);
         }
     },
     created: function () {

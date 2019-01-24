@@ -1,4 +1,5 @@
 document.write('<script src="js/jquery.min.js"></script>');
+document.write('<script src="jqgrid/jquery.jqGrid.min.js"></script>');
 document.write('<script src="vue/dist/vue.js"></script>');
 document.write('<script src="js/vue-i18n.js"></script>');
 document.write('<script src="axios/dist/axios.min.js"></script>');
