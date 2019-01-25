@@ -4,6 +4,9 @@ import com.xhg.studyelement.shiro.domain.Permission;
 
 import java.util.List;
 
+/**
+ * @author Eddy.Xu
+ */
 public interface PermissionService {
 
     /**

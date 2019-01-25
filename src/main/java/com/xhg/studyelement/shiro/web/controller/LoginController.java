@@ -55,6 +55,7 @@ public class LoginController {
 
     /**
      * 使用java生成的动态验证码
+     *
      * @param response
      */
     @GetMapping("/saveVerify")
@@ -81,10 +82,11 @@ public class LoginController {
 
     /**
      * 获取静态验证码
+     *
      * @param response
      */
 //     @RequestMapping(value="saveVerify",method= RequestMethod.GET)
-    public void getVCode(HttpServletResponse response){
+    public void getVCode(HttpServletResponse response) {
         try {
             response.setHeader("Pragma", "No-cache");
             response.setHeader("Cache-Control", "no-cache");
@@ -101,7 +103,7 @@ public class LoginController {
 
             logger.info("验证码保存成功! ");
         } catch (Exception e) {
-            logger.error("获取验证码异常：%s",e.getMessage());
+            logger.error("获取验证码异常：%s", e.getMessage());
         }
     }
 
@@ -124,7 +126,7 @@ public class LoginController {
             return R.error(2, "用户名或密码错误，请重试！");
         }
         //账号锁定
-        if (!"1".equals(user.getStatus())) {
+        if (!User.STATUS_VALID.equals(user.getStatus())) {
             return R.error(2, "账号已被锁定或不可用,请联系管理员");
         }
 
