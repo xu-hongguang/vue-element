@@ -6,6 +6,8 @@ import com.xhg.studyelement.shiro.domain.Permission;
 import com.xhg.studyelement.shiro.realm.PermissionName;
 import com.xhg.studyelement.shiro.service.PermissionService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,9 +26,12 @@ import java.util.Objects;
  */
 @RestController
 public class PermissionController extends BaseController {
+    private static Logger logger = LoggerFactory.getLogger(PermissionController.class);
 
-    //请求映射处理映射器
-    //springmvc在启动时候将所有贴有请求映射标签：RequestMapper方法收集起来封装到该对象中
+    /**
+     *  请求映射处理映射器
+     *  springmvc在启动时候将所有贴有请求映射标签：RequestMapper方法收集起来封装到该对象中
+     */
     private final RequestMappingHandlerMapping rmhm;
 
     private final PermissionService permissionService;
@@ -73,6 +78,7 @@ public class PermissionController extends BaseController {
     @RequestMapping("menu/nav")
     public R nav(){
         List<Permission> menuList = permissionService.getAllPermissionsByUserId(getUserId(), "1");
+        logger.info("菜单列表: " + menuList);
         return R.ok().put("menuList",menuList);
     }
 

@@ -5,6 +5,9 @@ import com.xhg.studyelement.shiro.domain.User;
 
 import java.util.Map;
 
+/**
+ * @author Eddy.Xu
+ */
 public interface UserService {
     User getByUsername(String username);
 

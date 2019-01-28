@@ -1,17 +1,23 @@
 package com.xhg.studyelement.shiro.realm;
 
-import com.xhg.studyelement.shiro.dao.IUserDAO;
 import com.xhg.studyelement.shiro.domain.User;
 import com.xhg.studyelement.shiro.service.PermissionService;
 import com.xhg.studyelement.shiro.service.RoleService;
+import com.xhg.studyelement.shiro.service.UserService;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -19,71 +25,65 @@ import java.util.List;
 /**
  * @author 16033
  */
-//@Component
+@Component("userRealm")
 public class UserRealm extends AuthorizingRealm {
 
+    private static Logger logger = LoggerFactory.getLogger(UserRealm.class);
+
     @Autowired
-    private IUserDAO userDAO;
+    private UserService userService;
     @Autowired
     private RoleService roleService;
     @Autowired
     private PermissionService permissionService;
-
-    /** 认证操作 */
-    @Override
-    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        //从token中获取登录的用户名， 查询数据库返回用户信息
-        String username = (String) token.getPrincipal();
-        User user = userDAO.getUserByUsername(username);
-
-        if (user == null) {
-            throw new UnknownAccountException("用户名错误！");
-        }
-        if (User.STATUS_LOCK.equals(user.getStatus())) {
-            throw new LockedAccountException("账号已被锁定,请联系管理员！");
-        }
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, user.getPassword(),
-                ByteSource.Util.bytes(user.getUsername()),
-                getName());
-        return info;
-    }
-
 
     @Override
     public String getName() {
         return "UserRealm";
     }
 
-    /** 授权操作 */
+    /**
+     * 认证操作
+     */
+    @Override
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+        //从token中获取登录的用户名， 查询数据库返回用户信息
+        String username = (String) token.getPrincipal();
+        //获取token中的用户密码
+        String password = new String((char[]) token.getCredentials());
+        logger.info("password = " + password);
+
+        User user = userService.getByUsername(username);
+
+        return new SimpleAuthenticationInfo(user, user.getPassword(),
+                ByteSource.Util.bytes(user.getUsername()),
+                getName());
+    }
+
+    /**
+     * 授权操作
+     */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 
         User user = (User) principals.getPrimaryPrincipal();
 
+        // 获取用户权限和用户角色
         List<String> permissions = permissionService.getPermissionResourceByUserId(user.getId());
         List<String> roles = roleService.getRoleSnByUserId(user.getId());
 
-       /* if ("admin".equals(user.getUsername())) {
-            //拥有所有权限
-//            permissions.add("*:*");
-            permissions = permissionService.getPermissionResourceByUserId(user.getId());
-            //查询所有角色
-            roles = roleService.getAllRoleSn();
-        } else {
-            System.out.println(user.getId());
-            //根据用户id查询该用户所具有的角色
-            roles = roleService.getRoleSnByUserId(user.getId());
-            //根据用户id查询该用户所具有的权限
-            permissions = permissionService.getPermissionResourceByUserId(user.getId());
-        }*/
-
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+
+        // 给用户赋予权限和角色
         info.addStringPermissions(permissions);
         info.addRoles(roles);
+
         return info;
     }
 
-    /** 清除缓存 */
+    /**
+     * 清除缓存
+     */
     public void clearCached() {
         //获取当前等的用户凭证，然后清除
         PrincipalCollection principals = SecurityUtils.getSubject().getPrincipals();

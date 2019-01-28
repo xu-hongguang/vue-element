@@ -1,26 +1,34 @@
 package com.xhg.studyelement.common.utils;
 
 import org.apache.shiro.crypto.hash.Md5Hash;
+import org.apache.shiro.crypto.hash.SimpleHash;
+import org.apache.shiro.util.ByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.security.MessageDigest;
 
 /**
- * Created by Daily.zhang on 2018/04/18.
+ * @author Eddy.Xu
  */
 public class MD5Utils {
     private static final Logger logger = LoggerFactory.getLogger(MD5Utils.class);
 
-    private MD5Utils(){
+    public static final String ALGORITHM_NAME = "md5";
+
+    public static final int HASH_ITERATIONS = 3;
+
+    private MD5Utils() {
         throw new IllegalStateException("MD5Utils");
     }
+
     /**
      * MD5 encode
+     *
      * @param password
      * @return
      */
-    public static String encode(String password){
+    public static String encode(String password) {
         char[] hexDigits = {
                 '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
         };
@@ -48,7 +56,27 @@ public class MD5Utils {
         }
     }
 
-    public static String md5(String pwd,String name,int n){
-        return new Md5Hash(pwd,name,n).toHex();
+    /**
+     * 以下两种加密方式一样(Md5Hash继承SimpleHash)
+     *
+     * @param pwd
+     * @param name
+     * @return
+     */
+    public static String md5(String pwd, String name) {
+        return new Md5Hash(pwd, name, HASH_ITERATIONS).toHex();
+    }
+
+    private static String md5Encode(String pwd, String name) {
+        return new SimpleHash(ALGORITHM_NAME, pwd, ByteSource.Util.bytes(name), HASH_ITERATIONS).toHex();
+    }
+
+
+    public static void main(String[] args) {
+        String name = "xhg";
+        String password = "666666";
+
+        System.out.println(md5(password, name));
+        System.out.println(md5Encode(password, name));
     }
 }

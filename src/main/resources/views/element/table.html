@@ -233,11 +233,16 @@
     <!--分页  默认layout="total, sizes, prev, pager, next, jumper" -->
     <div class="block" style="padding:0.1rem;">
         <el-pagination style="float: right" background @size-change="handleSizeChange"
-                       @current-change="handleCurrentChange"
-                       :current-page="currentPage" :page-sizes="pageSizes" :page-size="pageSize"
-                       layout="slot, sizes, prev, pager, next" :total="total">
+                       @current-change="handleCurrentChange" :current-page="currentPage"
+                       :page-sizes="pageSizes" :page-size="pageSize" :total="total"
+                       layout="slot, sizes, prev, pager, next, jumper">
             <span>共{{total}}条记录，第{{currentPage}}页，共{{totalPage}}页</span>
         </el-pagination>
+        <!--<el-pagination style="float: right" background @size-change="handleSizeChange"
+                       @current-change="handleCurrentChange" :current-page="currentPage"
+                       :page-sizes="pageSizes" :page-size="pageSize" :total="total"
+                       layout="total, sizes, prev, pager, next, jumper" >
+        </el-pagination>-->
     </div>
 </div>
 </body>

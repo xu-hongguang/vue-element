@@ -121,8 +121,8 @@ public class LoginController {
         User user = userService.getByUsername(username);
 
         if (user == null) {
-            return R.error(2, "用户名不正确!");
-        } else if (!user.getPassword().equals(MD5Utils.md5(password, username, 3))) {
+            return R.error(2, "用户名不存在!");
+        } else if (!user.getPassword().equals(MD5Utils.md5(password, username))) {
             return R.error(2, "用户名或密码错误，请重试！");
         }
         //账号锁定

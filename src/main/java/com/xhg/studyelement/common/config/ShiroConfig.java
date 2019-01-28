@@ -2,6 +2,7 @@ package com.xhg.studyelement.common.config;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import com.xhg.studyelement.common.listener.ShiroSessionListener;
+import com.xhg.studyelement.common.utils.MD5Utils;
 import com.xhg.studyelement.shiro.realm.UserRealm;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
@@ -43,7 +44,7 @@ public class ShiroConfig {
      * @param credentialsMatcher
      * @return
      */
-    @Bean("userRealm")
+    @Bean
     public UserRealm userRealm(CredentialsMatcher credentialsMatcher){
         UserRealm userRealm = new UserRealm();
         //设置密码加密器
@@ -109,9 +110,9 @@ public class ShiroConfig {
         // 设置session超时时间，单位为毫秒
         sessionManager.setGlobalSessionTimeout(1800000L);
         //相隔多久检查一次session的有效性
-//        sessionManager.setSessionValidationInterval(1800000L);
+        sessionManager.setSessionValidationInterval(1800000L);
         sessionManager.setSessionIdUrlRewritingEnabled(false);
-//        sessionManager.setSessionValidationSchedulerEnabled(true);
+        sessionManager.setSessionValidationSchedulerEnabled(true);
         return sessionManager;
     }
 
@@ -123,8 +124,10 @@ public class ShiroConfig {
     @Bean
     public CredentialsMatcher hashedCredentialsMatcher() {
         HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
-        credentialsMatcher.setHashAlgorithmName("md5");
-        credentialsMatcher.setHashIterations(3);
+        //设置加密算法
+        credentialsMatcher.setHashAlgorithmName(MD5Utils.ALGORITHM_NAME);
+        //设置hash次数
+        credentialsMatcher.setHashIterations(MD5Utils.HASH_ITERATIONS);
         return credentialsMatcher;
     }
 

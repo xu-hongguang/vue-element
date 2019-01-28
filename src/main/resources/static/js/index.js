@@ -62,6 +62,9 @@ const vm = new Vue({
             $.getJSON("menu/nav", function (r) {
                 vm.menuList = r.menuList;
                 window.permissions = r.permissions;
+                for(let i = 0; i < vm.menuList.length; i++){
+
+                }
             });
         },
         updatePassword: function () {

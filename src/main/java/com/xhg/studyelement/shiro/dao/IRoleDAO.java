@@ -2,6 +2,9 @@ package com.xhg.studyelement.shiro.dao;
 
 import java.util.List;
 
+/**
+ * @author Eddy.Xu
+ */
 public interface IRoleDAO {
     /**
      * 查找所有的角色
