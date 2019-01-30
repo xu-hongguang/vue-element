@@ -20,7 +20,7 @@
         }
 
         .el-aside {
-            background-color: #D3DCE6;
+            background-color: #545c64;
             color: #333;
             text-align: center;
             line-height: 200px;
@@ -84,21 +84,22 @@
             <el-aside width="200px">
                 <el-row class="tac">
                     <el-col :span="24">
-                        <!--<h5>默认颜色</h5>-->
-                        <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
-                            <template v-for="(item, index1) in menuList">
-                                <el-menu-item index="1" v-if="item.parientId === -1">
+                        <!--<h5>默认颜色</h5>  :default-active="$route.path"-->
+                        <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
+                                 background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" :unique-opened="true">
+                            <template v-for="(item, index) in menuList">
+                                <el-menu-item :index="item.url" v-if="item.parientId === -1">
                                     <i :class="item.icon"></i>
                                     <span slot="title">{{item.name}}</span>
                                 </el-menu-item>
                                 <template v-if="item.parientId === 27">
-                                    <el-submenu index="1">
+                                    <el-submenu :index="item.url + index + ''" class="myClass">
                                         <template slot="title">
                                             <i :class="item.icon"></i>
                                             <span>{{item.name}}</span>
                                         </template>
-                                        <el-menu-item-group v-for="(child, index) in item.childList">
-                                            <el-menu-item index="1-1">{{child.name}}</el-menu-item>
+                                        <el-menu-item-group v-for="(child) in item.childList">
+                                            <el-menu-item :index="child.url">{{child.name}}</el-menu-item>
                                         </el-menu-item-group>
                                     </el-submenu>
                                 </template>
@@ -233,7 +234,7 @@
 
 </script>-->
 
-<script src="js/router.js"></script>
+<!--<script src="js/router.js"></script>-->
 <script src="js/index.js"></script>
 </body>
 </html>

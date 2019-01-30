@@ -1,4 +1,3 @@
-
 //生成菜单
 var menuItem = Vue.extend({
     name: 'menu-item',
@@ -39,6 +38,24 @@ var menuItem = Vue.extend({
 //注册菜单组件
 Vue.component('menuItem', menuItem);
 
+const routes = [
+    /*{
+        path: '/h5',
+        name: 'h5',
+        component: html5,
+        children: [
+            {path:'basic', component: basic},
+            {path:'big', component: big},
+            // 配置根路由
+            {path:'/', redirect: 'basic'}
+        ]
+    },
+    {path: '/java', component: java},
+    {path: '/python', component: python, name: 'python'},
+    // 配置默认显示页
+    {path: '/', redirect: 'index.html'}*/
+];
+
 const vm = new Vue({
     el: '#main',
     data: {
@@ -50,7 +67,9 @@ const vm = new Vue({
         password: '',
         newPassword: '',
         navTitle: "首页",
-        navTag: '我的系统'
+        navTag: '我的系统',
+
+        menuIndex: null
     },
     methods: {
         logout: function () {
@@ -59,12 +78,15 @@ const vm = new Vue({
         },
 
         getMenuList: function () {
-            $.getJSON("menu/nav", function (r) {
+            /*axios.get("menu/nav").then(function (response) {
+                let r = response.data;
                 vm.menuList = r.menuList;
                 window.permissions = r.permissions;
-                for(let i = 0; i < vm.menuList.length; i++){
+            });*/
 
-                }
+            $.getJSON("menu/nav",function (r) {
+                vm.menuList = r.menuList;
+                window.permissions = r.permissions;
             });
         },
         updatePassword: function () {
@@ -114,12 +136,12 @@ const vm = new Vue({
     created: function () {
         this.getMenuList();
     },
-    updated: function () {
+    /*updated: function () {
         //路由
         let router = new Router();
         routerList(router, vm.menuList);
         router.start();
-    }
+    }*/
 });
 
 
@@ -140,7 +162,7 @@ function routerList(router, menuList) {
                 $("a[href='" + url + "']").parents("li").addClass("active");
 
                 vm.navTitle = $("a[href='" + url + "']").text();
-                vm.navTag= $('.sidebar-menu>li.active>a>span').text();
+                vm.navTag = $('.sidebar-menu>li.active>a>span').text();
             });
         }
     }
