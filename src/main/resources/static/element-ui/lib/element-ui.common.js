@@ -198,7 +198,7 @@ module.exports = require("element-ui/lib/utils/dom");
 module.exports = require("element-ui/lib/mixins/locale");
 
 /***/ }),
-/* 5 */
+/* scrollbar-plugin */
 /***/ (function(module, exports) {
 
 module.exports = require("vuestudy");

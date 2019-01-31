@@ -74,8 +74,9 @@ public class Quant {
     private byte[] colorMap() {
         byte[] map = new byte[3 * NETSIZE];
         int[] index = new int[NETSIZE];
-        for (int i = 0; i < NETSIZE; i++)
+        for (int i = 0; i < NETSIZE; i++) {
             index[network[i][3]] = i;
+        }
         int k = 0;
         for (int i = 0; i < NETSIZE; i++) {
             int j = index[i];
@@ -129,15 +130,17 @@ public class Quant {
 
             if (smallval != previouscol) {
                 netindex[previouscol] = (startpos + i) >> 1;
-                for (j = previouscol + 1; j < smallval; j++)
+                for (j = previouscol + 1; j < smallval; j++) {
                     netindex[j] = i;
+                }
                 previouscol = smallval;
                 startpos = i;
             }
         }
         netindex[previouscol] = (startpos + MAXNETPOS) >> 1;
-        for (j = previouscol + 1; j < 256; j++)
+        for (j = previouscol + 1; j < 256; j++) {
             netindex[j] = MAXNETPOS;
+        }
     }
 
 
@@ -158,8 +161,9 @@ public class Quant {
         int pix;
         int lim;
 
-        if (lengthcount < MINPICTUREBYTES)
+        if (lengthcount < MINPICTUREBYTES) {
             samplefac = 1;
+        }
 
         int alphadec = 30 + ((samplefac - 1) / 3);
         p = thepicture;
@@ -171,24 +175,27 @@ public class Quant {
         radius = INITRADIUS;
 
         rad = radius >> RADIUSBIASSHIFT;
-        if (rad <= 1)
+        if (rad <= 1) {
             rad = 0;
-        for (i = 0; i < rad; i++)
+        }
+        for (i = 0; i < rad; i++) {
             radpower[i] = alpha * (((rad * rad - i * i) * RADBIAS) / (rad * rad));
+        }
 
 
-        if (lengthcount < MINPICTUREBYTES)
+        if (lengthcount < MINPICTUREBYTES) {
             step = 3;
-        else if ((lengthcount % PRIME1) != 0)
+        } else if ((lengthcount % PRIME1) != 0) {
             step = 3 * PRIME1;
-        else {
-            if ((lengthcount % PRIME2) != 0)
+        } else {
+            if ((lengthcount % PRIME2) != 0) {
                 step = 3 * PRIME2;
-            else {
-                if ((lengthcount % PRIME3) != 0)
+            } else {
+                if ((lengthcount % PRIME3) != 0) {
                     step = 3 * PRIME3;
-                else
+                } else {
                     step = 3 * PRIME4;
+                }
             }
         }
 
@@ -200,24 +207,29 @@ public class Quant {
             j = contest(b, g, r);
 
             altersingle(alpha, j, b, g, r);
-            if (rad != 0)
+            if (rad != 0) {
                 alterneigh(rad, j, b, g, r);
+            }
 
             pix += step;
-            if (pix >= lim)
+            if (pix >= lim) {
                 pix -= lengthcount;
+            }
 
             i++;
-            if (delta == 0)
+            if (delta == 0) {
                 delta = 1;
+            }
             if (i % delta == 0) {
                 alpha -= alpha / alphadec;
                 radius -= radius / RADIUSDEC;
                 rad = radius >> RADIUSBIASSHIFT;
-                if (rad <= 1)
+                if (rad <= 1) {
                     rad = 0;
-                for (j = 0; j < rad; j++)
+                }
+                for (j = 0; j < rad; j++) {
                     radpower[j] = alpha * (((rad * rad - j * j) * RADBIAS) / (rad * rad));
+                }
             }
         }
     }
@@ -241,20 +253,23 @@ public class Quant {
             if (i < NETSIZE) {
                 p = network[i];
                 dist = p[1] - g;
-                if (dist >= bestd)
+                if (dist >= bestd) {
                     i = NETSIZE;
-                else {
+                } else {
                     i++;
-                    if (dist < 0)
+                    if (dist < 0) {
                         dist = -dist;
+                    }
                     a = p[0] - b;
-                    if (a < 0)
+                    if (a < 0) {
                         a = -a;
+                    }
                     dist += a;
                     if (dist < bestd) {
                         a = p[2] - r;
-                        if (a < 0)
+                        if (a < 0) {
                             a = -a;
+                        }
                         dist = dist + a;
                         if (dist < bestd) {
                             bestd = dist;
@@ -266,20 +281,23 @@ public class Quant {
             if (j >= 0) {
                 p = network[j];
                 dist = g - p[1];
-                if (dist >= bestd)
+                if (dist >= bestd) {
                     j = -1;
-                else {
+                } else {
                     j--;
-                    if (dist < 0)
+                    if (dist < 0) {
                         dist = -dist;
+                    }
                     a = p[0] - b;
-                    if (a < 0)
+                    if (a < 0) {
                         a = -a;
+                    }
                     dist += a;
                     if (dist < bestd) {
                         a = p[2] - r;
-                        if (a < 0)
+                        if (a < 0) {
                             a = -a;
+                        }
                         dist += a;
                         if (dist < bestd) {
                             bestd = dist;
@@ -324,11 +342,13 @@ public class Quant {
         int[] p;
 
         lo = i - rad;
-        if (lo < -1)
+        if (lo < -1) {
             lo = -1;
+        }
         hi = i + rad;
-        if (hi > NETSIZE)
+        if (hi > NETSIZE) {
             hi = NETSIZE;
+        }
 
         j = i + 1;
         k = i - 1;
@@ -391,15 +411,18 @@ public class Quant {
         for (i = 0; i < NETSIZE; i++) {
             n = network[i];
             dist = n[0] - b;
-            if (dist < 0)
+            if (dist < 0) {
                 dist = -dist;
+            }
             a = n[1] - g;
-            if (a < 0)
+            if (a < 0) {
                 a = -a;
+            }
             dist += a;
             a = n[2] - r;
-            if (a < 0)
+            if (a < 0) {
                 a = -a;
+            }
             dist += a;
             if (dist < bestd) {
                 bestd = dist;

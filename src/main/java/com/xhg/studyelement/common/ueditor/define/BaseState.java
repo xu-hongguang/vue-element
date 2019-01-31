@@ -1,10 +1,10 @@
 package com.xhg.studyelement.common.ueditor.define;
 
+import com.xhg.studyelement.common.ueditor.Encoder;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import com.xhg.studyelement.common.ueditor.Encoder;
 
 public class BaseState implements State {
 
@@ -31,6 +31,7 @@ public class BaseState implements State {
 		this.info = AppInfo.getStateInfo( infoCode );
 	}
 	
+	@Override
 	public boolean isSuccess () {
 		return this.state;
 	}
@@ -52,6 +53,7 @@ public class BaseState implements State {
 		return this.toString();
 	}
 	
+	@Override
 	public String toString () {
 		
 		String key = null;

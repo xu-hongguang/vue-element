@@ -42,7 +42,7 @@
         month2: '2 月',
         month3: '3 月',
         month4: '4 月',
-        month5: '5 月',
+        month5: 'scrollbar-plugin 月',
         month6: '6 月',
         month7: '7 月',
         month8: '8 月',

@@ -32,7 +32,7 @@ public enum DictDetaEnum {
     /**
      * 认证状态-认证失败
      */
-    AUTH_STATUS_ERROR("5","认证失败"),
+    AUTH_STATUS_ERROR("scrollbar-plugin","认证失败"),
 
     /**
      * 默认

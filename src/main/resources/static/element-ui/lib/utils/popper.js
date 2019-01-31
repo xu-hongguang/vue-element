@@ -123,7 +123,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
      *      The element which will define the boundaries of the popper position, the popper will never be placed outside
      *      of the defined boundaries (except if `keepTogether` is enabled)
      *
-     * @param {Number} [options.boundariesPadding=5]
+     * @param {Number} [options.boundariesPadding=scrollbar-plugin]
      *      Additional padding for the boundaries
      *
      * @param {Array} [options.preventOverflowOrder=['left', 'right', 'top', 'bottom']]

@@ -7,6 +7,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * @author Eddy.Xu
+ */
 public class FileUtil {
 
 	protected static Logger log = LoggerFactory.getLogger(FileUtil.class);
@@ -22,11 +25,13 @@ public class FileUtil {
      */
 	public static void writeFile(String path, String fileName, String fileContent) throws IOException{
 	        
-	    	if (null == fileContent || true == "".equals(fileContent))
-	            return;
+	    	if (null == fileContent || true == "".equals(fileContent)) {
+				return;
+			}
 	    	
-	    	if(false == directoryIsExists(path)) 
-	    		return;
+	    	if(false == directoryIsExists(path)) {
+				return;
+			}
 	    	
 	        FileWriter writer = null;
 	        try{
@@ -34,25 +39,29 @@ public class FileUtil {
 	        	writer.write(fileContent);
 	        	writer.flush();
 	        }finally{
-	        	if(null != writer)
-	        		try{
-	        			writer.close();
-	        		}catch(IOException e){
-	        			e.printStackTrace();
-	        		}
+	        	if(null != writer) {
+					try{
+						writer.close();
+					}catch(IOException e){
+						e.printStackTrace();
+					}
+				}
 	        }
 	    }
     
     public static boolean directoryIsExists(String path){
     	File directory = new File(path);
-    	if(true == directory.exists())
-    		return true;
+    	if(true == directory.exists()) {
+			return true;
+		}
     	
-        if(false == directory.mkdir())
-        	return false;
+        if(false == directory.mkdir()) {
+			return false;
+		}
         
-        if(true == directory.canWrite())
-        	return true;
+        if(true == directory.canWrite()) {
+			return true;
+		}
         
         return directory.setWritable(true);
     }
@@ -62,15 +71,17 @@ public class FileUtil {
 	 *@param sPath  要删除的目录或文件 
 	 *@return 删除成功返回 true，否则返回 false。 
 	 */  
-	public boolean DeleteFolder(String sPath) {  
+	public boolean deleteFolder(String sPath) {
 	    flag = false;  
 	    file = new File(sPath);  
 	    // 判断目录或文件是否存在  
-	    if (!file.exists()) {  // 不存在返回 false  
+	    // 不存在返回 false
+	    if (!file.exists()) {
 	        return flag;  
 	    } else {  
 	        // 判断是否为文件  
-	        if (file.isFile()) {  // 为文件时调用删除文件方法  
+	        // 为文件时调用删除文件方法
+	        if (file.isFile()) {
 	            return deleteFile(sPath);  
 	        } else {  // 为目录时调用删除目录方法  
 	            return deleteDirectory(sPath);  
@@ -116,14 +127,20 @@ public class FileUtil {
 	        //删除子文件  
 	        if (files[i].isFile()) {  
 	            flag = deleteFile(files[i].getAbsolutePath());  
-	            if (!flag) break;  
+	            if (!flag) {
+					break;
+				}
 	        } //删除子目录  
 	        else {  
 	            flag = deleteDirectory(files[i].getAbsolutePath());  
-	            if (!flag) break;  
+	            if (!flag) {
+					break;
+				}
 	        }  
 	    }  
-	    if (!flag) return false;  
+	    if (!flag) {
+			return false;
+		}
 	    //删除当前目录  
         return dirFile.delete();
 	} 

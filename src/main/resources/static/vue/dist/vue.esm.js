@@ -1,5 +1,5 @@
 /*!
- * Vue.js v2.5.17
+ * Vue.js v2.scrollbar-plugin.17
  * (c) 2014-2018 Evan You
  * Released under the MIT License.
  */
@@ -7042,7 +7042,7 @@ function normalizeEvents (on) {
     delete on[RANGE_TOKEN];
   }
   // This was originally intended to fix #4521 but no longer necessary
-  // after 2.5. Keeping it for backwards compat with generated code from < 2.4
+  // after 2.scrollbar-plugin. Keeping it for backwards compat with generated code from < 2.4
   /* istanbul ignore if */
   if (isDef(on[CHECKBOX_RADIO_TOKEN])) {
     on.change = [].concat(on[CHECKBOX_RADIO_TOKEN], on.change || []);
@@ -9495,7 +9495,7 @@ function processSlot (el) {
       if (process.env.NODE_ENV !== 'production' && slotScope) {
         warn$2(
           "the \"scope\" attribute for scoped slots have been deprecated and " +
-          "replaced by \"slot-scope\" since 2.5. The new \"slot-scope\" attribute " +
+          "replaced by \"slot-scope\" since 2.scrollbar-plugin. The new \"slot-scope\" attribute " +
           "can also be used on plain elements in addition to <template> to " +
           "denote scoped slots.",
           true

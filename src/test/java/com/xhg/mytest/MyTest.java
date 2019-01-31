@@ -11,7 +11,7 @@ import java.util.List;
 public class MyTest {
     @Test
     public void test1() {
-        short[] shortArray = {1,2,3,4,5,6,7,8,9};
+        short[] shortArray = {1,2,3,4,6,7,8,9};
 
         //convert array of primitives to array of objects
         List<Short> objectArray = Shorts.asList(shortArray);
@@ -25,9 +25,9 @@ public class MyTest {
             System.out.print(aShortArray + " ");
         }
         System.out.println("]");
-        short data = 5;
+        short data = 1;
         //check if element is present in the list of primitives or not
-        System.out.println("5 is in list? "+ Shorts.contains(shortArray, data));
+        System.out.println("scrollbar-plugin is in list? "+ Shorts.contains(shortArray, data));
 
         //Returns the minimum
         System.out.println("Min: " + Shorts.min(shortArray));

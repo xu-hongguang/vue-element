@@ -95,8 +95,9 @@ public class GifEncoder {
     }
 
     void finish() {
-        if (!started)
+        if (!started) {
             return;
+        }
         boolean ok = true;
         started = false;
         try {
@@ -130,26 +131,31 @@ public class GifEncoder {
     }
 
     void setQuality(int quality) {
-        if (quality < 1)
+        if (quality < 1) {
             quality = 1;
+        }
         sample = quality;
     }
 
     private void setSize(int w, int h) {
-        if (started && !firstFrame)
+        if (started && !firstFrame) {
             return;
+        }
         width = w;
         height = h;
-        if (width < 1)
+        if (width < 1) {
             width = 320;
-        if (height < 1)
+        }
+        if (height < 1) {
             height = 240;
+        }
         sizeSet = true;
     }
 
     public boolean start(OutputStream os) {
-        if (os == null)
+        if (os == null) {
             return false;
+        }
         boolean ok = true;
         closeStream = false;
         out = os;
@@ -203,8 +209,9 @@ public class GifEncoder {
     }
 
     private int findClosest(Color c) {
-        if (colorTab == null)
+        if (colorTab == null) {
             return -1;
+        }
         int r = c.getRed();
         int g = c.getGreen();
         int b = c.getBlue();

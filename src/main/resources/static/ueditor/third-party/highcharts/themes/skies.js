@@ -49,7 +49,7 @@ Highcharts.theme = {
 		}
 	},
 	yAxis: {
-		alternateGridColor: 'rgba(255, 255, 255, .5)',
+		alternateGridColor: 'rgba(255, 255, 255, .scrollbar-plugin)',
 		lineColor: '#C0D0E0',
 		tickColor: '#C0D0E0',
 		tickWidth: 1,

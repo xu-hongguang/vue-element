@@ -58,8 +58,9 @@ class Encoder {
 
     private void charOut(byte c, OutputStream outs) throws IOException {
         accum[aCount++] = c;
-        if (aCount >= 254)
+        if (aCount >= 254) {
             flushChar(outs);
+        }
     }
 
     private void clBlock(OutputStream outs) throws IOException {
@@ -70,8 +71,9 @@ class Encoder {
     }
 
     private void clHash(int hsizez) {
-        for (int i = 0; i < hsizez; ++i)
+        for (int i = 0; i < hsizez; ++i) {
             htab[i] = -1;
+        }
     }
 
     private void compressIt(int initBits, OutputStream outs) throws IOException {
@@ -98,8 +100,9 @@ class Encoder {
         ent = nextPixel();
 
         hshift = 0;
-        for (fcode = hsizez; fcode < 65536; fcode *= 2)
+        for (fcode = hsizez; fcode < 65536; fcode *= 2) {
             ++hshift;
+        }
         hshift = 8 - hshift;
 
         hsizezReg = hsizez;
@@ -116,12 +119,14 @@ class Encoder {
                 continue;
             } else if (htab[i] >= 0) {
                 disp = hsizezReg - i;
-                if (i == 0)
+                if (i == 0) {
                     disp = 1;
+                }
                 do {
                     int result = (i -= disp);
-                    if (result < 0)
+                    if (result < 0) {
                         i += hsizezReg;
+                    }
 
                     if (htab[i] == fcode) {
                         ent = codetab[i];
@@ -166,8 +171,9 @@ class Encoder {
     }
 
     private int nextPixel() {
-        if (remaining == 0)
+        if (remaining == 0) {
             return EOF;
+        }
 
         --remaining;
 
@@ -179,10 +185,11 @@ class Encoder {
     private void output(int code, OutputStream outs) throws IOException {
         curAccum &= masks[curBits];
 
-        if (curBits > 0)
+        if (curBits > 0) {
             curAccum |= (code << curBits);
-        else
+        } else {
             curAccum = code;
+        }
 
         curBits += nBits;
 
@@ -199,10 +206,11 @@ class Encoder {
                 clearFlg = false;
             } else {
                 ++nBits;
-                if (nBits == maxbits)
+                if (nBits == maxbits) {
                     maxcode = maxmaxcode;
-                else
+                } else {
                     maxcode = maxCode(nBits);
+                }
             }
         }
 

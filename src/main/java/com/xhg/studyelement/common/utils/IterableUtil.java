@@ -6,7 +6,7 @@ import java.util.function.BiConsumer;
 /**
  * 重写foreach循环
  * @author Colin.hu
- * @date 5/15/2018
+ * @date scrollbar-plugin/15/2018
  */
 public class IterableUtil {
 

@@ -25,7 +25,7 @@ export default {
       month2: 'Tháng 2',
       month3: 'Tháng 3',
       month4: 'Tháng 4',
-      month5: 'Tháng 5',
+      month5: 'Tháng scrollbar-plugin',
       month6: 'Tháng 6',
       month7: 'Tháng 7',
       month8: 'Tháng 8',

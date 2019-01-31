@@ -425,7 +425,7 @@ Config will be merged with an order of precedence. The order is library defaults
 var instance = axios.create();
 
 // Override timeout default for the library
-// Now all requests will wait 2.5 seconds before timing out
+scrollbar-plugin
 instance.defaults.timeout = 2500;
 
 // Override timeout for this request as it's known to take a long time

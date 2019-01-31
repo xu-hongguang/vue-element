@@ -13,10 +13,15 @@
 
         /*布局容器*/
         .el-header, .el-footer {
-            background-color: #B3C0D1;
+            background-color: #8e9daa;
             color: #333;
             text-align: center;
-            line-height: 60px;
+            line-height: 50px;
+            height: 50px !important;
+        }
+
+        .el-footer {
+            background-color: #E9EEF3;
         }
 
         .el-aside {
@@ -58,12 +63,68 @@
             color: #d1eaff;
         }
 
-        /*设置父菜单位置*/
-        .el-submenu__title{
-            padding: 0 100px
+        /*设置退出样式*/
+        .el-dropdown-link {
+            cursor: pointer;
+            color: #000;
         }
-        .el-menu-item{
+
+        .el-icon-arrow-down {
+            font-size: 12px;
+        }
+
+
+        /*设置导航菜单*/
+        .el-menu {
+            min-width: 200px;
+            border-right: solid 0 #e6e6e6;
+        }
+
+        /*设置父菜单位置*/
+        .el-menu-item, .el-submenu__title {
+            padding: 0 120px;
+            height: 50px;
+            line-height: 50px;
+        }
+
+        /*设置首页位置*/
+        /*.el-menu-item {
             padding: 0 120px
+        }*/
+
+        /*设置子菜单*/
+        .el-submenu .el-menu-item {
+            padding: 0 60px;
+        }
+
+        /*谷歌设置滚动条样式*/
+        ::-webkit-scrollbar {
+            /*设置滚动条轨道*/
+            width: 10px;
+            height: 0;
+            background-color: #F5F5F5;
+        }
+        /*定义滚动条轨道 内阴影+圆角*/
+        ::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+            background-color: #F5F5F5;
+            border-radius: 5px;
+        }
+        /*定义滑块 内阴影+圆角*/
+        ::-webkit-scrollbar-thumb {
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+            background-color: #9c9c9c;
+            border-radius: 5px;
+        }
+
+        #footer {
+            font-size: 10px;
+            font-weight: normal;
+            text-decoration: none;
+            color: black;
+        }
+        #footer:hover {
+            color: -webkit-link;
         }
 
         [v-cloak] {
@@ -73,28 +134,17 @@
 </head>
 <body>
 <div id="main" v-cloak>
-    <el-container>
-        <!--头部导航栏-->
-        <el-header style="float: right;">
-            <el-form :inline="true" size="small" style="text-align: right;margin-right: 15px;">
-                <a href="#" class="full" onclick="fullScreen(this)">全屏</a>&nbsp;&nbsp;
-                <template v-if="username !== ''|| null">
-                    <span style="font-size: 15px">欢迎{{username}}&nbsp;&nbsp;</span>
-                    <a class="logout" href="#" @click="logout">退出</a>
-                </template>
-                <template v-else>
-                    <a style=";font-size: 15px" href="#" @click="login">登录&nbsp;&nbsp;</a>
-                </template>
-            </el-form>
-        </el-header>
+    <el-container style="height: 100%; min-height: 100vh" direction="vertical">
         <el-container>
-            <!--菜单栏-->
+            <!--左侧菜单栏-->
             <el-aside width="200px">
                 <el-row class="tac">
                     <el-col :span="24">
                         <!--<h5>默认颜色</h5>  :default-active="$route.path"-->
-                        <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
-                                 background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" :unique-opened="true">
+                        <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen"
+                                 @close="handleClose"
+                                 background-color="#545c64" text-color="#fff" active-text-color="#ffd04b"
+                                 :unique-opened="true">
                             <template v-for="(item, index) in menuList">
                                 <el-menu-item :index="item.url" v-if="item.parientId === -1">
                                     <i :class="item.icon"></i>
@@ -115,32 +165,48 @@
                         </el-menu>
                     </el-col>
                 </el-row>
-
-                <!--<section class="sidebar">
-                    &lt;!&ndash; /.search form &ndash;&gt;
-                    &lt;!&ndash; sidebar menu: : style can be found in sidebar.less &ndash;&gt;
-                    <ul class="sidebar-menu">
-                        &lt;!&ndash;  <li class="header">导航菜单</li>&ndash;&gt;
-
-                        &lt;!&ndash; vue生成的菜单 &ndash;&gt;
-                        <menu-item :item="item" :index="index" v-for="(item, index) in menuList"></menu-item>
-                    </ul>
-                </section>-->
             </el-aside>
-            <!--主体内容-->
-            <el-main>
-                <section>
-                    <el-breadcrumb separator-class="el-icon-arrow-right">
-                        <el-breadcrumb-item>{{navTag}}</el-breadcrumb-item>
-                        <el-breadcrumb-item>{{navTitle}}</el-breadcrumb-item>
-                    </el-breadcrumb>
-                </section>
-                <section class="el-container">
-                    <iframe scrolling="yes"
-                            style="width:100%;min-height:200px;border: none;overflow:visible;background:#E9EEF3;height: 800px"
-                            :src="main"></iframe>
-                </section>
-            </el-main>
+            <el-container>
+                <!--头部导航栏-->
+                <el-header style="float: right;">
+                    <el-form :inline="true" size="small" style="text-align: right;margin-right: 15px;">
+                        <template v-if="username !== ''|| null">
+                            <el-dropdown>
+                                <div class="el-dropdown-link" style="height: 50px; line-height: 50px;">
+                                    <img src="https://www.gravatar.com/avatar/6560ed55e62396e40b34aac1e5041028" alt="我的头像"
+                                         style="height: 45px; line-height: 45px; border-radius: 50%; position: absolute; right: 18px;">
+                                    <i class="el-icon-caret-bottom el-icon--right"></i>
+                                </div>
+                                <el-dropdown-menu slot="dropdown">
+                                    <el-dropdown-item><strong>{{username}}</strong></el-dropdown-item>
+                                    <el-dropdown-item onclick="fullScreen(this)"><span>全屏</span></el-dropdown-item>
+                                    <el-dropdown-item><span @click="logout">退出</span></el-dropdown-item>
+                                </el-dropdown-menu>
+                            </el-dropdown>
+                        </template>
+                        <template v-else>
+                            <a style="font-size: 15px" href="#" @click="login">登录</a>
+                        </template>
+                    </el-form>
+                </el-header>
+                <!--主体内容-->
+                <el-main>
+                    <section>
+                        <el-breadcrumb separator-class="el-icon-arrow-right">
+                            <el-breadcrumb-item>{{navTag}}</el-breadcrumb-item>
+                            <el-breadcrumb-item>{{navTitle}}</el-breadcrumb-item>
+                        </el-breadcrumb>
+                    </section>
+                    <section class="el-container">
+                        <iframe scrolling="yes" style="width:100%;min-height:200px;border: none;overflow:visible;background:#E9EEF3;height: 800px"
+                                :src="main"></iframe>
+                    </section>
+                </el-main>
+                <!--脚-->
+                <el-footer>
+                    <a href="index.html" id="footer">我的系统</a>
+                </el-footer>
+            </el-container>
         </el-container>
     </el-container>
 </div>

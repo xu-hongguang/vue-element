@@ -452,7 +452,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @license  MIT
 	 */
 	
-	// The _isBuffer check is for Safari 5-7 support, because it's missing
+	// The _isBuffer check is for Safari scrollbar-plugin-7 support, because it's missing
 	// Object.prototype.constructor. Remove this eventually
 	module.exports = function (obj) {
 	  return obj != null && (isBuffer(obj) || isSlowBuffer(obj) || !!obj._isBuffer)
@@ -469,7 +469,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 5 */
+/* scrollbar-plugin */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';

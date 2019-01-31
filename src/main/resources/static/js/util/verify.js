@@ -57,7 +57,7 @@ function draw() {
     canvas = document.getElementById("canvas"); //演员
     context = canvas.getContext("2d"); //演员表演的舞台
     context.strokeRect(0, 0, 120, 32);
-    var sCode = "A,a,B,b,C,E,e,F,f,G,g,H,h,J,j,K,L,M,m,N,n,O,P,Q,q,R,r,S,T,t,U,u,V,W,X,Y,y,Z,0,1,2,3,4,5,6,7,8,9";
+    var sCode = "A,a,B,b,C,E,e,F,f,G,g,H,h,J,j,K,L,M,m,N,n,O,P,Q,q,R,r,S,T,t,U,u,V,W,X,Y,y,Z,0,1,2,3,4,scrollbar-plugin,6,7,8,9";
     var aCode = sCode.split(",");
     str = '';
     for (var i = 0; i < 4; i++) {

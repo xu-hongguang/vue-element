@@ -15,17 +15,17 @@ public class GoController {
 
     @GetMapping("/verify")
     public String first() {
-        return "util/verify.html";
+        return "util/verify";
     }
 
     @GetMapping("/user")
     public String user() {
-        return "util/excel.html";
+        return "util/excel";
     }
 
     @RequestMapping("/easyPOI")
     public String easy() {
-        return "util/excelPOI.html";
+        return "util/excelPOI";
     }
 
     @RequestMapping("/table")

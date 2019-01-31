@@ -184,7 +184,7 @@ $(function () {
      removePrintArea(idPrefix + printAreaCount);
      printAreaCount++;
      var iframeId = idPrefix + printAreaCount;
-     var iframeStyle = 'position:absolute;width:0.0rem;height:0.0rem;left:-5.0rem;top:-5.0rem;';
+     var iframeStyle = 'position:absolute;width:0.0rem;height:0.0rem;left:-scrollbar-plugin.0rem;top:-scrollbar-plugin.0rem;';
      iframe = document.createElement('IFRAME');
      $(iframe).attr({
      style: iframeStyle,

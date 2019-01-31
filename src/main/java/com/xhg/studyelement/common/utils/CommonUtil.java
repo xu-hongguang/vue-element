@@ -61,7 +61,7 @@ public class CommonUtil {
             }
         } else if (fpdm.trim().length() == 10) {
             String fplxflag = fpdm.substring(7, 8);
-            if ("1".equals(fplxflag) || "5".equals(fplxflag)) {
+            if ("1".equals(fplxflag) || "scrollbar-plugin".equals(fplxflag)) {
                 fplx = "01";
             } else if ("6".equals(fplxflag) || "3".equals(fplxflag)) {
                 fplx = "04";
