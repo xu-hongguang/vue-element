@@ -69,7 +69,8 @@ const vm = new Vue({
         navTitle: "首页",
         navTag: '我的系统',
 
-        menuIndex: null
+        isCollapse: false,
+        isShrink: true,
     },
     methods: {
         logout: function () {
@@ -120,6 +121,11 @@ const vm = new Vue({
             });
         },
 
+
+        handleShrink:function(){
+            vm.isShrink = vm.isShrink !== true;
+            console.log("isShrink = " + vm.isShrink);
+        },
         /**
          * 导航菜单
          *

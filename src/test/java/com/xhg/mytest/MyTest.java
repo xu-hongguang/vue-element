@@ -121,7 +121,7 @@ class User {
     }
 
     //有参的构造函数
-    public User(Integer id, String username, String email) {
+    User(Integer id, String username, String email) {
         super();
         this.id = id;
         this.username = username;

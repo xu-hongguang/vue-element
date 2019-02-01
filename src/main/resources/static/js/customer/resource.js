@@ -1,11 +1,10 @@
 document.write('<script src="js/jquery.min.js"></script>');
-document.write('<script src="jqgrid/jquery.jqGrid.min.js"></script>');
+// document.write('<script src="jqgrid/jquery.jqGrid.min.js"></script>');
 document.write('<script src="vue/dist/vue.js"></script>');
 document.write('<script src="js/vue-i18n.js"></script>');
 // document.write('<script src="js/vue-router.js"></script>');
 document.write('<script src="axios/dist/axios.min.js"></script>');
-document.write('<script src="vue/vue-resource@1.scrollbar-plugin.1.js"></script>');
-document.write('<script src="element-ui/lib/index.js"></script>');
+document.write('<script src="https://unpkg.com/element-ui/lib/index.js"></script>');
 document.write('<script src="js/bootstrap.min.js"></script>');
 document.write('<script src="js/bootstrap-notify.min.js"></script>');
 document.write('<script src="layer/layer.js"></script>');
@@ -23,7 +22,7 @@ document.write('<script type="text/javascript" charset="utf-8" src="js/customer/
 document.write('<script type="text/babel" src="js/customer/vuecommon.js"></script> ');
 
 //CSS
-document.write('<link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">');
+document.write('<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">');
 // document.write('<link rel="stylesheet" href="css/bootstrap.min.css">');
 // document.write('<link rel="stylesheet" href="js/customer/index.css">');
 

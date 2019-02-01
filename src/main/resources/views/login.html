@@ -191,13 +191,13 @@
 
     function setCookie(name, value) {
         /*wiki 上的世界末日*/
-        var exp = new Date(0x7fffffff * 1e3);
+        const exp = new Date(0x7fffffff * 1e3);
         document.cookie = name + "=" + decodeURI(value) + ";expires=" + exp.toUTCString();
     }
 
     //取cookies函数
     function getCookie(name) {
-        var arr = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"));
+        const arr = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"));
         if (arr != null) return decodeURIComponent(arr[2]);
         return null;
     }
