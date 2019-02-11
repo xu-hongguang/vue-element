@@ -1,9 +1,11 @@
 package com.xhg.studyelement.common.config;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
+import com.xhg.studyelement.common.config.propertiesconfig.FebsProperties;
 import com.xhg.studyelement.common.listener.ShiroSessionListener;
 import com.xhg.studyelement.common.utils.MD5Utils;
 import com.xhg.studyelement.shiro.realm.UserRealm;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.codec.Base64;
@@ -15,6 +17,7 @@ import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
@@ -27,6 +30,13 @@ import java.util.*;
  */
 @Configuration
 public class ShiroConfig {
+
+    private final FebsProperties febsProperties;
+
+    @Autowired
+    public ShiroConfig(FebsProperties febsProperties) {
+        this.febsProperties = febsProperties;
+    }
 
     /**
      * 请求映射处理映射器
@@ -146,15 +156,21 @@ public class ShiroConfig {
         shiroFilter.setUnauthorizedUrl("noPermission.html");
 
         Map<String, String> filterMap = new HashMap<>(16);
-        filterMap.put("/login", "anon");
-        filterMap.put("/img/**", "anon");
-        filterMap.put("/vue/**", "anon");
-        filterMap.put("/axios/**", "anon");
-        filterMap.put("/element-ui/**", "anon");
-        filterMap.put("/saveVerify", "anon");
-        filterMap.put("/userList/**", "anon");
-        filterMap.put("/**/*.css", "anon");
-        filterMap.put("/**/*.js", "anon");
+//        filterMap.put("/login", "anon");
+//        filterMap.put("/img/**", "anon");
+//        filterMap.put("/vue/**", "anon");
+//        filterMap.put("/axios/**", "anon");
+//        filterMap.put("/element-ui/**", "anon");
+//        filterMap.put("/saveVerify", "anon");
+//        filterMap.put("/userList/**", "anon");
+//        filterMap.put("/**/*.css", "anon");
+//        filterMap.put("/**/*.js", "anon");
+
+        // 设置免认证 url
+        String[] anonUrls = StringUtils.splitByWholeSeparatorPreserveAllTokens(febsProperties.getShiro().getAnonUrl(), ",");
+        for (String url : anonUrls) {
+            filterMap.put(url, "anon");
+        }
         filterMap.put("/logout", "logout");
         filterMap.put("/**", "authc");
         shiroFilter.setFilterChainDefinitionMap(filterMap);

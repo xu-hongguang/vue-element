@@ -137,5 +137,6 @@ public class User1AndInvoiceMapperTest {
         System.out.println("**************************************************");
         List<Permission> permissions = permissionService.getAllPermissionsByUserId(1L, "1");
         permissions.forEach(System.out::println);
+        System.out.println("**************************************************");
     }
 }

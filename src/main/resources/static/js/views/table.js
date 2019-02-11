@@ -76,7 +76,7 @@ const vm = new Vue({
         };
 
 
-        this.getUserList(this.currentPage);
+        // this.getUserList(this.currentPage);
 
         // 实例化editor编辑器
         // UE.getEditor('editor');
@@ -261,12 +261,13 @@ const vm = new Vue({
                 data: {},
                 dataType: 'json'
             }).then(function (response) {
+                const res = response.data;
                 //.data不可去
-                vm.currentPage = response.data.pageNo;
-                vm.totalPage = response.data.totalPage;
-                vm.total = response.data.totalCount;
-                vm.userList = response.data.userList;
-
+                vm.currentPage = res.pageNo;
+                vm.totalPage = res.totalPage;
+                vm.total = res.totalCount;
+                vm.userList = res.userList;
+console.log(vm.total);
                 //关闭加载显示
                 vm.listLoading = false;
             }).catch(function (error) {
