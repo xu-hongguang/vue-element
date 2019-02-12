@@ -49,11 +49,11 @@ const routes = [
             // 配置根路由
             {path:'/', redirect: 'basic'}
         ]
-    },
-    {path: '/java', component: java},
+    },*/
+    {path: '/table', component: java},
     {path: '/python', component: python, name: 'python'},
     // 配置默认显示页
-    {path: '/', redirect: 'index.html'}*/
+    {path: '/', redirect: 'main.html'}
 ];
 
 const vm = new Vue({

@@ -74,6 +74,28 @@
             font-size: 14px;
         }
 
+
+        /*谷歌设置滚动条样式*/
+        ::-webkit-scrollbar {
+            /*设置滚动条轨道*/
+            width: 10px;
+            height: 0;
+            background-color: #F5F5F5;
+        }
+
+        /*定义滚动条轨道 内阴影+圆角*/
+        ::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+            background-color: #F5F5F5;
+            border-radius: 5px;
+        }
+
+        /*定义滑块 内阴影+圆角*/
+        ::-webkit-scrollbar-thumb {
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+            background-color: #9c9c9c;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -232,17 +254,17 @@
     </template>
     <!--分页  默认layout="total, sizes, prev, pager, next, jumper" -->
     <div class="block" style="padding:0.1rem;">
-        <el-pagination style="float: right" background @size-change="handleSizeChange"
+        <!--<el-pagination style="float: right" background @size-change="handleSizeChange"
                        @current-change="handleCurrentChange" :current-page="currentPage"
                        :page-sizes="pageSizes" :page-size="pageSize"
                        layout="slot, sizes, prev, pager, next" :total="total">
             <span>共{{total}}条记录，第{{currentPage}}页，共{{totalPage}}页</span>
-        </el-pagination>
-        <!--<el-pagination style="float: right" background @size-change="handleSizeChange"
+        </el-pagination>-->
+        <el-pagination style="float: right" background @size-change="handleSizeChange"
                        @current-change="handleCurrentChange" :current-page="currentPage"
                        :page-sizes="pageSizes" :page-size="pageSize" :total="total"
                        layout="total, sizes, prev, pager, next, jumper" >
-        </el-pagination>-->
+        </el-pagination>
     </div>
 </div>
 </body>

@@ -75,17 +75,17 @@
 
 
         /*设置导航菜单*/
-        .el-menu {
+        /*.el-menu {
             min-width: 200px;
             border-right: solid 0 #e6e6e6;
         }
 
-        /*设置父菜单位置*/
+        !*设置父菜单位置*!
         .el-menu-item, .el-submenu__title {
             padding: 0 120px;
             height: 50px;
             line-height: 50px;
-        }
+        }*/
 
         /*设置首页位置*/
         /*.el-menu-item {
@@ -115,7 +115,8 @@
             border-radius: 0 4px 4px 0 !important;
             border-left: 0 solid #dcdfe6 !important;
         }
-        .el-radio-remove-outline{
+
+        .el-radio-remove-outline {
             border-radius: 0 4px 4px 0 !important;
         }
 
@@ -170,17 +171,19 @@
             <!--左侧菜单栏-->
             <el-aside width="200px">
                 <el-row class="tac">
-                    <el-col >
+                    <el-col>
                         <!--<h5>默认颜色</h5>  :default-active="$route.path"-->
                         <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen"
                                  @close="handleClose"
                                  background-color="#545c64" text-color="#fff" active-text-color="#ffd04b"
                                  :unique-opened="true" :collapse="isCollapse">
                             <template v-for="(item, index) in menuList">
-                                <el-menu-item :index="item.url" v-if="item.parientId === -1">
-                                    <i :class="item.icon"></i>
-                                    <span slot="title">{{item.name}}</span>
-                                </el-menu-item>
+                                <router-link v-if="item.parientId === -1" :to="//">
+                                    <el-menu-item :index="item.url" v-if="item.parientId === -1">
+                                        <i :class="item.icon"></i>
+                                        <span slot="title">{{item.name}}</span>
+                                    </el-menu-item>
+                                </router-link>
                                 <template v-if="item.parientId === 27">
                                     <el-submenu :index="item.url + index + ''" class="myClass">
                                         <template slot="title">
@@ -201,10 +204,12 @@
                 <!--头部导航栏-->
                 <el-header style="float: right;">
                     <el-radio-group v-model="isCollapse" style="margin-bottom: 20px; float: left;">
-                        <el-radio-button :label="true" v-show="isShrink === true"><i  @click="handleShrink"
-                                class="el-icon-remove-outline"></i></el-radio-button>
+                        <el-radio-button :label="true" v-show="isShrink === true"><i @click="handleShrink"
+                                                                                     class="el-icon-remove-outline"></i>
+                        </el-radio-button>
                         <el-radio-button :label="false" v-show="isShrink === false"><i @click="handleShrink"
-                                class="el-icon-circle-plus-outline"></i></el-radio-button>
+                                                                                       class="el-icon-circle-plus-outline"></i>
+                        </el-radio-button>
                     </el-radio-group>
                     <el-form :inline="true" size="small" style="text-align: right;margin-right: 15px;">
                         <template v-if="username !== ''|| null">
