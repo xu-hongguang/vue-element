@@ -11,11 +11,13 @@
 .sts4-cache
 
 ### IntelliJ IDEA ###
+/src/main/resources/views/jsp/
 .idea
 .mvn
 *.iws
 *.iml
 *.ipr
+*.jsp
 
 ### NetBeans ###
 /nbproject/private/
