@@ -71,15 +71,18 @@ const vm = new Vue({
         main: "main.html",
         password: '',
         newPassword: '',
-        navTitle: "首页",
         navTag: '我的系统',
+        navTitle: "首页",
 
         isCollapse: false,
         isShrink: true,
     },
     methods: {
-        changeMain: function(main){
-            vm.main = main
+        //
+        changeMain: function(main,navTag,navTitle){
+            vm.main = main;
+            vm.navTag= navTag;
+            vm.navTitle = navTitle
         },
 
         logout: function () {
