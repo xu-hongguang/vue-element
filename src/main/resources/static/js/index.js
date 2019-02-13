@@ -50,14 +50,19 @@ const routes = [
             {path:'/', redirect: 'basic'}
         ]
     },*/
-    {path: '/table', component: java},
-    {path: '/python', component: python, name: 'python'},
+    // {path: '/table', component: java},
+    // {path: '/python', component: python, name: 'python'},
     // 配置默认显示页
     {path: '/', redirect: 'main.html'}
 ];
 
+const router = new VueRouter({
+    routes
+});
+
 const vm = new Vue({
     el: '#main',
+    // router: router,
     data: {
         username: localStorage.getItem('username'),
 
@@ -73,6 +78,10 @@ const vm = new Vue({
         isShrink: true,
     },
     methods: {
+        changeMain: function(main){
+            vm.main = main
+        },
+
         logout: function () {
             localStorage.removeItem("username");
             location.href = 'logout'

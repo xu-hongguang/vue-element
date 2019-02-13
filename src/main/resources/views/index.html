@@ -178,12 +178,14 @@
                                  background-color="#545c64" text-color="#fff" active-text-color="#ffd04b"
                                  :unique-opened="true" :collapse="isCollapse">
                             <template v-for="(item, index) in menuList">
-                                <router-link v-if="item.parientId === -1" :to="//">
-                                    <el-menu-item :index="item.url" v-if="item.parientId === -1">
-                                        <i :class="item.icon"></i>
-                                        <span slot="title">{{item.name}}</span>
-                                    </el-menu-item>
-                                </router-link>
+                                <!--<router-link to="/">-->
+                                <el-menu-item :index="item.url" v-if="item.parientId === -1" @click="changeMain(item.url)">
+                                    <!--<a :href="item.url">-->
+                                    <i :class="item.icon"></i>
+                                    <span slot="title">{{item.name}}</span>
+                                    <!--</a>-->
+                                </el-menu-item>
+                                <!--</router-link>-->
                                 <template v-if="item.parientId === 27">
                                     <el-submenu :index="item.url + index + ''" class="myClass">
                                         <template slot="title">
@@ -191,7 +193,9 @@
                                             <span>{{item.name}}</span>
                                         </template>
                                         <el-menu-item-group v-for="(child) in item.childList">
-                                            <el-menu-item :index="child.url">{{child.name}}</el-menu-item>
+                                            <!--<a :href="child.url">-->
+                                            <el-menu-item :index="child.url" @click="changeMain(child.url)">{{child.name}}</el-menu-item>
+                                            <!--</a>-->
                                         </el-menu-item-group>
                                     </el-submenu>
                                 </template>
@@ -244,6 +248,7 @@
                         <iframe scrolling="yes"
                                 style="width:100%;min-height:200px;border: none;overflow:visible;background:#E9EEF3;height: 800px"
                                 :src="main"></iframe>
+                        <!--<router-view></router-view>-->
                     </section>
                 </el-main>
                 <!--脚-->
