@@ -75,17 +75,17 @@
 
 
         /*设置导航菜单*/
-        /*.el-menu {
+        .el-menu {
             min-width: 200px;
             border-right: solid 0 #e6e6e6;
         }
 
-        !*设置父菜单位置*!
+        /*设置父菜单位置*/
         .el-menu-item, .el-submenu__title {
             padding: 0 120px;
             height: 50px;
             line-height: 50px;
-        }*/
+        }
 
         /*设置首页位置*/
         /*.el-menu-item {
@@ -187,7 +187,8 @@
                                 </el-menu-item>
                                 <!--</router-link>-->
                                 <template v-if="item.parientId === 27">
-                                    <el-submenu :index="item.url + index + ''" class="myClass">
+                                    <!--v-if="item.childList.length > 0" 没有子菜单则不显示-->
+                                    <el-submenu :index="item.url + index + ''" v-if="item.childList.length > 0" class="myClass">
                                         <template slot="title">
                                             <i :class="item.icon"></i>
                                             <span>{{item.name}}</span>

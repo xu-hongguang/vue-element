@@ -68,7 +68,7 @@ const vm = new Vue({
 
         user: {},
         menuList: {},
-        main: "table",
+        main: "main.html",
         password: '',
         newPassword: '',
         navTitle: "首页",

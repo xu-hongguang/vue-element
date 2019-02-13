@@ -1,5 +1,6 @@
 package com.xhg.studyelement.shiro.web.controller;
 
+import com.xhg.studyelement.common.config.propertiesconfig.FebsProperties;
 import com.xhg.studyelement.common.utils.MD5Utils;
 import com.xhg.studyelement.common.utils.R;
 import com.xhg.studyelement.common.utils.ShiroUtils;
@@ -32,9 +33,12 @@ public class LoginController {
 
     private final UserService userService;
 
+    private FebsProperties febsProperties;
+
     @Autowired
-    public LoginController(UserService userService) {
+    public LoginController(UserService userService,FebsProperties febsProperties) {
         this.userService = userService;
+        this.febsProperties = febsProperties;
     }
 
     /**
@@ -66,7 +70,7 @@ public class LoginController {
             response.setDateHeader("Expires", 0);
             response.setContentType("image/gif");
 
-            Captcha captcha = new GifCaptcha(146, 42, 4);
+            Captcha captcha = new GifCaptcha(febsProperties.getValidateCode().getWidth(), febsProperties.getValidateCode().getHeight(), febsProperties.getValidateCode().getLength());
             //输出图片
             ServletOutputStream out = response.getOutputStream();
             captcha.out(out);
