@@ -37,7 +37,7 @@ public class User1ImportExcel extends AbstractImportExcel {
         final Workbook workBook = getWorkBook(file);
         //读取第一个标签
         final Sheet sheet = workBook.getSheetAt(0);
-        final Integer rowCount = sheet.getLastRowNum();
+        final int rowCount = sheet.getLastRowNum();
 
         int index = 0;
         //获取数据 行数从0开始，数据从第2开始取 当没有实际数据时rowCount为1（两行）
