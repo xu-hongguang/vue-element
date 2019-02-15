@@ -18,6 +18,9 @@ import java.util.Map;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
+/**
+ * @author Eddy.Xu
+ */
 @RestController
 public class User1ExcelController {
 
@@ -40,7 +43,7 @@ public class User1ExcelController {
 
     /**
      * 导出表格模板
-     * @param response
+     * @param response 响应
      */
     @RequestMapping("/export/UserExcelTemplate")
     @RequiresPermissions("export:exportUserExcelTemplate")
