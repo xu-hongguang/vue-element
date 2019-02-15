@@ -153,7 +153,7 @@ public class ShiroConfig {
         shiroFilter.setSecurityManager(securityManager);
         shiroFilter.setLoginUrl("/login");
         shiroFilter.setSuccessUrl("/index.html");
-        shiroFilter.setUnauthorizedUrl("noPermission.html");
+        shiroFilter.setUnauthorizedUrl("/noPermission.html");
 
         Map<String, String> filterMap = new HashMap<>(16);
 //        filterMap.put("/login", "anon");
@@ -187,7 +187,7 @@ public class ShiroConfig {
     public SimpleMappingExceptionResolver exceptionResolver(){
         SimpleMappingExceptionResolver exceptionResolver = new SimpleMappingExceptionResolver();
         Properties properties = new Properties();
-        properties.setProperty("org.apache.shiro.authz.UnauthorizedException","redirect:/nopermission.html");
+        properties.setProperty("org.apache.shiro.authz.UnauthorizedException","redirect:/noPermission.html");
 
         exceptionResolver.setExceptionMappings(properties);
 

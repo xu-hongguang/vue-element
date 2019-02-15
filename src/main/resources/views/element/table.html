@@ -8,7 +8,7 @@
     <script src="ueditor/ueditor.config.js"></script>
     <script src="ueditor/ueditor.all.js"></script>
     <style>
-        body{
+        body {
             background-color: #E9EEF3;
         }
 
@@ -107,7 +107,7 @@
 <div id="app">
     <el-form id="upload_form" :inline="true" align="center" size="small" style="width: 100%;margin: 0 auto">
         <el-row>
-            <el-col :span="24" al>
+            <el-col :span="24">
                 <el-form-item>
                     <el-input v-model="username1" placeholder="用户名"></el-input>
                 </el-form-item>
@@ -192,7 +192,8 @@
                   @selection-change="handleSelectionChange"
                   v-loading="listLoading"
                   element-loading-text="正在拼命加载中">
-            <el-table-column type="selection" width="55" prop="id" align="center" shiro:hasPermission="user:batchRemoveUser"></el-table-column>
+            <el-table-column type="selection" width="55" prop="id" align="center"
+                             shiro:hasPermission="user:batchRemoveUser"></el-table-column>
             <el-table-column :show-overflow-tooltip="true" type="index" width="70" :index="mainIndex" label="序号"
                              align="center"></el-table-column>
             <el-table-column prop="id" label="编号" align="center"></el-table-column>
@@ -267,7 +268,7 @@
         <el-pagination style="float: right" background @size-change="handleSizeChange"
                        @current-change="handleCurrentChange" :current-page="currentPage"
                        :page-sizes="pageSizes" :page-size="pageSize" :total="total"
-                       layout="total, sizes, prev, pager, next, jumper" >
+                       layout="total, sizes, prev, pager, next, jumper">
         </el-pagination>
     </div>
 </div>

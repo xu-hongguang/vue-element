@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -19,6 +20,7 @@ import java.time.LocalTime;
 @SpringBootApplication
 @EnableConfigurationProperties({FebsProperties.class})
 @EnableCaching
+@EnableScheduling
 public class StudyelementApplication {
 
 	private static Logger log = LoggerFactory.getLogger(StudyelementApplication.class);
