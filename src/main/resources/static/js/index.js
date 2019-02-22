@@ -78,11 +78,15 @@ const vm = new Vue({
         isShrink: true,
     },
     methods: {
-        //
-        changeMain: function(main,navTag,navTitle){
-            vm.main = main;
-            vm.navTag= navTag;
-            vm.navTitle = navTitle
+        //修改主页面显示
+        changeMain: function (main, navTag, navTitle) {
+            vm.navTag = navTag;
+            vm.navTitle = navTitle;
+            if (main === "main.html") {
+                location.href = "index.html"
+            } else {
+                vm.main = main;
+            }
         },
 
         logout: function () {
@@ -97,7 +101,7 @@ const vm = new Vue({
                 window.permissions = r.permissions;
             });*/
 
-            $.getJSON("menu/nav",function (r) {
+            $.getJSON("menu/nav", function (r) {
                 vm.menuList = r.menuList;
                 window.permissions = r.permissions;
             });
@@ -134,7 +138,7 @@ const vm = new Vue({
         },
 
 
-        handleShrink:function(){
+        handleShrink: function () {
             vm.isShrink = vm.isShrink !== true;
             console.log("isShrink = " + vm.isShrink);
         },

@@ -116,7 +116,7 @@
             border-left: 0 solid #dcdfe6 !important;
         }
 
-        .el-radio-remove-outline {
+        .el-icon-d-arrow-left {
             border-radius: 0 4px 4px 0 !important;
         }
 
@@ -214,11 +214,11 @@
                 <!--头部导航栏-->
                 <el-header style="float: right;">
                     <el-radio-group v-model="isCollapse" style="margin-bottom: 20px; float: left;">
-                        <el-radio-button :label="true" v-show="isShrink === true"><i @click="handleShrink"
-                                                                                     class="el-icon-remove-outline"></i>
+                        <el-radio-button :label="true" v-show="isShrink === true">
+                            <i @click="handleShrink" class="el-icon-d-arrow-left"></i>
                         </el-radio-button>
-                        <el-radio-button :label="false" v-show="isShrink === false"><i @click="handleShrink"
-                                                                                       class="el-icon-circle-plus-outline"></i>
+                        <el-radio-button :label="false" v-show="isShrink === false">
+                            <i @click="handleShrink" class="el-icon-d-arrow-right"></i>
                         </el-radio-button>
                     </el-radio-group>
                     <el-form :inline="true" size="small" style="text-align: right;margin-right: 15px;">

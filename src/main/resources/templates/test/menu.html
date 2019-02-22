@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>菜单权限</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="../../static/js/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <!-- jquery.treegrid -->
+    <link rel="stylesheet" href="../../static/css/jqTreeGrid/jquery.treegrid.css">
+    <script src="../../static/js/jqTreeGrid/jquery.treegrid.js"></script>
+    <!-- jquery.treegrid.extension -->
+    <script src="../../static/js/jqTreeGrid/jquery.treegrid.extension.js"></script>
+
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+</head>
+<body>
+<form class="form">
+    <div class="row">
+        <div class="col">
+            <div class="input-group">
+                <span class="input-group-addon">部门名称：</span>
+                <div class="form-group">
+                    <input type="text" name="deptName" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <button type="button" class="btn btn-success" onclick="refresh()">重置</button>
+            <button type="button" class="btn btn-primary" onclick="search()">搜索</button>
+        </div>
+    </div>
+</form>
+<table id="deptTreeTable" data-mobile-responsive="true" class="mb-bootstrap-table text-nowrap"></table>
+
+<script>
+    // var ctx = [[@{/}]];
+
+    $(function () {
+        initDeptTreeTable();
+    });
+
+    function initDeptTreeTable() {
+        $('#deptTreeTable').bootstrapTreeTable({
+            id: 'deptId', // 选取记录返回的值
+            code: 'deptId', // 用于设置父子关系
+            parentCode: 'parentId', // 用于设置父子关系
+            rootCodeValue: null, //设置根节点code值----可指定根节点，默认为null,"",0,"0"
+            data: [], // 构造table的数据集合，如果是ajax请求则不必填写
+            type: "GET", // 请求数据的ajax类型
+            url: '../../static/json/dept.json', // 请求数据的ajax的url
+            ajaxParams: {
+                deptName: $(".form").find("input[name='deptName']").val().trim()
+            }, // 请求数据的ajax的data属性
+            expandColumn: 2, // 在哪一列上面显示展开按钮
+            expandAll: true, // 是否全部展开
+            striped: true, // 是否各行渐变色
+            columns: [
+                {
+                    field: 'selectItem',
+                    checkbox: true
+                },
+                {
+                    title: '编号',
+                    field: 'deptId',
+                    width: '50px'
+                },
+                {
+                    title: '名称',
+                    field: 'deptName'
+                },
+                {
+                    title: '创建时间',
+                    field: 'createTime'
+                }
+            ], // 设置列
+            toolbar: null, //顶部工具条
+            height: 0,
+            expanderExpandedClass: 'fa fa-chevron-down', // 展开的按钮的图标
+            expanderCollapsedClass: 'fa fa-chevron-up' // 缩起的按钮的图标
+        });
+    }
+
+    // 搜索方法
+    function search() {
+        initDeptTreeTable();
+    }
+
+    // 重置方法
+    function refresh() {
+        $(".form")[0].reset();
+        search();
+    }
+</script>
+</body>
+</html>
