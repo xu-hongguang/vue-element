@@ -14,7 +14,7 @@ var url = function (name) {
 T.p = url;
 
 //请求前缀
-var baseURL = "/dxhy-gylpt/";
+var baseURL = "/vue-element/";
 //发票匹配误差值
 var cover = 20.00;
 

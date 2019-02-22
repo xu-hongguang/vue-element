@@ -3,17 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>菜单权限</title>
-    <link rel="stylesheet" href="../../static/css/bootstrap/bootstrap.min.css">
-    <script src="../../static/js/jquery.min.js"></script>
-    <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"></script>
-    <!--<script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>-->
-    <script src=../../static/js/bootstrap/bootstrap.min.js"></script>
-    <!-- jquery.treegrid -->
-    <link rel="stylesheet" href="../../static/css/jqTreeGrid/jquery.treegrid.css">
-    <script src="../../static/js/jqTreeGrid/jquery.treegrid.js"></script>
-    <!-- jquery.treegrid.extension -->
-    <script src="../../static/js/jqTreeGrid/jquery.treegrid.extension.js"></script>
+    <script src="js/customer/resource.js"></script>
 
+    <!--bootstrap没有自带图标组件，为了下文的使用，这里引入font-awesome-->
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
 </head>
 <body>
@@ -50,7 +42,7 @@
             rootCodeValue: null, //设置根节点code值----可指定根节点，默认为null,"",0,"0"
             data: [], // 构造table的数据集合，如果是ajax请求则不必填写
             type: "GET", // 请求数据的ajax类型
-            url: '../../static/json/dept.json', // 请求数据的ajax的url
+            url: 'json/dept.json', // 请求数据的ajax的url
             ajaxParams: {
                 deptName: $(".form").find("input[name='deptName']").val().trim()
             }, // 请求数据的ajax的data属性
