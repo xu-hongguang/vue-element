@@ -1,43 +1,51 @@
-[{
-  "deptId": 1,
-  "parentId": 0,
-  "deptName": "开发部",
-  "orderNum": null,
-  "createTime": 1515051746000
-}, {
-  "deptId": 2,
-  "parentId": 1,
-  "deptName": "开发一部",
-  "orderNum": null,
-  "createTime": 1515051754000
-}, {
-  "deptId": 3,
-  "parentId": 1,
-  "deptName": "开发二部",
-  "orderNum": null,
-  "createTime": 1515051749000
-}, {
-  "deptId": 4,
-  "parentId": 0,
-  "deptName": "市场部",
-  "orderNum": null,
-  "createTime": 1515051756000
-}, {
-  "deptId": 5,
-  "parentId": 0,
-  "deptName": "人事部",
-  "orderNum": null,
-  "createTime": 1515051752000
-}, {
-  "deptId": 6,
-  "parentId": 0,
-  "deptName": "测试部",
-  "orderNum": null,
-  "createTime": 1515051758000
-}, {
-  "deptId": 7,
-  "parentId": 2,
-  "deptName": "开发一部福州分部",
-  "orderNum": null,
-  "createTime": 1521077535000
-}]
+[
+  {
+    "deptId": 1,
+    "parentId": 0,
+    "deptName": "开发部",
+    "orderNum": null,
+    "createTime": 1515051746000
+  },
+  {
+    "deptId": 2,
+    "parentId": 1,
+    "deptName": "开发一部",
+    "orderNum": null,
+    "createTime": 1515051754000
+  },
+  {
+    "deptId": 3,
+    "parentId": 1,
+    "deptName": "开发二部",
+    "orderNum": null,
+    "createTime": 1515051749000
+  },
+  {
+    "deptId": 4,
+    "parentId": 0,
+    "deptName": "市场部",
+    "orderNum": null,
+    "createTime": 1515051756000
+  },
+  {
+    "deptId": 5,
+    "parentId": 0,
+    "deptName": "人事部",
+    "orderNum": null,
+    "createTime": 1515051752000
+  },
+  {
+    "deptId": 6,
+    "parentId": 0,
+    "deptName": "测试部",
+    "orderNum": null,
+    "createTime": 1515051758000
+  },
+  {
+    "deptId": 7,
+    "parentId": 2,
+    "deptName": "开发一部福州分部",
+    "orderNum": null,
+    "createTime": 1521077535000
+  }
+]

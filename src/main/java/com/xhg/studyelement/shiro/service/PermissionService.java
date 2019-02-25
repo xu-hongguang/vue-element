@@ -3,6 +3,7 @@ package com.xhg.studyelement.shiro.service;
 import com.xhg.studyelement.shiro.domain.Permission;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Eddy.Xu
@@ -28,4 +29,10 @@ public interface PermissionService {
     List<Permission> getAllPermissions();
 
     List<Permission> getAllPermissionsByUserId(Long userId, String type);
+
+    /**
+     * @param params
+     * @return
+     */
+    List<Permission> findAllPermiss(Map<String,Object> params);
 }

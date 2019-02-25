@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Eddy.Xu
@@ -18,6 +19,12 @@ public interface PermissionMapper {
     int insertSelective(Permission record);
 
     Permission selectByPrimaryKey(Long id);
+
+    /**
+     * @param params
+     * @return
+     */
+    List<Permission> findAllPermiss(@Param("params")Map<String,Object> params);
 
     List<Permission> selectAllMenuByUserId(@Param("userId") Long userId, @Param("type") String type);
 

@@ -7,7 +7,7 @@
     <script src="../../static/js/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"></script>
     <!--<script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>-->
-    <script src=../../static/js/bootstrap/bootstrap.min.js"></script>
+    <script src="../../static/js/bootstrap/bootstrap.min.js"></script>
     <!-- jquery.treegrid -->
     <link rel="stylesheet" href="../../static/css/jqTreeGrid/jquery.treegrid.css">
     <script src="../../static/js/jqTreeGrid/jquery.treegrid.js"></script>
@@ -44,15 +44,15 @@
 
     function initDeptTreeTable() {
         $('#deptTreeTable').bootstrapTreeTable({
-            id: 'deptId', // 选取记录返回的值
-            code: 'deptId', // 用于设置父子关系
-            parentCode: 'parentId', // 用于设置父子关系
+            id: 'id', // 选取记录返回的值
+            code: 'id', // 用于设置父子关系
+            parentCode: 'parientId', // 用于设置父子关系
             rootCodeValue: null, //设置根节点code值----可指定根节点，默认为null,"",0,"0"
             data: [], // 构造table的数据集合，如果是ajax请求则不必填写
             type: "GET", // 请求数据的ajax类型
-            url: '../../static/json/dept.json', // 请求数据的ajax的url
+            url: '../../static/json/permiss.json', // 请求数据的ajax的url
             ajaxParams: {
-                deptName: $(".form").find("input[name='deptName']").val().trim()
+                name: $(".form").find("input[name='deptName']").val().trim()
             }, // 请求数据的ajax的data属性
             expandColumn: 2, // 在哪一列上面显示展开按钮
             expandAll: true, // 是否全部展开
@@ -64,22 +64,49 @@
                 },
                 {
                     title: '编号',
-                    field: 'deptId',
+                    field: 'id',
                     width: '50px'
                 },
                 {
-                    title: '名称',
-                    field: 'deptName'
+                    title: '权限名称',
+                    field: 'name'
                 },
                 {
-                    title: '创建时间',
-                    field: 'createTime'
+                    title: '图标',
+                    field: 'icon',
+                    formatter: function (item, index) {
+                        return '<i class="' + item.icon + '"></i>';
+                    }
+
+                },
+                {
+                    title: '类型',
+                    field: 'type',
+                    formatter: function (item, index) {
+                        if (item.type === '0') return '<span class="badge badge-warning">按钮</span>';
+                        if (item.type === '1') return '<span class="badge badge-success">菜单</span>';
+                    }
+
+                },
+                {
+                    title: '地址',
+                    field: 'url',
+                    formatter: function (item, index) {
+                        return item.url === 'null' ? '' : item.url;
+                    }
+                },
+                {
+                    title: '权限标识',
+                    field: 'resource',
+                    formatter: function (item, index) {
+                        return item.resource === 'null' ? '' : item.resource;
+                    }
                 }
             ], // 设置列
             toolbar: null, //顶部工具条
             height: 0,
             expanderExpandedClass: 'fa fa-chevron-down', // 展开的按钮的图标
-            expanderCollapsedClass: 'fa fa-chevron-up' // 缩起的按钮的图标
+            expanderCollapsedClass: 'fa fa-chevron-right' // 缩起的按钮的图标
         });
     }
 

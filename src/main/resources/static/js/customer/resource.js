@@ -3,11 +3,11 @@
 //element-ui
 document.write('<link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">');
 
-
 document.write('<link href="//cdn.bootcss.com/tether/1.3.6/css/tether.min.css" rel="stylesheet">');
 document.write('<link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">');
 document.write('<link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">');
 document.write('<link rel="stylesheet" href="css/jqTreeGrid/jquery.treegrid.css">');
+
 //jquery
 document.write('<script src="js/jquery.min.js"></script>');
 //vue.js

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -84,5 +85,10 @@ public class PermissionServiceImpl implements PermissionService {
         }
 
         return nodeList;
+    }
+
+    @Override
+    public List<Permission> findAllPermiss(Map<String, Object> params) {
+        return permissionMapper.findAllPermiss(params);
     }
 }
