@@ -1,8 +1,11 @@
 package com.xhg.studyelement.controller;
 
+import com.xhg.studyelement.common.utils.R;
 import com.xhg.studyelement.shiro.domain.Permission;
+import com.xhg.studyelement.shiro.realm.PermissionName;
 import com.xhg.studyelement.shiro.service.PermissionService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,8 +22,12 @@ import java.util.Map;
 @Controller
 public class MenuController {
 
+    private final PermissionService permissionService;
+
     @Autowired
-    private PermissionService permissionService;
+    public MenuController(PermissionService permissionService) {
+        this.permissionService = permissionService;
+    }
 
     @RequestMapping("/menu")
     public String toMenu(){
@@ -28,6 +35,8 @@ public class MenuController {
     }
 
     @RequestMapping("/sys/menuList")
+    @RequiresPermissions("sys:menuList")
+    @PermissionName("菜单列表")
     @ResponseBody
     public List<Permission> getMenuList(@RequestParam Map<String,Object> params){
         log.info("params = " + params);
@@ -35,5 +44,15 @@ public class MenuController {
 
         log.info("allPermiss = " + allPermiss);
         return allPermiss;
+    }
+
+    @RequestMapping("/sys/menu/add")
+    @ResponseBody
+    public R addMenuPer(Permission permission){
+
+        permissionService.save(permission);
+
+        return R.ok();
+
     }
 }

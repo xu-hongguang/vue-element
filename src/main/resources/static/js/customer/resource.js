@@ -8,6 +8,8 @@ document.write('<link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">')
 document.write('<link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">');
 document.write('<link rel="stylesheet" href="css/jqTreeGrid/jquery.treegrid.css">');
 
+document.write('<link rel="stylesheet" href="css/material-design-iconic-font/css/material-design-iconic-font.min.css">');
+
 //jquery
 document.write('<script src="js/jquery.min.js"></script>');
 //vue.js

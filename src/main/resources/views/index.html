@@ -187,7 +187,7 @@
                                     <!--</a>-->
                                 </el-menu-item>
                                 <!--</router-link>-->
-                                <template v-if="item.parientId === 27">
+                                <template v-if="item.parientId === 19">
                                     <!--v-if="item.childList.length > 0" 没有子菜单则不显示-->
                                     <el-submenu :index="item.url + index + ''" v-if="item.childList.length > 0"
                                                 class="myClass">
@@ -252,7 +252,7 @@
                     </section>
                     <section class="el-container">
                         <iframe scrolling="yes"
-                                style="width:100%;min-height:200px;border: none;overflow:visible;background:#E9EEF3;height: 800px"
+                                style="width:100%;min-height:200px;border: none;overflow:visible;background:#E9EEF3;height: 800px;margin-top: 15px"
                                 :src="main"></iframe>
                         <!--<router-view></router-view>-->
                     </section>
