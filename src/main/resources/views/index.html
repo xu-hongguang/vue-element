@@ -179,7 +179,7 @@
                                  :unique-opened="true" :collapse="isCollapse">
                             <template v-for="(item, index) in menuList">
                                 <!--<router-link to="/">-->
-                                <el-menu-item :index="item.url" v-if="item.parientId === -1"
+                                <el-menu-item :index="item.url" v-if="item.parientId === 0"
                                               @click="changeMain(item.url,'我的系统','首页')">
                                     <!--<a :href="item.url">-->
                                     <i :class="item.icon"></i>

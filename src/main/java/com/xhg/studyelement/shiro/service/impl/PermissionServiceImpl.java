@@ -58,7 +58,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     /**
-     * 根据用户id获取菜单栏
+     * 根据用户id获取菜单栏（二级菜单）
      * @param userId
      * @param type
      * @return
@@ -68,7 +68,7 @@ public class PermissionServiceImpl implements PermissionService {
         List<Permission> permissions = permissionMapper.selectAllMenuByUserId(userId, type);
         Permission rootMenu = null;
         for (Permission permission : permissions){
-            if (permission.getParientId() == -1){
+            if (permission.getParientId() == 0){
                 rootMenu = permission;
             }
         }
