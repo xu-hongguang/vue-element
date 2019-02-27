@@ -47,9 +47,11 @@
             $('#deptTree').jstree({
                 "core": {
                     'data': data.children,
+                    //取消多选
+                    'multiple': false
                 },
                 //checkbox添加多选按钮；wholerow给选中的项目或者hover的项目添加一个行级别的背景色
-                "plugins": ["checkbox"],
+                "plugins": ["checkbox","changed"],
                 "checkbox" : {
                     //去除选中后的背景色
                     "keep_selected_style" : false,
@@ -58,8 +60,10 @@
                 },
 
             }).on("changed.jstree",function (e,data) {  //on方法设置默认初始化展开树
-                console.log(data.changed.selected); // newly selected
-                console.log(data.changed.deselected); // newly deselected
+                console.log("新选择项：" + data.changed.selected); // newly selected新选择的
+                console.log("刚取消选择项：" + data.changed.deselected); // newly deselected取消选择的
+
+                console.log("所有选中项：" + data.selected);  //所有选择的
             });
         })
     }
