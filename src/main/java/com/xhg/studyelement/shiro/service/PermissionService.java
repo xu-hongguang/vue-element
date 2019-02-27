@@ -14,7 +14,7 @@ public interface PermissionService {
      * 保存权限对象
      * @param permission
      */
-    void save(Permission permission);
+    int save(Permission permission);
 
     /**
      * 获取员工的权限表达式

@@ -2,11 +2,12 @@
 #数据库数据源
 spring:
   datasource:
-    type: com.alibaba.druid.pool.DruidDataSource
-    driver-class-name: com.mysql.jdbc.Driver
-    username: root
-    password: root
-    url: jdbc:mysql://localhost:3306/logistics?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+    druid:
+      db-type: com.alibaba.druid.pool.DruidDataSource
+      username: ENC(KW960Qq2tpleeLt1PlmINw==)
+      password: ENC(RrEXaujhkwwXAKYp9apWdQ==)
+      url: jdbc:mysql://localhost:3306/logistics?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+      driver-class-name: com.mysql.jdbc.Driver
   jpa:
     show-sql: true
     hibernate:
@@ -37,7 +38,10 @@ logging:
   path: E:/logs/
   file: ${logging.path}vue_log
 
-
+#数据库配置加密密钥
+jasypt:
+  encryptor:
+    password: study
 
 #mybatis配置
 mybatis:

@@ -30,8 +30,8 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    public void save(Permission permission) {
-        permissionDAO.save(permission);
+    public int save(Permission permission) {
+        return permissionDAO.save(permission);
     }
 
     /**

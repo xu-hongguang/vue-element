@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jsTree演示</title>
+    <!-- jQuery -->
+    <script src="https://cdn.bootcss.com/jquery/2.2.0/jquery.min.js"></script>
+    <!-- jsTree -->
+    <script src="https://cdn.bootcss.com/jstree/3.3.5/jstree.min.js"></script>
+    <link rel="stylesheet" href="../../static/css/jsTree/style.min.css">
+</head>
+<body>
+<div id="deptTree"></div>
+
+<script>
+    $(function() {
+        createDeptTree();
+    });
+
+    function createDeptTree() {
+       /* $.get("../../static/json/jsTreeDept.json", {}, function(r) {
+            let data = r.msg;
+            $('#deptTree').jstree({
+                "core": {
+                    'data': data.children,
+                    //取消多选
+                    'multiple': false
+                },
+                //checkbox添加多选按钮；wholerow给选中的项目或者hover的项目添加一个行级别的背景色
+                "plugins": ["checkbox","wholerow"],
+                "checkbox" : {
+                    //去除选中后的背景色
+                    "keep_selected_style" : false,
+                    //取消选择父节点后选中所有子节点
+                    "three_state": false
+                },
+
+            }).on("loaded.jstree",function (event,data) {  //on方法设置默认初始化展开树
+                $("#deptTree").jstree().open_all();
+                $("#deptTree").jstree('select_node',[5,7],true);
+                console.log($('#deptTree').jstree(true).get_selected()); // ["5", "7"]
+            });
+        });*/
+
+        $.get("../../static/json/jsTreeDept.json", function(r) {
+            let data = r.msg;
+            $('#deptTree').jstree({
+                "core": {
+                    'data': data.children,
+                },
+                //checkbox添加多选按钮；wholerow给选中的项目或者hover的项目添加一个行级别的背景色
+                "plugins": ["checkbox"],
+                "checkbox" : {
+                    //去除选中后的背景色
+                    "keep_selected_style" : false,
+                    //取消选择父节点后选中所有子节点
+                    "three_state": false
+                },
+
+            }).on("changed.jstree",function (e,data) {  //on方法设置默认初始化展开树
+                console.log(data.changed.selected); // newly selected
+                console.log(data.changed.deselected); // newly deselected
+            });
+        })
+    }
+</script>
+</body>
+</html>
