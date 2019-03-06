@@ -1,5 +1,6 @@
 package com.xhg.studyelement;
 
+import com.xhg.studyelement.common.domain.Tree;
 import com.xhg.studyelement.common.utils.PageUtils;
 import com.xhg.studyelement.dao.InvoiceRepository;
 import com.xhg.studyelement.dao.User1Repository;
@@ -138,5 +139,7 @@ public class User1AndInvoiceMapperTest {
         List<Permission> permissions = permissionService.getAllPermissionsByUserId(1L, "1");
         permissions.forEach(System.out::println);
         System.out.println("**************************************************");
+        Tree<Permission> tree = permissionService.getAllMenus(1L,"1");
+        System.out.println(tree);
     }
 }

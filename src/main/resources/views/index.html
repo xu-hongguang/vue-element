@@ -195,12 +195,24 @@
                                             <i :class="item.icon"></i>
                                             <span>{{item.name}}</span>
                                         </template>
-                                        <el-menu-item-group v-for="(child) in item.childList">
+                                        <el-menu-item-group v-for="(child,index1) in item.childList">
+                                            <template v-if="child.childList > 0">
+                                                <el-submenu :index="child.url + index1 + ''">
+                                                    <el-menu-item-group v-for="child1 in child.childList">
+                                                        <el-menu-item :index="child1.url"
+                                                                      @click="changeMain(child1.url,item.name,child.name)">
+                                                            {{child1.name}}
+                                                        </el-menu-item>
+                                                    </el-menu-item-group>
+                                                </el-submenu>
+                                            </template>
                                             <!--<a :href="child.url">-->
-                                            <el-menu-item :index="child.url"
-                                                          @click="changeMain(child.url,item.name,child.name)">
-                                                {{child.name}}
-                                            </el-menu-item>
+                                            <template v-else>
+                                                <el-menu-item :index="child.url"
+                                                              @click="changeMain(child.url,item.name,child.name)">
+                                                    {{child.name}}
+                                                </el-menu-item>
+                                            </template>
                                             <!--</a>-->
                                         </el-menu-item-group>
                                     </el-submenu>

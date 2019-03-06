@@ -1,5 +1,6 @@
 package com.xhg.studyelement.shiro.service;
 
+import com.xhg.studyelement.common.domain.Tree;
 import com.xhg.studyelement.shiro.domain.Permission;
 
 import java.util.List;
@@ -35,4 +36,6 @@ public interface PermissionService {
      * @return
      */
     List<Permission> findAllPermiss(Map<String,Object> params);
+
+    Tree<Permission> getAllMenus(Long userId, String type);
 }
