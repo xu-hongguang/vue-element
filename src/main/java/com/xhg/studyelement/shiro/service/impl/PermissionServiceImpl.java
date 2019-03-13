@@ -35,6 +35,7 @@ public class PermissionServiceImpl implements PermissionService {
 
     /**
      * 根据用户id获取所有权限
+     *
      * @param userId
      * @return
      */
@@ -58,13 +59,14 @@ public class PermissionServiceImpl implements PermissionService {
 
     /**
      * 根据用户id获取菜单栏（二级菜单）
+     *
      * @param userId
      * @param type
      * @return
      */
     @Override
     public List<Permission> getAllPermissionsByUserId(Long userId, String type) {
-        Permission rootMenu = getRootMenu(userId,type);
+        Permission rootMenu = getRootMenu(userId, type);
         //添加一级菜单
         final List<Permission> nodeList = Lists.newArrayList();
         nodeList.add(rootMenu);
@@ -81,15 +83,16 @@ public class PermissionServiceImpl implements PermissionService {
 
     /**
      * 获取主页父菜单
+     *
      * @param userId
      * @param type
      * @return
      */
-    public Permission getRootMenu(Long userId, String type){
+    public Permission getRootMenu(Long userId, String type) {
         List<Permission> permissions = permissionMapper.selectAllMenuByUserId(userId, type);
         Permission rootMenu = null;
-        for (Permission permission : permissions){
-            if (permission.getParientId() == 0){
+        for (Permission permission : permissions) {
+            if (permission.getParientId() == 0) {
                 rootMenu = permission;
             }
         }
@@ -107,7 +110,7 @@ public class PermissionServiceImpl implements PermissionService {
     public Tree<Permission> getAllMenus(Long userId, String type) {
 
         List<Tree<Permission>> trees = new ArrayList<>();
-        List<Permission> permissions = permissionMapper.selectAllMenuByUserId(userId,type);
+        List<Permission> permissions = permissionMapper.selectAllMenuByUserId(userId, type);
 
         permissions.forEach(permission -> {
             Tree<Permission> tree = new Tree<>();

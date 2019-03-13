@@ -141,5 +141,6 @@ public class User1AndInvoiceMapperTest {
         System.out.println("**************************************************");
         Tree<Permission> tree = permissionService.getAllMenus(1L,"1");
         System.out.println(tree);
+        System.out.println(tree.getAttributes());
     }
 }
