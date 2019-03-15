@@ -38,6 +38,48 @@ var menuItem = Vue.extend({
 //注册菜单组件
 Vue.component('menuItem', menuItem);
 
+
+var navMenu = Vue.extend({
+    name: 'nav-menu',
+    props: ['navMenus'],
+    template: `
+        <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
+                                     background-color="#20222A" text-color="#fff" active-text-color="#ffd04b"
+                                     :unique-opened="true" :collapse="isCollapse">
+            <template v-for="(item, index) in treeTree.children">
+                <el-menu-item :index="treeTree.children[0].url + index + ''" v-if="treeTree.children[0].id === 19"
+                              @click="changeMain(treeTree.children[0].url,'我的系统','首页')">
+                    <i :class="treeTree.children[0].icon"></i>
+                    <span slot="title">{{treeTree.children[0].text}}</span>
+                </el-menu-item>
+                <template v-if="item.children.length > 0" v-for="(child,index0) in item.children">
+                    <!--v-if="item.children.length > 0" 没有子菜单则不显示-->
+                    <el-submenu :index="child.url + index0 + ''"
+                                class="myClass">
+                        <template slot="title">
+                            <i :class="child.icon"></i>
+                            <span>{{child.text}}</span>
+                        </template>
+
+                        <!--<nav-menu :navMenus="child.children"></nav-menu>-->
+
+                        <el-menu-item-group v-for="(child1, index1) in child.children"
+                                            v-if="item.children">
+                            <template slot="title">
+                                <el-menu-item :index="child1.url + index1 + ''"
+                                              @click="changeMain(child1.url, child.text, child1.text)">
+                                    {{child1.text}}
+                                </el-menu-item>
+                            </template>
+                        </el-menu-item-group>
+                    </el-submenu>
+                </template>
+            </template>
+        </el-menu>
+    `
+});
+Vue.component("navMenu", navMenu);
+
 const routes = [
     /*{
         path: '/h5',
@@ -68,6 +110,7 @@ const vm = new Vue({
 
         user: {},
         menuList: {},
+        treeTree: {},
         main: "main.html",
         password: '',
         newPassword: '',
@@ -101,9 +144,18 @@ const vm = new Vue({
                 window.permissions = r.permissions;
             });*/
 
+            let res = this;
             $.getJSON("menu/nav", function (r) {
-                vm.menuList = r.menuList;
+                res.menuList = r.menuList;
+
+                res.treeTree = r.treeTree;
                 window.permissions = r.permissions;
+
+                // console.log(res.treeTree.children[0].text);
+                // for (let i = 0; i < res.treeTree.children.length; i++) {
+                //     console.log(res.treeTree.children[i].id + "=" + res.treeTree.children[i].url + "="
+                //         + res.treeTree.children[i].icon + "=" + res.treeTree.children[i].text)
+                // }
             });
         },
         updatePassword: function () {

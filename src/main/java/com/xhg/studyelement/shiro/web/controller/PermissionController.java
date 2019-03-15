@@ -1,6 +1,7 @@
 package com.xhg.studyelement.shiro.web.controller;
 
 import com.xhg.studyelement.common.controller.BaseController;
+import com.xhg.studyelement.common.domain.Tree;
 import com.xhg.studyelement.common.utils.R;
 import com.xhg.studyelement.shiro.domain.Permission;
 import com.xhg.studyelement.shiro.realm.PermissionName;
@@ -78,7 +79,13 @@ public class PermissionController extends BaseController {
     @RequestMapping("menu/nav")
     public R nav(){
         List<Permission> menuList = permissionService.getAllPermissionsByUserId(getUserId(), "1");
+
+        Tree<Permission> treeTree = permissionService.getAllMenus(getUserId(),"1");
+
         logger.info("菜单列表: " + menuList);
+        logger.info("菜单列表: " + treeTree);
+
+//        return R.ok().put("treeTree",treeTree);
         return R.ok().put("menuList",menuList);
     }
 

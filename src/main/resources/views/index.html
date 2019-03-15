@@ -99,7 +99,7 @@
 
         /*设置收缩后悬浮框样式*/
         .el-menu-item-group__title {
-            padding: 0;
+            padding: 0 !important;
         }
 
         /*菜单收缩功能*/
@@ -219,6 +219,44 @@
                                 </template>
                             </template>
                         </el-menu>
+
+                        <!--<nav-menu :navMenus="menuList"></nav-menu>-->
+                        <!--<template id="nav_menu">
+                            <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen"
+                                     @close="handleClose"
+                                     background-color="#20222A" text-color="#fff" active-text-color="#ffd04b"
+                                     :unique-opened="true" :collapse="isCollapse">
+                                <template v-for="(item, index) in treeTree.children">
+                                    <el-menu-item :index="treeTree.children[0].url + index + ''" v-if="treeTree.children[0].id === 19"
+                                                  @click="changeMain(treeTree.children[0].url,'我的系统','首页')">
+                                        <i :class="treeTree.children[0].icon"></i>
+                                        <span slot="title">{{treeTree.children[0].text}}</span>
+                                    </el-menu-item>
+                                    <template v-if="item.children.length > 0" v-for="(child,index0) in item.children">
+                                        &lt;!&ndash;v-if="item.children.length > 0" 没有子菜单则不显示&ndash;&gt;
+                                        <el-submenu :index="child.url + index0 + ''"
+                                                    class="myClass">
+                                            <template slot="title">
+                                                <i :class="child.icon"></i>
+                                                <span>{{child.text}}</span>
+                                            </template>
+
+                                            <nav-menu :navMenus="child.children"></nav-menu>
+
+                                            &lt;!&ndash;<el-menu-item-group v-for="(child1, index1) in child.children"
+                                                                v-if="item.children">
+                                                <template slot="title">
+                                                    <el-menu-item :index="child1.url + index1 + ''"
+                                                                  @click="changeMain(child1.url, child.text, child1.text)">
+                                                        {{child1.text}}
+                                                    </el-menu-item>
+                                                </template>
+                                            </el-menu-item-group>&ndash;&gt;
+                                        </el-submenu>
+                                    </template>
+                                </template>
+                            </el-menu>
+                        </template>-->
                     </el-col>
                 </el-row>
             </el-aside>

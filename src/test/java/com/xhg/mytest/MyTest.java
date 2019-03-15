@@ -68,7 +68,7 @@ public class MyTest {
     public void testBook() {
         Chapter chapter1 = new Chapter("第一章", 2500, 15);
         Chapter chapter2 = new Chapter("第二章", 2600, 16);
-        Book book = new Book(1l, "三国演义", "罗贯中", Lists.newArrayList(chapter1, chapter2));
+        Book book = new Book(1L, "三国演义", "罗贯中", Lists.newArrayList(chapter1, chapter2));
         Book cloneBook = (Book) book.clone();
         System.out.println(book == cloneBook);  //false
         System.out.println(book.getChapterList() == cloneBook.getChapterList()); //true
