@@ -75,27 +75,27 @@
 
 
         /*设置导航菜单*/
-        .el-menu {
+        /*.el-menu {
             min-width: 200px;
             border-right: solid 0 #e6e6e6;
         }
 
-        /*设置父菜单位置*/
+        !*设置父菜单位置*!
         .el-menu-item, .el-submenu__title {
             padding: 0 120px;
             height: 50px;
             line-height: 50px;
         }
 
-        /*设置首页位置*/
-        /*.el-menu-item {
+        !*设置首页位置*!
+        !*.el-menu-item {
             padding: 0 120px
-        }*/
+        }*!
 
-        /*设置子菜单*/
+        !*设置子菜单*!
         .el-submenu .el-menu-item {
             padding: 0 60px;
-        }
+        }*/
 
         /*设置收缩后悬浮框样式*/
         .el-menu-item-group__title {
@@ -169,97 +169,96 @@
     <el-container style="height: 100%; min-height: 100vh" direction="vertical">
         <el-container>
             <!--左侧菜单栏-->
-            <el-aside width="200px">
-                <el-row class="tac">
-                    <el-col>
-                        <!--<h5>默认颜色</h5>  :default-active="$route.path"-->
-                        <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen"
-                                 @close="handleClose"
-                                 background-color="#20222A" text-color="#fff" active-text-color="#ffd04b"
-                                 :unique-opened="true" :collapse="isCollapse">
-                            <template v-for="(item, index) in menuList">
-                                <!--<router-link to="/">-->
-                                <el-menu-item :index="item.url" v-if="item.parientId === 0"
-                                              @click="changeMain(item.url,'我的系统','首页')">
-                                    <!--<a :href="item.url">-->
-                                    <i :class="item.icon"></i>
-                                    <span slot="title">{{item.name}}</span>
-                                    <!--</a>-->
-                                </el-menu-item>
-                                <!--</router-link>-->
-                                <template v-if="item.parientId === 19">
-                                    <!--v-if="item.childList.length > 0" 没有子菜单则不显示-->
-                                    <el-submenu :index="item.url + index + ''" v-if="item.childList.length > 0"
-                                                class="myClass">
-                                        <template slot="title">
-                                            <i :class="item.icon"></i>
-                                            <span>{{item.name}}</span>
-                                        </template>
-                                        <el-menu-item-group v-for="(child,index1) in item.childList">
-                                            <template v-if="child.childList > 0">
-                                                <el-submenu :index="child.url + index1 + ''">
-                                                    <el-menu-item-group v-for="child1 in child.childList">
-                                                        <el-menu-item :index="child1.url"
-                                                                      @click="changeMain(child1.url,item.name,child.name)">
-                                                            {{child1.name}}
-                                                        </el-menu-item>
-                                                    </el-menu-item-group>
-                                                </el-submenu>
-                                            </template>
-                                            <!--<a :href="child.url">-->
-                                            <template v-else>
-                                                <el-menu-item :index="child.url"
-                                                              @click="changeMain(child.url,item.name,child.name)">
-                                                    {{child.name}}
-                                                </el-menu-item>
-                                            </template>
-                                            <!--</a>-->
+            <!--<el-aside width="200px">-->
+            <!--<el-row class="tac">-->
+            <!--<el-col>-->
+            <!--<h5>默认颜色</h5>  :default-active="$route.path"-->
+            <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen"
+                     @close="handleClose"
+                     background-color="#20222A" text-color="#fff" active-text-color="#ffd04b"
+                     :unique-opened="true" :collapse="isCollapse">
+                <template v-for="(item, index) in menuList">
+                    <!--<router-link to="/">-->
+                    <el-menu-item :index="item.url" v-if="item.parientId === 0"
+                                  @click="changeMain(item.url,'我的系统','首页')">
+                        <!--<a :href="item.url">-->
+                        <i :class="item.icon"></i>
+                        <span slot="title">{{item.name}}</span>
+                        <!--</a>-->
+                    </el-menu-item>
+                    <!--</router-link>-->
+                    <template v-if="item.parientId === 19">
+                        <!--v-if="item.childList.length > 0" 没有子菜单则不显示-->
+                        <el-submenu :index="item.url + index + ''" v-if="item.childList.length > 0" class="myClass">
+                            <template slot="title">
+                                <i :class="item.icon"></i>
+                                <span>{{item.name}}</span>
+                            </template>
+                            <el-menu-item-group v-for="(child,index1) in item.childList">
+                                <template v-if="child.childList > 0">
+                                    <el-submenu :index="child.url + index1 + ''">
+                                        <el-menu-item-group v-for="child1 in child.childList">
+                                            <el-menu-item :index="child1.url"
+                                                          @click="changeMain(child1.url,item.name,child.name)">
+                                                {{child1.name}}
+                                            </el-menu-item>
                                         </el-menu-item-group>
                                     </el-submenu>
                                 </template>
-                            </template>
-                        </el-menu>
-
-                        <!--<nav-menu :navMenus="menuList"></nav-menu>-->
-                        <!--<template id="nav_menu">
-                            <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen"
-                                     @close="handleClose"
-                                     background-color="#20222A" text-color="#fff" active-text-color="#ffd04b"
-                                     :unique-opened="true" :collapse="isCollapse">
-                                <template v-for="(item, index) in treeTree.children">
-                                    <el-menu-item :index="treeTree.children[0].url + index + ''" v-if="treeTree.children[0].id === 19"
-                                                  @click="changeMain(treeTree.children[0].url,'我的系统','首页')">
-                                        <i :class="treeTree.children[0].icon"></i>
-                                        <span slot="title">{{treeTree.children[0].text}}</span>
+                                <!--<a :href="child.url">-->
+                                <template v-else>
+                                    <el-menu-item :index="child.url"
+                                                  @click="changeMain(child.url,item.name,child.name)">
+                                        {{child.name}}
                                     </el-menu-item>
-                                    <template v-if="item.children.length > 0" v-for="(child,index0) in item.children">
-                                        &lt;!&ndash;v-if="item.children.length > 0" 没有子菜单则不显示&ndash;&gt;
-                                        <el-submenu :index="child.url + index0 + ''"
-                                                    class="myClass">
-                                            <template slot="title">
-                                                <i :class="child.icon"></i>
-                                                <span>{{child.text}}</span>
-                                            </template>
-
-                                            <nav-menu :navMenus="child.children"></nav-menu>
-
-                                            &lt;!&ndash;<el-menu-item-group v-for="(child1, index1) in child.children"
-                                                                v-if="item.children">
-                                                <template slot="title">
-                                                    <el-menu-item :index="child1.url + index1 + ''"
-                                                                  @click="changeMain(child1.url, child.text, child1.text)">
-                                                        {{child1.text}}
-                                                    </el-menu-item>
-                                                </template>
-                                            </el-menu-item-group>&ndash;&gt;
-                                        </el-submenu>
-                                    </template>
                                 </template>
-                            </el-menu>
-                        </template>-->
-                    </el-col>
-                </el-row>
-            </el-aside>
+                                <!--</a>-->
+                            </el-menu-item-group>
+                        </el-submenu>
+                    </template>
+                </template>
+            </el-menu>
+
+            <!--<nav-menu :navMenus="menuList"></nav-menu>-->
+            <!--<template id="nav_menu">
+                <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen"
+                         @close="handleClose"
+                         background-color="#20222A" text-color="#fff" active-text-color="#ffd04b"
+                         :unique-opened="true" :collapse="isCollapse">
+                    <template v-for="(item, index) in treeTree.children">
+                        <el-menu-item :index="treeTree.children[0].url + index + ''" v-if="treeTree.children[0].id === 19"
+                                      @click="changeMain(treeTree.children[0].url,'我的系统','首页')">
+                            <i :class="treeTree.children[0].icon"></i>
+                            <span slot="title">{{treeTree.children[0].text}}</span>
+                        </el-menu-item>
+                        <template v-if="item.children.length > 0" v-for="(child,index0) in item.children">
+                            &lt;!&ndash;v-if="item.children.length > 0" 没有子菜单则不显示&ndash;&gt;
+                            <el-submenu :index="child.url + index0 + ''"
+                                        class="myClass">
+                                <template slot="title">
+                                    <i :class="child.icon"></i>
+                                    <span>{{child.text}}</span>
+                                </template>
+
+                                <nav-menu :navMenus="child.children"></nav-menu>
+
+                                &lt;!&ndash;<el-menu-item-group v-for="(child1, index1) in child.children"
+                                                    v-if="item.children">
+                                    <template slot="title">
+                                        <el-menu-item :index="child1.url + index1 + ''"
+                                                      @click="changeMain(child1.url, child.text, child1.text)">
+                                            {{child1.text}}
+                                        </el-menu-item>
+                                    </template>
+                                </el-menu-item-group>&ndash;&gt;
+                            </el-submenu>
+                        </template>
+                    </template>
+                </el-menu>
+            </template>-->
+            <!--</el-col>-->
+            <!--</el-row>-->
+            <!--</el-aside>-->
             <el-container>
                 <!--头部导航栏-->
                 <el-header style="float: right;">
