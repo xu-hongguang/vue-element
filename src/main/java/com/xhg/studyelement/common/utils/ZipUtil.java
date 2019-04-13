@@ -1,28 +1,28 @@
 package com.xhg.studyelement.common.utils;
 
 import java.io.*;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.zip.*;
 
 
 public class ZipUtil {
-	
-	private static int k = 1; // 定义递归次数变量  
-	
-	
-	/** 
-     * @param args 
-     */  
-    public static void main(String[] args) {  
+
+    private static int k = 1; // 定义递归次数变量
+
+
+    /**
+     * @param args
+     */
+    public static void main(String[] args) {
         // TODO Auto-generated method stub  
-    	ZipUtil book = new ZipUtil();  
-        try {  
+        ZipUtil book = new ZipUtil();
+        try {
             zip("D:\\test\\1.zip",
-                    new File("D:\\a\\"));  
-        } catch (Exception e) {  
+                    new File("src/main/java/com/xhg/studyelement/common/utils/vcode/Captcha.java"));
+            readZipFile("D:\\test\\1.zip");
+        } catch (Exception e) {
             // TODO Auto-generated catch block  
-            e.printStackTrace();  
+            e.printStackTrace();
         }  
         
         /*try {  
@@ -31,111 +31,115 @@ public class ZipUtil {
             // TODO Auto-generated catch block  
             e.printStackTrace();  
         }  */
-  
-    }  
-  
-    public static void zip(String zipFileName, File inputFile) throws Exception {  
-        System.out.println("压缩中...");  
-        ZipOutputStream out = new ZipOutputStream(new FileOutputStream(  
-                zipFileName));  
-        BufferedOutputStream bo = new BufferedOutputStream(out);  
-        zip(out, inputFile, inputFile.getName(), bo);  
-        bo.close();  
+
+    }
+
+    public static void zip(String zipFileName, File inputFile) throws Exception {
+        System.out.println("压缩中...");
+        // 从文件输出流中获取数据校验和输出流,并设置Adler32
+        CheckedOutputStream csum = new CheckedOutputStream(new FileOutputStream(zipFileName), new Adler32());
+        ZipOutputStream out = new ZipOutputStream(csum);
+        BufferedOutputStream bo = new BufferedOutputStream(out);
+        zip(out, inputFile, inputFile.getName(), bo);
+        bo.close();
         out.close(); // 输出流关闭  
-        System.out.println("压缩完成");  
-    }  
-  
-    private static void zip(ZipOutputStream out, File f, String base,  
-            BufferedOutputStream bo) throws Exception { // 方法重载  
-        if (f.isDirectory()) {  
-            File[] fl = f.listFiles();  
-            if (fl.length == 0) {  
+        System.out.println("压缩完成");
+    }
+
+    private static void zip(ZipOutputStream out, File f, String base, BufferedOutputStream bo) throws Exception { // 方法重载
+        if (f.isDirectory()) {
+            File[] fl = f.listFiles();
+            if (fl.length == 0) {
                 out.putNextEntry(new ZipEntry(base + "/")); // 创建zip压缩进入点base  
-                System.out.println(base + "/");  
-            }  
-            for (int i = 0; i < fl.length; i++) {  
+                System.out.println(base + "/");
+            }
+            for (int i = 0; i < fl.length; i++) {
                 zip(out, fl[i], base + "/" + fl[i].getName(), bo); // 递归遍历子文件夹  
-            }  
-            System.out.println("第" + k + "次递归");  
-            k++;  
-        } else {  
+            }
+            System.out.println("第" + k + "次递归");
+            k++;
+        } else {
             out.putNextEntry(new ZipEntry(base)); // 创建zip压缩进入点base  
-            System.out.println(base);  
-            FileInputStream in = new FileInputStream(f);  
-            BufferedInputStream bi = new BufferedInputStream(in);  
-            int b;  
-            while ((b = bi.read()) != -1) {  
+            System.out.println(base);
+            FileInputStream input = new FileInputStream(f);
+            BufferedInputStream bi = new BufferedInputStream(input);
+            DataInputStream in = new DataInputStream(new BufferedInputStream(bi));
+            int b;
+            while ((b = in.read()) != -1) {
                 bo.write(b); // 将字节流写入当前zip目录  
-            }  
-            bi.close();  
+            }
+            bi.close();
             in.close(); // 输入流关闭  
-        }  
-    }  
-    
+        }
+    }
+
     /**
      * 解压缩
+     *
      * @param outPath 解压后文件路径
-     * @throws IOException 
+     * @throws IOException
      */
-    public static void jyZip(String inputPathZipName,String outPath) throws IOException{
-  	  long startTime=System.currentTimeMillis();  
-            ZipInputStream Zin=new ZipInputStream(new FileInputStream(  
-            		inputPathZipName));//输入源zip路径  
-            BufferedInputStream Bin=new BufferedInputStream(Zin);  
-            File fout=null;
-            ZipEntry entry;  
-            while((entry = Zin.getNextEntry())!=null && !entry.isDirectory()){  
-                fout=new File(outPath,entry.getName());
-                if(!fout.exists()){
-                    (new File(fout.getParent())).mkdirs();
-                }  
-                FileOutputStream out=new FileOutputStream(fout);
-                BufferedOutputStream Bout=new BufferedOutputStream(out);  
-                int b;  
-                while((b=Bin.read())!=-1){  
-                    Bout.write(b);  
-                }  
-                Bout.close();  
-                out.close();  
-                System.out.println(fout+"解压成功");
-            }  
-            Bin.close();  
-            Zin.close();  
-        long endTime=System.currentTimeMillis();  
-        System.out.println("耗费时间： "+(endTime-startTime)+" ms");
+    public static void jyZip(String inputPathZipName, String outPath) throws IOException {
+        long startTime = System.currentTimeMillis();
+        ZipInputStream Zin = new ZipInputStream(new FileInputStream(
+                inputPathZipName));//输入源zip路径
+        BufferedInputStream Bin = new BufferedInputStream(Zin);
+        File fout = null;
+        ZipEntry entry;
+        while ((entry = Zin.getNextEntry()) != null && !entry.isDirectory()) {
+            fout = new File(outPath, entry.getName());
+            if (!fout.exists()) {
+                (new File(fout.getParent())).mkdirs();
+            }
+            FileOutputStream out = new FileOutputStream(fout);
+            BufferedOutputStream Bout = new BufferedOutputStream(out);
+            int b;
+            while ((b = Bin.read()) != -1) {
+                Bout.write(b);
+            }
+            Bout.close();
+            out.close();
+            System.out.println(fout + "解压成功");
+        }
+        Bin.close();
+        Zin.close();
+        long endTime = System.currentTimeMillis();
+        System.out.println("耗费时间： " + (endTime - startTime) + " ms");
     }
-    
+
     /**
      * 读取压缩文件
+     *
      * @param file 文件路径+文件名
      * @return 解压后的二进制输出流
      * @throws Exception
      */
-    public static byte[] readZipFile(String file) throws Exception {  
-    	ZipInputStream Zin=new ZipInputStream(new FileInputStream(file));//输入源zip路径  
-    	BufferedInputStream Bin=new BufferedInputStream(Zin);
-    	 ByteArrayOutputStream bos = null;
-    	 byte[] byteArray = null;
-         ZipEntry entry;  
-             while((entry = Zin.getNextEntry())!=null && !entry.isDirectory()){  
-                 bos = new ByteArrayOutputStream();
-                 int b;  
-                 while((b=Bin.read())!=-1){  
-                     bos.write(b);
-                     bos.close();  
-                 } 
-             }  
-             Bin.close();  
-             Zin.close();
-             byteArray = bos.toByteArray();
-			return byteArray;  
-    }  
-    
-    public static byte[] readInputStream(InputStream inputStream) throws Exception{
+    public static byte[] readZipFile(String file) throws Exception {
+        ZipInputStream Zin = new ZipInputStream(new FileInputStream(file));//输入源zip路径
+        BufferedInputStream Bin = new BufferedInputStream(Zin);
+        ByteArrayOutputStream bos = null;
+        byte[] byteArray = null;
+        ZipEntry entry;
+        while ((entry = Zin.getNextEntry()) != null && !entry.isDirectory()) {
+            bos = new ByteArrayOutputStream();
+            int b;
+            while ((b = Bin.read()) != -1) {
+                bos.write(b);
+                bos.close();
+            }
+        }
+        Bin.close();
+        Zin.close();
+        byteArray = bos.toByteArray();
+        System.out.println(new String(byteArray, StandardCharsets.UTF_8));
+        return byteArray;
+    }
+
+    public static byte[] readInputStream(InputStream inputStream) throws Exception {
         byte[] buffer = new byte[1024];
         int len = -1;
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        while((len = inputStream.read(buffer)) != -1){
+        while ((len = inputStream.read(buffer)) != -1) {
             outputStream.write(buffer, 0, len);
         }
         outputStream.close();

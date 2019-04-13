@@ -15,6 +15,7 @@
         from cars cars
         where cars.id = #{id,jdbcType=INTEGER}
     </select>
+
     <select id="selectAll" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>

@@ -119,7 +119,7 @@ public class CommonUtil {
         if (!StringUtils.isEmpty(regex)) {
             final Pattern pattern = Pattern.compile(regex);
             final Matcher m = pattern.matcher(str);
-            final Boolean dateFlag = m.matches();
+            final boolean dateFlag = m.matches();
             if (!dateFlag) {
                 return Boolean.FALSE;
             }
