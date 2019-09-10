@@ -51,7 +51,7 @@ public class UserDAOImpl implements IUserDAO {
 
     @Override
     public int countUser(Map<String, Object> map) {
-        int count =  template.queryForObject("select count(1) from `user` order by id limit ?,?", Integer.class, map.get("offset"), map.get("limit"));
+        int count =  template.queryForObject("select count(1) from `user` order by id", Integer.class);
         return count;
     }
 }

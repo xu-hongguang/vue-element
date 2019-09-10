@@ -122,7 +122,7 @@ public class User1AndInvoiceMapperTest {
     @Test
     public void testUsers(){
         Map<String,Object> map = new HashMap<>(16);
-        map.put("page",1);
+        map.put("page",2);
         map.put("limit",2);
         PageUtils<User> userAllPaging = userService.findUserAllPaging(map);
         System.out.println("当前页数据:" + userAllPaging.getList());
