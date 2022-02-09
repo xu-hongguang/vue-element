@@ -203,7 +203,7 @@
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-web</artifactId>
-            <version>1.4.0</version>
+            <version>1.7.1</version>
         </dependency>
         <dependency>  <!--以上两包已依赖-->
             <groupId>org.apache.shiro</groupId>
